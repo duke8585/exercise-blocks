@@ -43,4 +43,37 @@ describe("seedExercises", () => {
       )
     ).toBe(true);
   });
+
+  it("carries the second-round v2 additions", () => {
+    const requiredV2Ids = [
+      "seated-good-mornings",
+      "hyperextensions",
+      "standing-good-mornings",
+      "jefferson-curl",
+      "copenhagen-plank",
+      "banded-torso-rotations-standing",
+      "sumo-squat",
+      "nordic-curls",
+      "reverse-nordics",
+      "single-leg-deadlift"
+    ];
+
+    for (const id of requiredV2Ids) {
+      const found = seedExercises.find((exercise) => exercise.id === id);
+      expect(found, `missing seed: ${id}`).toBeDefined();
+      expect(found?.tags).toContain("inventory:v2");
+    }
+  });
+
+  it("retags existing entries into v2 without dropping prior tags", () => {
+    const retagged = ["copenhagen-short-lever", "single-leg-rdl-reach"];
+
+    for (const id of retagged) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v2");
+      // these originated in v0, so the original tag must survive the retag.
+      expect(exercise?.tags).toContain("inventory:v0");
+    }
+  });
 });

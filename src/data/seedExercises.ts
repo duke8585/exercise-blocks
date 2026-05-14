@@ -464,14 +464,129 @@ const inventoryV2Exercises: Exercise[] = [
     sideMode: "single",
     description:
       "Lie on your back with knees bent and feet lifted or planted, depending on difficulty. Rotate the legs side to side like windshield wipers while keeping the shoulders heavy on the floor. Make the range smaller if the low back lifts or the motion becomes uncontrolled."
+  },
+  {
+    id: "seated-good-mornings",
+    name: "Seated good mornings",
+    primaryGroup: "hamstrings",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Sit upright on a sturdy chair or bench with feet flat and a light load held at the chest or across the shoulders. Hinge forward at the hips with a long spine until you feel the hamstrings and back work, then return to upright without rounding. The seated position removes the legs as helpers, so even a small load is plenty."
+  },
+  {
+    id: "hyperextensions",
+    name: "Hyperextensions",
+    primaryGroup: "back",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Set up on a hyperextension bench or stable surface with the hips supported and feet anchored. Lower the chest with a long spine, then extend back up by driving the hips down rather than cranking through the low back. Stop at a neutral line instead of overarching, and start with body weight only."
+  },
+  {
+    id: "standing-good-mornings",
+    name: "Standing good mornings",
+    primaryGroup: "hamstrings",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Stand with feet about hip width, knees softly bent, ribs stacked over hips, and a light load held at the chest or across the shoulders. Hinge from the hips while sending them back, letting the chest travel down without rounding the spine. Reverse by driving the hips forward and keep the load conservative until the pattern is automatic."
+  },
+  {
+    id: "jefferson-curl",
+    name: "Jefferson curl",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Stand on a sturdy surface holding a very light weight in both hands, with softly bent knees. Slowly curl down one segment at a time, letting the spine fully round, then reverse from the pelvis upward to restack the spine. Treat this as controlled spinal flexion mobility, not a heavy lift, and ramp the load up only when the pattern is clean."
+  },
+  {
+    id: "copenhagen-plank",
+    name: "Copenhagen plank",
+    primaryGroup: "adductors",
+    tags: ["inventory:v2"],
+    sideMode: "leftRight",
+    description:
+      "Set the top leg's inner foot or shin on a bench so the inner thigh is loaded, prop yourself on the bottom forearm, and let the bottom leg hover just above the floor. Lift the hips into a side plank and hold while keeping the body long. This is the long-lever Copenhagen and it is demanding; drop to the short-lever hold or shorten the block if the adductor starts to grip."
+  },
+  {
+    id: "banded-torso-rotations-standing",
+    name: "Banded torso rotations, standing",
+    primaryGroup: "core",
+    tags: ["inventory:v2"],
+    sideMode: "leftRight",
+    description:
+      "Anchor a band at chest height, stand sideways to the anchor, and hold the band with both hands at chest level with arms long. Rotate the trunk away from the anchor while keeping the hips relatively quiet, then return slowly under control. Use the first block for one side and the second block for the other, and keep the band tension light enough that the spine stays long."
+  },
+  {
+    id: "sumo-squat",
+    name: "Sumo squat",
+    primaryGroup: "adductors",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Stand with feet wider than shoulders and toes turned out, hands together at the chest or holding a light weight. Sit straight down between your hips while keeping the knees tracking over the toes, then drive up through the floor. The wide stance loads the inner thighs and glutes more than a regular squat; stop the depth before the heels lift or the pelvis tucks under hard."
+  },
+  {
+    id: "nordic-curls",
+    name: "Nordic curls",
+    primaryGroup: "hamstrings",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Kneel on a padded surface with feet anchored under a support and hips and torso stacked in one line. Lower yourself forward by resisting through the hamstrings until you can no longer hold the line, then catch on your hands and push back up. This is brutally hard; use a band, raised hands, or a partial range until the lowering phase is controlled."
+  },
+  {
+    id: "reverse-nordics",
+    name: "Reverse Nordics",
+    primaryGroup: "quads",
+    tags: ["inventory:v2"],
+    sideMode: "single",
+    description:
+      "Kneel tall with feet behind you, hips stacked over knees, and torso long. Lean backward by hinging at the knees while keeping a straight line from knees to head, then return to upright. Use a smaller range or place a hand on the floor behind you for support until the quads can manage the lean without the low back arching."
+  },
+  {
+    id: "single-leg-deadlift",
+    name: "Single-leg deadlift",
+    primaryGroup: "hamstrings",
+    tags: ["inventory:v2"],
+    sideMode: "leftRight",
+    description:
+      "Stand on one leg with a soft knee and the other leg lightly trailing or hovering. Hinge at the standing hip while the trailing leg counterbalances behind you, letting a light weight in the opposite hand travel toward the floor. Reverse by driving the standing heel down, and keep the standing-side hip from collapsing inward."
   }
 ];
 
-export const seedExercises: Exercise[] = consolidateExercises([
-  ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
-  ...inventoryV1Exercises,
-  ...inventoryV2Exercises
-]);
+// Existing entries that should also live under inventory:v2. We add the tag
+// instead of duplicating the entry, so the original description and side mode
+// stay authoritative.
+const inventoryV2RetagIds: readonly string[] = [
+  "copenhagen-short-lever", // matches "copenhagen plank" (short-lever variant)
+  "single-leg-rdl-reach" // matches "single legged RDL"
+];
+
+export const seedExercises: Exercise[] = applyRetags(
+  consolidateExercises([
+    ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
+    ...inventoryV1Exercises,
+    ...inventoryV2Exercises
+  ]),
+  inventoryV2RetagIds,
+  "inventory:v2"
+);
+
+function applyRetags(
+  exercises: Exercise[],
+  ids: readonly string[],
+  tag: string
+): Exercise[] {
+  const idSet = new Set(ids);
+  return exercises.map((exercise) =>
+    idSet.has(exercise.id)
+      ? { ...exercise, tags: mergeTags(exercise.tags, [tag]) }
+      : exercise
+  );
+}
 
 function addInventoryTag(exercise: SeedExerciseInput, tag: string): Exercise {
   return {
