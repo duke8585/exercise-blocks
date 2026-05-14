@@ -309,8 +309,18 @@ h2 {
   display: grid;
   gap: 8px;
   margin: 0;
-  padding: 0;
+  /* Leave enough space at the bottom for the last item to scroll into the
+     vertical middle of the viewport when it becomes active. */
+  padding: 0 0 50vh;
   list-style: none;
+}
+
+.routine-item {
+  /* When the auto-scroll uses block:'start' fallback (older browsers, or
+     when an item is already partially in view), keep it clear of the
+     sticky timer band that lives at the top of the viewport. */
+  scroll-margin-top: 96px;
+  scroll-margin-bottom: 24px;
 }
 
 .routine-card {

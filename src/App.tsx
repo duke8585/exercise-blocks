@@ -60,6 +60,7 @@ export default function App() {
   const [session, setSession] = useState<SessionState>(emptySession);
   const [message, setMessage] = useState<string>("");
   const audioContextRef = useRef<AudioContext | null>(null);
+  const routineItemRefs = useRef<Array<HTMLLIElement | null>>([]);
 
   const completedIds = useMemo(
     () => new Set(session.completedIds),
@@ -82,6 +83,35 @@ export default function App() {
   useEffect(() => {
     saveStoredConfig(window.localStorage, config);
   }, [config]);
+
+  // Trim the ref array when the routine shrinks so stale refs don't linger.
+  useEffect(() => {
+    routineItemRefs.current.length = routine.length;
+  }, [routine.length]);
+
+  // Auto-scroll the active routine item into view whenever the active index
+  // changes or a new routine is generated. `scrollIntoView` is a no-op when
+  // the target is already visible, so this self-disables on desktop viewports
+  // big enough to show the whole list.
+  useEffect(() => {
+    if (session.activeIndex === null) {
+      return;
+    }
+
+    const node = routineItemRefs.current[session.activeIndex];
+    if (!node) {
+      return;
+    }
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    node.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "center"
+    });
+  }, [session.activeIndex, routine]);
 
   useEffect(() => {
     if (!["sideA", "sideB", "resting"].includes(session.mode)) {
@@ -564,6 +594,9 @@ export default function App() {
                     isDone ? "done" : ""
                   }`}
                   key={exercise.instanceId}
+                  ref={(node) => {
+                    routineItemRefs.current[index] = node;
+                  }}
                 >
                   <div className="routine-card">
                     <button
