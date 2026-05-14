@@ -37,6 +37,12 @@ const emptySession: SessionState = {
 
 const allGroups = MUSCLE_GROUP_OPTIONS.map((option) => option.id);
 
+function collectLibraryTags(exercises: StoredAppConfig["exercises"]): string[] {
+  return Array.from(
+    new Set(exercises.flatMap((exercise) => exercise.tags))
+  ).sort((a, b) => a.localeCompare(b));
+}
+
 export default function App() {
   const [config, setConfig] = useState<StoredAppConfig>(() => {
     if (typeof window === "undefined") {
@@ -46,6 +52,10 @@ export default function App() {
     return loadStoredConfig(window.localStorage);
   });
   const [selectedGroups, setSelectedGroups] = useState<MuscleGroup[]>(allGroups);
+  const allTags = useMemo(() => collectLibraryTags(config.exercises), [config.exercises]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(() =>
+    collectLibraryTags(config.exercises)
+  );
   const [routine, setRoutine] = useState<RoutineExercise[]>([]);
   const [session, setSession] = useState<SessionState>(emptySession);
   const [message, setMessage] = useState<string>("");
@@ -58,6 +68,16 @@ export default function App() {
   const activeExercise =
     session.activeIndex === null ? null : routine[session.activeIndex] ?? null;
   const selectedCount = selectedGroups.length;
+
+  // Drop any selected tags that no longer exist after a library swap (e.g.
+  // import or clear-storage may not have touched selectedTags directly).
+  useEffect(() => {
+    setSelectedTags((current) => {
+      const allowed = new Set(allTags);
+      const filtered = current.filter((tag) => allowed.has(tag));
+      return filtered.length === current.length ? current : filtered;
+    });
+  }, [allTags]);
 
   useEffect(() => {
     saveStoredConfig(window.localStorage, config);
@@ -168,11 +188,20 @@ export default function App() {
     );
   }
 
+  function toggleTag(tag: string) {
+    setSelectedTags((current) =>
+      current.includes(tag)
+        ? current.filter((selected) => selected !== tag)
+        : [...current, tag]
+    );
+  }
+
   function generate() {
     const nextRoutine = toRoutineExercises(
       generateRoutine(
         config.exercises,
         selectedGroups,
+        selectedTags,
         config.settings.routineCount
       )
     );
@@ -180,7 +209,7 @@ export default function App() {
     if (nextRoutine.length === 0) {
       setRoutine([]);
       setSession(emptySession);
-      setMessage("Select at least one muscle group with exercises.");
+      setMessage("No exercises match the current group and tag filters.");
       return;
     }
 
@@ -253,8 +282,10 @@ export default function App() {
     }
 
     window.localStorage.removeItem(STORAGE_KEY);
-    setConfig(defaultStoredConfig());
+    const fresh = defaultStoredConfig();
+    setConfig(fresh);
     setSelectedGroups(allGroups);
+    setSelectedTags(collectLibraryTags(fresh.exercises));
     setRoutine([]);
     setSession(emptySession);
     setMessage("Storage reset to defaults.");
@@ -277,6 +308,7 @@ export default function App() {
 
     setConfig(parsed.config);
     setSelectedGroups(allGroups);
+    setSelectedTags(collectLibraryTags(parsed.config.exercises));
     setRoutine(importedRoutine);
     setSession(
       importedRoutine.length > 0 ? { ...emptySession, activeIndex: 0 } : emptySession
@@ -381,7 +413,9 @@ export default function App() {
       <section className="panel controls-panel" aria-labelledby="settings-heading">
         <div className="section-heading">
           <h2 id="settings-heading">Settings</h2>
-          <span>{selectedCount} groups</span>
+          <span>
+            {selectedCount} groups · {selectedTags.length}/{allTags.length} tags
+          </span>
         </div>
 
         <div className="number-grid">
@@ -408,27 +442,61 @@ export default function App() {
           />
         </div>
 
-        <div className="group-actions">
-          <button type="button" onClick={() => setSelectedGroups(allGroups)}>
-            All
-          </button>
-          <button type="button" onClick={() => setSelectedGroups([])}>
-            None
-          </button>
+        <div className="filter-section">
+          <div className="filter-heading">
+            <h3>Muscle groups</h3>
+            <div className="group-actions">
+              <button type="button" onClick={() => setSelectedGroups(allGroups)}>
+                All
+              </button>
+              <button type="button" onClick={() => setSelectedGroups([])}>
+                None
+              </button>
+            </div>
+          </div>
+
+          <div className="group-grid" aria-label="Muscle groups">
+            {MUSCLE_GROUP_OPTIONS.map((group) => (
+              <label className="group-toggle" key={group.id}>
+                <input
+                  checked={selectedGroups.includes(group.id)}
+                  type="checkbox"
+                  onChange={() => toggleGroup(group.id)}
+                />
+                <span>{group.label}</span>
+              </label>
+            ))}
+          </div>
         </div>
 
-        <div className="group-grid" aria-label="Muscle groups">
-          {MUSCLE_GROUP_OPTIONS.map((group) => (
-            <label className="group-toggle" key={group.id}>
-              <input
-                checked={selectedGroups.includes(group.id)}
-                type="checkbox"
-                onChange={() => toggleGroup(group.id)}
-              />
-              <span>{group.label}</span>
-            </label>
-          ))}
-        </div>
+        {allTags.length > 0 ? (
+          <div className="filter-section">
+            <div className="filter-heading">
+              <h3>Tags</h3>
+              <div className="group-actions">
+                <button type="button" onClick={() => setSelectedTags(allTags)}>
+                  All
+                </button>
+                <button type="button" onClick={() => setSelectedTags([])}>
+                  None
+                </button>
+              </div>
+            </div>
+
+            <div className="group-grid" aria-label="Tags">
+              {allTags.map((tag) => (
+                <label className="group-toggle" key={tag}>
+                  <input
+                    checked={selectedTags.includes(tag)}
+                    type="checkbox"
+                    onChange={() => toggleTag(tag)}
+                  />
+                  <span>{tag}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="primary-actions">
           <button className="primary-button" type="button" onClick={generate}>

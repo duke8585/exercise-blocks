@@ -141,6 +141,28 @@ h2 {
   margin-top: 12px;
 }
 
+.filter-section {
+  margin-top: 14px;
+}
+
+.filter-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-heading h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #1c2321;
+}
+
+.filter-heading .group-actions {
+  margin-top: 0;
+}
+
 .group-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
