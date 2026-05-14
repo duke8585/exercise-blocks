@@ -1,0 +1,434 @@
+:root {
+  color: #1c2321;
+  background: #f6f4ee;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(246, 244, 238, 0.96), rgba(232, 238, 235, 0.92)),
+    #f6f4ee;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  min-height: 44px;
+  border: 1px solid #b8c3bb;
+  border-radius: 8px;
+  padding: 0 14px;
+  color: #1c2321;
+  background: #fffefa;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+input[type="number"] {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #b8c3bb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #fffefa;
+  color: #1c2321;
+}
+
+.app-shell {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 18px 14px 32px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #53645b;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(2rem, 9vw, 4.4rem);
+  line-height: 0.96;
+  letter-spacing: 0;
+}
+
+h2 {
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+
+.panel,
+.timer-band,
+.routine-section {
+  margin-top: 14px;
+}
+
+.panel {
+  border: 1px solid #d4ddd6;
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 254, 250, 0.82);
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.section-heading span {
+  color: #53645b;
+  font-size: 0.9rem;
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.number-grid label {
+  display: grid;
+  gap: 6px;
+  color: #53645b;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.group-actions,
+.primary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.group-toggle {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 8px;
+  border: 1px solid #d4ddd6;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: #fffefa;
+  color: #1c2321;
+  font-size: 0.93rem;
+}
+
+.group-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2e6f5c;
+}
+
+.primary-button,
+.start-button {
+  border-color: #215747;
+  color: #ffffff;
+  background: #2e6f5c;
+}
+
+.secondary-button {
+  flex: 0 0 auto;
+}
+
+.file-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid #b8c3bb;
+  border-radius: 8px;
+  padding: 0 14px;
+  background: #fffefa;
+  cursor: pointer;
+}
+
+.file-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.message {
+  margin: 12px 0 0;
+  color: #7a3924;
+  font-weight: 700;
+}
+
+.timer-band {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: stretch;
+  border: 1px solid #b8c3bb;
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(238, 244, 240, 0.96);
+  box-shadow: 0 12px 24px rgba(43, 60, 52, 0.12);
+}
+
+.timer-band.work {
+  border-color: #c45a3b;
+  background: #fff0e8;
+}
+
+.timer-band.work div:first-child strong {
+  color: #9b321f;
+}
+
+.timer-band.rest {
+  border-color: #4d8a68;
+  background: #e7f6ed;
+}
+
+.timer-band.rest div:first-child strong {
+  color: #256043;
+}
+
+.timer-band.done {
+  border-color: #5c6b62;
+  background: #eef1ed;
+}
+
+.timer-band div {
+  min-width: 0;
+}
+
+.timer-band span,
+.timer-band strong {
+  display: block;
+}
+
+.timer-band span {
+  color: #53645b;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.timer-band strong {
+  overflow: hidden;
+  margin-top: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timer-band div:first-child strong {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.start-button {
+  min-width: 94px;
+}
+
+.empty-state {
+  border: 1px dashed #b8c3bb;
+  border-radius: 8px;
+  padding: 24px 14px;
+  color: #53645b;
+  text-align: center;
+}
+
+.routine-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.routine-card {
+  border: 1px solid #d4ddd6;
+  border-radius: 8px;
+  background: #fffefa;
+}
+
+.routine-select {
+  display: grid;
+  width: 100%;
+  min-height: 64px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  border: 0;
+  padding: 9px 10px;
+  background: transparent;
+  text-align: left;
+}
+
+.routine-item.active .routine-card {
+  border-color: #2e6f5c;
+  background: #eef7f2;
+}
+
+.routine-item.done .routine-card {
+  color: #53645b;
+  background: #eef1ed;
+}
+
+.routine-index,
+.state-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.routine-index {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #35534a;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.routine-item.done .routine-index {
+  background: #829188;
+}
+
+.routine-item strong,
+.routine-item small {
+  display: block;
+}
+
+.routine-item strong {
+  overflow-wrap: anywhere;
+}
+
+.routine-item small {
+  margin-top: 3px;
+  color: #53645b;
+}
+
+.exercise-description {
+  margin: -2px 12px 10px 54px;
+  color: #53645b;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.exercise-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 12px 12px 54px;
+}
+
+.exercise-links a {
+  border: 1px solid #c9d5ce;
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: #174636;
+  background: #f8fbf9;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.state-pill {
+  min-width: 64px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: #53645b;
+  background: #e6ece8;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.routine-item.active .state-pill {
+  color: #174636;
+  background: #cce9dc;
+}
+
+@media (max-width: 620px) {
+  .app-shell {
+    padding-inline: 10px;
+  }
+
+  .number-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-band {
+    grid-template-columns: 1fr auto;
+  }
+
+  .timer-band div:nth-child(2) {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .start-button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .routine-select {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .state-pill {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .exercise-description,
+  .exercise-links {
+    margin-left: 52px;
+  }
+}

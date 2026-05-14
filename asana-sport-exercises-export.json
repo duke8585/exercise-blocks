@@ -1,0 +1,422 @@
+{
+  "exported_at": "2026-05-13T23:00:00+02:00",
+  "source": {
+    "system": "Asana",
+    "project_gid": "1211123623872055",
+    "project_name": "private",
+    "tag": "sport"
+  },
+  "actions_taken": {
+    "sport_tagged_cards_found": 9,
+    "moved_all_to_my_tasks_section": "BLOCKED",
+    "my_tasks_blocked_section_gid": "1214700654849467"
+  },
+  "cards": [
+    {
+      "gid": "1212598366151055",
+      "title": "Lower Back Spasm Recovery - Myofascial Release",
+      "url": "https://app.asana.com/0/1211123623872055/1212598366151055",
+      "minimal_notes": [
+        "Daily 10 min protocol.",
+        "Use a 2:1 time ratio: spend double time on the tight side.",
+        "Expected improvement: 30–40% in 1–2 weeks.",
+        "Stop for sharp shooting pain, leg numbness, or bruising."
+      ],
+      "exercises": [
+        {
+          "name": "Psoas lacrosse-ball release",
+          "dose": "60–90s",
+          "notes": "Face down; ball between hip bone and belly button."
+        },
+        {
+          "name": "TFL / IT-band lacrosse-ball release",
+          "dose": "60s on tender spots",
+          "notes": "Side-lying; ball on outer hip."
+        },
+        {
+          "name": "Rectus femoris release",
+          "dose": "2–3 passes",
+          "notes": "Face down; release upper front thigh."
+        },
+        {
+          "name": "Piriformis lacrosse-ball release",
+          "dose": "90s",
+          "notes": "Sit on ball in figure-4; find tender spot."
+        },
+        {
+          "name": "Glute med / max lacrosse-ball release",
+          "dose": "60–90s per spot",
+          "notes": "Side-lying with ball under glute."
+        },
+        {
+          "name": "QL / lower-back lacrosse-ball release",
+          "dose": "60–90s per side",
+          "notes": "Place ball between spine and side of torso; not on spine."
+        }
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1213466366269914",
+      "title": "daily workout / mobility / stretching overview",
+      "url": "https://app.asana.com/0/1211123623872055/1213466366269914",
+      "minimal_notes": [
+        "Sport-tagged card has no body notes or comments to extract."
+      ],
+      "exercises": [],
+      "comments": []
+    },
+    {
+      "gid": "1211144726009188",
+      "title": "physio hamstring exercises",
+      "url": "https://app.asana.com/0/1211123623872055/1211144726009188",
+      "minimal_notes": [
+        "From Jan Schrepel.",
+        "Focus on bridging variations and more abductor work."
+      ],
+      "exercises": [
+        {
+          "name": "Glute bridges on heels",
+          "dose": "3 x 45s holds or 2 x 10 reps",
+          "notes": "Heels pull toward butt."
+        },
+        {
+          "name": "Elevated-heel glute bridge",
+          "dose": "Start with holds, then reps",
+          "notes": "Use box or chair under heels."
+        },
+        {
+          "name": "Single-leg bridge",
+          "dose": "Start with holds, then reps",
+          "notes": "Harder bridge variation."
+        },
+        {
+          "name": "Straight-leg abductor work",
+          "dose": "Not specified",
+          "notes": "Do more of this; use bands or cable."
+        }
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1212734220305141",
+      "title": "Hip Flexor Release Protocol (Pre-Glute Work)",
+      "url": "https://app.asana.com/0/1211123623872055/1212734220305141",
+      "minimal_notes": [
+        "Start 1 week post-injury, before glute activation protocol.",
+        "Frequency: daily, 8–10 min.",
+        "Goal: release hip-flexor tightness that inhibits glute activation.",
+        "Pick 2 stretches per day; sustainable > perfect.",
+        "Do before glute activation work."
+      ],
+      "exercises": [
+        {
+          "name": "Couch stretch",
+          "dose": "2 min each side / 4 min total",
+          "notes": "Back knee on pad; shin vertical against wall/couch; front knee 90°; push hips forward; torso upright."
+        },
+        {
+          "name": "90/90 hip stretch",
+          "dose": "1.5 min each side / 3 min total",
+          "notes": "Front leg externally rotated; back leg internally rotated; sit tall and lean forward over front leg."
+        },
+        {
+          "name": "Pigeon pose",
+          "dose": "2 min each side / 4 min total",
+          "notes": "Front leg bent, back leg extended; keep hips square; fold forward."
+        },
+        {
+          "name": "Psoas release with kettlebell",
+          "dose": "2 min each side / 4 min total",
+          "notes": "Lie on back; 12kg KB on hip flexor; pull same-side knee to chest; deep release, not sharp pain."
+        }
+      ],
+      "rotation": [
+        "Monday/Thursday: Couch stretch + Pigeon",
+        "Tuesday/Friday: 90/90 + Psoas release",
+        "Wednesday/Saturday: Couch stretch + 90/90",
+        "Sunday: Pigeon + Psoas release",
+        "Alternative: pick whichever 2 feel best that day."
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1213038445745081",
+      "title": "Glute Activation & Strength Protocol (Motor Control Fix)",
+      "url": "https://app.asana.com/0/1211123623872055/1213038445745081",
+      "minimal_notes": [
+        "Start 1–2 weeks post-injury, after hip-flexor work starts.",
+        "Frequency: daily, 10–12 min.",
+        "Goal: make glute dominance automatic and prevent lumbar compensation.",
+        "This is motor control, not strength training; perfect form always.",
+        "If back takes over, stop, rest, restart.",
+        "Video reference from note: https://youtu.be/qu1pqo-dbXM?si=ZJlPpYIWZpL9Rd6h at 6:48"
+      ],
+      "exercises": [
+        {
+          "name": "Single-leg glute bridges",
+          "dose": "2 x 12 reps each leg / 4–5 min",
+          "notes": "Pause 3s at top; feel glutes, not hamstrings/back; hand on glute to verify activation; optional other foot resting on working-leg knee."
+        },
+        {
+          "name": "Clamshells with resistance band",
+          "dose": "2 x 15 each side / 3–4 min",
+          "notes": "Slow and controlled; external rotation from glutes; 30s rest between sets."
+        },
+        {
+          "name": "Intentional kettlebell swings",
+          "dose": "2 x 15 with 16kg / 3–4 min",
+          "notes": "Conscious glute snap; not just hip hinge; feel glutes working between sets."
+        },
+        {
+          "name": "Heavy hip thrusts",
+          "dose": "3 x 12 with 24–28kg KB",
+          "notes": "Phase 2 option; tempo 1s up, 2s hold, 2s down."
+        },
+        {
+          "name": "Light Romanian deadlifts",
+          "dose": "3 x 8 with 20–24kg KB",
+          "notes": "Phase 2 option; 4s eccentric; hand on glutes to feel loading."
+        },
+        {
+          "name": "Single-leg Romanian deadlift",
+          "dose": "3 x 6 each leg, bodyweight or 12kg KB",
+          "notes": "Phase 2 option."
+        },
+        {
+          "name": "Fatigue test",
+          "dose": "Once/week in weeks 9–12",
+          "notes": "3 sets hip thrusts near failure, then tempo deadlifts at 60% max / 50kg; pass if pattern holds."
+        },
+        {
+          "name": "Distraction test",
+          "dose": "Once/week in weeks 9–12",
+          "notes": "Deadlift at 60% while someone talks or while doing mental math; pattern must survive divided attention."
+        }
+      ],
+      "attention_split_training": [
+        "Weeks 2–4: bridges while counting backwards by 7s from 100.",
+        "Weeks 2–4: swings while having a conversation or listening to a podcast.",
+        "Goal: glute firing survives distraction."
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1211616737335619",
+      "title": "Hip Stabilizer Work - Copenhagen Planks & Abductor/Adductor Exercises",
+      "url": "https://app.asana.com/0/1211123623872055/1211616737335619",
+      "minimal_notes": [
+        "Accessory work for pistol squat control and knee stability.",
+        "Programming: 2–3x/week on non-consecutive days.",
+        "Can pair with upper-body days or use as warm-up before pistols.",
+        "Focus on control and feeling target muscles."
+      ],
+      "exercises": [
+        {
+          "name": "Copenhagen planks",
+          "dose": "3 x 20–30s holds or 3 x 8–12 raises per side",
+          "notes": "Adductors; side plank with top leg on bench/box."
+        },
+        {
+          "name": "Clamshells",
+          "dose": "3 x 15–20 per side",
+          "notes": "Glute med / external rotators; add band for progression."
+        },
+        {
+          "name": "Side plank with leg lift",
+          "dose": "3 x 20–30s holds or 3 x 8–12 raises per side",
+          "notes": "Abductors; standard side plank, lift top leg toward ceiling."
+        },
+        {
+          "name": "Single-leg hip thrusts",
+          "dose": "3 x 8–12 per side",
+          "notes": "Upper back on bench; one leg planted; drive through heel and squeeze glute; progress to elevated front foot."
+        }
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1211507235265451",
+      "title": "5-Minute Shoulder Mobility Routine (Daily)",
+      "url": "https://app.asana.com/0/1211123623872055/1211507235265451",
+      "minimal_notes": [
+        "Daily shoulder mobility for overhead reach and impingement prevention.",
+        "Target: improve overhead reach toward 180° and reduce front-shoulder impingement."
+      ],
+      "exercises": [
+        {
+          "name": "Thoracic opener",
+          "dose": "90s",
+          "notes": "Use foam roller or massage gun."
+        },
+        {
+          "name": "Anterior shoulder release",
+          "dose": "90s",
+          "notes": "Use lacrosse ball or doorway stretch."
+        },
+        {
+          "name": "Scapular wall slides",
+          "dose": "60s / 10–12 reps",
+          "notes": "Focus on squeeze."
+        },
+        {
+          "name": "High-angle band pull-aparts",
+          "dose": "60s / 15–20 reps overhead",
+          "notes": "Overhead band work."
+        },
+        {
+          "name": "Active overhead reach test",
+          "dose": "30s",
+          "notes": "Assess progress."
+        }
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1211507205946488",
+      "title": "🏋️ Convict Conditioning - Big Six Progressions",
+      "url": "https://app.asana.com/0/1211123623872055/1211507205946488",
+      "minimal_notes": [
+        "Progressive calisthenics program with six fundamental movement patterns and 10 levels each.",
+        "Daily routine: 10–15 min, 3-day A/B/C rotation.",
+        "Rest 60–90s between sets; cut to 2 sets per exercise for 8–10 min total.",
+        "Progress when goal reps feel comfortable for 2 workouts."
+      ],
+      "big_six": [
+        "Push-ups / horizontal push",
+        "Squats / lower-body power",
+        "Pull-ups / vertical pull",
+        "Leg raises / core strength",
+        "Bridges / posterior chain",
+        "Handstand push-ups / vertical push"
+      ],
+      "exercises": [
+        {
+          "name": "Day A — Push & Core Focus",
+          "dose": "~12 min",
+          "notes": "Push-ups 2–3 sets; leg raises 2–3 sets; handstand practice 1–2 sets; bridges 1–2 sets."
+        },
+        {
+          "name": "Day B — Legs & Pull Focus",
+          "dose": "~12 min",
+          "notes": "Squats 2–3 sets; pull-ups 2–3 sets; leg raises 2 sets; bridges light set 1 set."
+        },
+        {
+          "name": "Day C — Balance & Skill Focus",
+          "dose": "~10 min",
+          "notes": "Handstand practice 2–3 sets; push-ups 2 sets; squats 2 sets; pull-ups 2 sets."
+        }
+      ],
+      "comments": []
+    },
+    {
+      "gid": "1213326494679459",
+      "title": "Daily 5-Minute Mobility Routine",
+      "url": "https://app.asana.com/0/1211123623872055/1213326494679459",
+      "minimal_notes": [
+        "5–7 min daily routine; pick 4–5 exercises.",
+        "Consistency over complexity.",
+        "Alternative full 7-min morning protocol: https://youtu.be/XTbJZXXccpE?si=GXjqBCb4IAbiUGTc",
+        "Comment video reference: hip-rotation stretching exercise https://youtu.be/bhUcpoM15HU?t=180"
+      ],
+      "exercises": [
+        {
+          "name": "Deep squat hold",
+          "dose": "30–60s",
+          "notes": "Lower body."
+        },
+        {
+          "name": "90/90 hip stretch",
+          "dose": "30s each side",
+          "notes": "Lower body / hips."
+        },
+        {
+          "name": "Standing forward fold",
+          "dose": "30s hold",
+          "notes": "Lower body."
+        },
+        {
+          "name": "Calf stretch against wall",
+          "dose": "30s each side",
+          "notes": "Lower body."
+        },
+        {
+          "name": "Doorway chest stretch",
+          "dose": "30s",
+          "notes": "Upper body."
+        },
+        {
+          "name": "Cat-cow spinal waves",
+          "dose": "10 reps",
+          "notes": "Upper body / spine."
+        },
+        {
+          "name": "Overhead reach / side bend",
+          "dose": "30s each side",
+          "notes": "Upper body."
+        },
+        {
+          "name": "Thread the needle",
+          "dose": "30s each side",
+          "notes": "Thoracic spine; from hands/knees, thread one arm under the other."
+        },
+        {
+          "name": "Wall slides",
+          "dose": "10 reps",
+          "notes": "Back against wall, slide arms up/down."
+        },
+        {
+          "name": "Neck side bends",
+          "dose": "30s each side",
+          "notes": "Ear toward shoulder."
+        },
+        {
+          "name": "Chin tucks",
+          "dose": "10 reps, 3s hold each",
+          "notes": "Make a double chin."
+        },
+        {
+          "name": "World's Greatest Stretch",
+          "dose": "30s each side",
+          "notes": "Low lunge; hand inside foot; rotate opposite arm up."
+        },
+        {
+          "name": "Child's pose to upward dog flow",
+          "dose": "5–10 transitions",
+          "notes": "Full-body flow."
+        },
+        {
+          "name": "Hopping / shaking",
+          "dose": "1 min",
+          "notes": "Part of 7-min morning protocol."
+        },
+        {
+          "name": "Jumping twists",
+          "dose": "1 min",
+          "notes": "Part of 7-min morning protocol."
+        },
+        {
+          "name": "Pump stretch / down dog ↔ up dog",
+          "dose": "1 min",
+          "notes": "Part of 7-min morning protocol; optional bonus 10 Hindu pushups."
+        },
+        {
+          "name": "Straddle",
+          "dose": "1 min",
+          "notes": "Part of 7-min morning protocol."
+        },
+        {
+          "name": "90/90 morning protocol",
+          "dose": "1 min / 30s each side",
+          "notes": "Part of 7-min morning protocol."
+        }
+      ],
+      "comments": [
+        {
+          "text": "hip rotation stretching exercise https://youtu.be/bhUcpoM15HU?t=180",
+          "extracted_exercise": "Hip-rotation stretching exercise"
+        }
+      ]
+    }
+  ]
+}

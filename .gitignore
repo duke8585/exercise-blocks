@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+.vite
+coverage
+
+# tsc -b build outputs (vite.config.ts is the source of truth)
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
