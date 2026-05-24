@@ -557,6 +557,90 @@ const inventoryV2Exercises: Exercise[] = [
   }
 ];
 
+const inventoryV3Exercises: Exercise[] = [
+  {
+    id: "suitcase-carry",
+    name: "Suitcase carry",
+    primaryGroup: "core",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "leftRight",
+    description:
+      "Hold a moderately heavy kettlebell in one hand and stand tall with the shoulder packed down and ribs stacked over hips. Walk slowly while resisting the urge to lean toward the loaded side, keeping the trunk quiet so the obliques and side hip do the anti-tilt work. This is the most direct rehearsal for carrying a bag without dumping the load into the neck."
+  },
+  {
+    id: "suitcase-deadlift",
+    name: "Suitcase deadlift",
+    primaryGroup: "core",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "leftRight",
+    description:
+      "Stand with a kettlebell on the floor next to one foot and hinge at the hips to pick it up with one hand. Keep both hip points facing forward and don't let the loaded side tip down or the spine side-bend. Stand fully tall before lowering with control; the lift is about resisting the asymmetry, not moving big weight."
+  },
+  {
+    id: "prone-t-raise",
+    name: "Prone T raise",
+    primaryGroup: "back",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Lie face down with arms out to the sides in a T and thumbs pointing up. Lift the arms only as high as the shoulder blades can pull them back, without shrugging or arching the low back. Squeeze between the shoulder blades and keep the neck long; this targets the mid trap and rhomboids."
+  },
+  {
+    id: "prone-w-raise",
+    name: "Prone W raise",
+    primaryGroup: "back",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Lie face down with elbows bent and arms in a W, palms facing the floor. Pull the elbows back and down so the shoulder blades retract and slightly depress, ending with the upper arms close to the ribs. Keep the chest down and the neck long instead of lifting off the floor through low back extension."
+  },
+  {
+    id: "scapular-pull-up",
+    name: "Scapular pull-up",
+    primaryGroup: "back",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Hang from a bar or rings with arms straight and shoulders relaxed up by the ears. Without bending the elbows, pull the shoulder blades down and back so the body rises a few centimetres. Pause briefly at the top and lower under control; this trains the lats and lower traps to anchor the shoulder rather than letting the neck carry the hang."
+  },
+  {
+    id: "band-face-pull-external-rotation",
+    name: "Band face pull with external rotation",
+    primaryGroup: "shoulders",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Anchor a band at face height and grip it with both hands, palms facing down. Pull the hands toward your face while rotating the forearms up so the knuckles end up pointing at the ceiling and the elbows stay high. Keep the upper traps quiet; the rear delts and external rotators should do the pulling, not the shrug muscles."
+  },
+  {
+    id: "chin-nod",
+    name: "Chin nod",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Lie on your back with the head resting on the floor and look at the ceiling. Without lifting the head, gently nod the chin toward the throat as if tucking a small double chin, then release. The motion is tiny; the goal is to wake up the deep neck flexors so the SCM and scalenes stop overworking, not to crunch the neck."
+  },
+  {
+    id: "open-book",
+    name: "Open book",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "leftRight",
+    description:
+      "Lie on one side with knees stacked and bent at 90 degrees, arms reaching out in front at shoulder height. Keeping the knees pinned together, rotate the top arm and chest open toward the floor behind you, then return slowly. Move with the breath and let the rotation come from the upper back rather than yanking with the arm."
+  },
+  {
+    id: "foam-roller-tspine-extension",
+    name: "Foam roller t-spine extension",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Place a foam roller across the upper back just below the shoulder blades and lie back over it with hands supporting the head. Let the upper back extend over the roller without flaring the ribs or arching from the low back. Move the roller up an inch at a time to find stiff spots and skip ranges that pinch."
+  }
+];
+
 // Existing entries that should also live under inventory:v2. We add the tag
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -565,25 +649,39 @@ const inventoryV2RetagIds: readonly string[] = [
   "single-leg-rdl-reach" // matches "single legged RDL"
 ];
 
+// Existing entries that also belong to the neck/shoulder resilience set. They
+// are the same movements already seeded in v0, so we retag rather than duplicate
+// and keep the original descriptions authoritative.
+const inventoryV3RetagIds: readonly string[] = [
+  "side-plank",
+  "prone-y-raise"
+];
+
 export const seedExercises: Exercise[] = applyRetags(
-  consolidateExercises([
-    ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
-    ...inventoryV1Exercises,
-    ...inventoryV2Exercises
-  ]),
-  inventoryV2RetagIds,
-  "inventory:v2"
+  applyRetags(
+    consolidateExercises([
+      ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
+      ...inventoryV1Exercises,
+      ...inventoryV2Exercises,
+      ...inventoryV3Exercises
+    ]),
+    inventoryV2RetagIds,
+    ["inventory:v2"]
+  ),
+  inventoryV3RetagIds,
+  ["inventory:v3", "neck-shoulder-resilience"]
 );
 
 function applyRetags(
   exercises: Exercise[],
   ids: readonly string[],
-  tag: string
+  tags: readonly string[]
 ): Exercise[] {
   const idSet = new Set(ids);
+  const addedTags = [...tags];
   return exercises.map((exercise) =>
     idSet.has(exercise.id)
-      ? { ...exercise, tags: mergeTags(exercise.tags, [tag]) }
+      ? { ...exercise, tags: mergeTags(exercise.tags, addedTags) }
       : exercise
   );
 }

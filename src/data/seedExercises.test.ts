@@ -76,4 +76,38 @@ describe("seedExercises", () => {
       expect(exercise?.tags).toContain("inventory:v0");
     }
   });
+
+  it("carries the neck/shoulder resilience v3 additions", () => {
+    const requiredV3Ids = [
+      "suitcase-carry",
+      "suitcase-deadlift",
+      "prone-t-raise",
+      "prone-w-raise",
+      "scapular-pull-up",
+      "band-face-pull-external-rotation",
+      "chin-nod",
+      "open-book",
+      "foam-roller-tspine-extension"
+    ];
+
+    for (const id of requiredV3Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v3");
+      expect(exercise?.tags).toContain("neck-shoulder-resilience");
+    }
+  });
+
+  it("retags existing entries into v3 without dropping prior tags", () => {
+    const retagged = ["side-plank", "prone-y-raise"];
+
+    for (const id of retagged) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v3");
+      expect(exercise?.tags).toContain("neck-shoulder-resilience");
+      // these originated in v0, so the original tag must survive the retag.
+      expect(exercise?.tags).toContain("inventory:v0");
+    }
+  });
 });
