@@ -321,8 +321,18 @@ h2 {
   line-height: 1;
 }
 
+.timer-actions {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
 .start-button {
   min-width: 94px;
+}
+
+.stop-button {
+  min-width: 62px;
 }
 
 .empty-state {

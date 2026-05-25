@@ -273,6 +273,15 @@ export default function App() {
     }));
   }
 
+  function stopActiveExercise() {
+    setSession((current) => ({
+      ...current,
+      mode: "idle",
+      remaining: 0,
+      paused: false
+    }));
+  }
+
   function togglePause() {
     setSession((current) => ({ ...current, paused: !current.paused }));
   }
@@ -592,14 +601,21 @@ export default function App() {
           <span>{exercisePanelLabel}</span>
           <strong>{exercisePanelValue}</strong>
         </div>
-        <button
-          className="start-button"
-          type="button"
-          disabled={!canStart}
-          onClick={isWorkMode ? togglePause : startActiveExercise}
-        >
-          {isWorkMode ? (session.paused ? "Resume" : "Pause") : "Start"}
-        </button>
+        <div className="timer-actions">
+          {isWorkMode && (
+            <button className="stop-button" type="button" onClick={stopActiveExercise}>
+              Stop
+            </button>
+          )}
+          <button
+            className="start-button"
+            type="button"
+            disabled={!canStart}
+            onClick={isWorkMode ? togglePause : startActiveExercise}
+          >
+            {isWorkMode ? (session.paused ? "Resume" : "Pause") : "Start"}
+          </button>
+        </div>
       </section>
 
       <section className="routine-section" aria-labelledby="routine-heading">
