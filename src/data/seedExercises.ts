@@ -638,6 +638,33 @@ const inventoryV3Exercises: Exercise[] = [
     sideMode: "single",
     description:
       "Place a foam roller across the upper back just below the shoulder blades and lie back over it with hands supporting the head. Let the upper back extend over the roller without flaring the ribs or arching from the low back. Move the roller up an inch at a time to find stiff spots and skip ranges that pinch."
+  },
+  {
+    id: "scapular-push-up",
+    name: "Scapular push-up",
+    primaryGroup: "shoulders",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Start in a high plank with hands under shoulders, body in a straight line and arms locked. Without bending the elbows, let the shoulder blades sink together between them, then press the floor away so the upper back rounds and the shoulder blades wrap around the rib cage. The arms stay straight throughout; the motion is small and trains the serratus anterior to anchor the scapula so the upper trap stops doing its job."
+  },
+  {
+    id: "dead-hang",
+    name: "Dead hang",
+    primaryGroup: "back",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Hang from a pull-up bar with both hands at shoulder width, arms straight and feet off the ground. Gently pull the shoulder blades down and back without bending the arms so the shoulders feel packed rather than shrugged up toward the ears, and breathe normally. This decompresses the cervical spine, trains the lats and lower traps to anchor the shoulder, and builds grip endurance as a side effect."
+  },
+  {
+    id: "weighted-y-raise-hyper-bench",
+    name: "Weighted Y raise on hyperextension bench",
+    primaryGroup: "back",
+    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    sideMode: "single",
+    description:
+      "Set up face down on a 45-degree hyperextension bench with the hips supported and a light dumbbell in each hand. Let the arms hang in a Y with thumbs up, then lift them by pulling the shoulder blades down and back, ending with the arms roughly in line with the body. Move slowly, drive the motion from the lower trap rather than swinging, and start very light - 2 to 5 kg is plenty before form breaks."
   }
 ];
 
