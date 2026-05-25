@@ -62,6 +62,8 @@ export default function App() {
   const [session, setSession] = useState<SessionState>(emptySession);
   const [message, setMessage] = useState<string>("");
   const audioContextRef = useRef<AudioContext | null>(null);
+  const mediaStreamDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
+  const audioOutputRef = useRef<HTMLAudioElement | null>(null);
   const routineItemRefs = useRef<Array<HTMLLIElement | null>>([]);
 
   const completedIds = useMemo(
@@ -380,10 +382,25 @@ export default function App() {
 
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContextConstructor();
+
+      // Route audio through an <audio> element so iOS switches its AVAudioSession
+      // category to Playback, which bypasses the hardware mute switch.
+      // Must be called synchronously inside a user-gesture handler (Start button).
+      try {
+        const dest = audioContextRef.current.createMediaStreamDestination();
+        mediaStreamDestRef.current = dest;
+        const el = new Audio();
+        el.srcObject = dest.stream;
+        audioOutputRef.current = el;
+        void el.play();
+      } catch {
+        // MediaStreamDestination not supported; fall back to context.destination
+      }
     }
 
     if (audioContextRef.current.state === "suspended") {
       void audioContextRef.current.resume();
+      void audioOutputRef.current?.play();
     }
 
     return audioContextRef.current;
@@ -392,6 +409,7 @@ export default function App() {
   function playCue(count: 1 | 2) {
     const context = ensureAudioContext();
     if (context) {
+      const destination: AudioNode = mediaStreamDestRef.current ?? context.destination;
       for (let index = 0; index < count; index += 1) {
         const startAt = context.currentTime + index * 0.3;
         const oscillator = context.createOscillator();
@@ -402,7 +420,7 @@ export default function App() {
         gain.gain.exponentialRampToValueAtTime(0.18, startAt + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.2);
         oscillator.connect(gain);
-        gain.connect(context.destination);
+        gain.connect(destination);
         oscillator.start(startAt);
         oscillator.stop(startAt + 0.22);
       }
