@@ -62,7 +62,6 @@ export default function App() {
   const [session, setSession] = useState<SessionState>(emptySession);
   const [message, setMessage] = useState<string>("");
   const audioContextRef = useRef<AudioContext | null>(null);
-  const mediaStreamDestRef = useRef<MediaStreamAudioDestinationNode | null>(null);
   const audioOutputRef = useRef<HTMLAudioElement | null>(null);
   const routineItemRefs = useRef<Array<HTMLLIElement | null>>([]);
 
@@ -383,24 +382,33 @@ export default function App() {
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContextConstructor();
 
-      // Route audio through an <audio> element so iOS switches its AVAudioSession
-      // category to Playback, which bypasses the hardware mute switch.
-      // Must be called synchronously inside a user-gesture handler (Start button).
+      // iOS respects the hardware mute switch for Web Audio API but not for
+      // <audio> element playback. Streaming a silent oscillator through a
+      // MediaStream into an <audio> element (started on a user gesture here)
+      // switches the AVAudioSession category to Playback for the whole page,
+      // so subsequent Web Audio beeps on context.destination bypass mute too.
       try {
         const dest = audioContextRef.current.createMediaStreamDestination();
-        mediaStreamDestRef.current = dest;
+        const silentOsc = audioContextRef.current.createOscillator();
+        const silentGain = audioContextRef.current.createGain();
+        silentGain.gain.value = 0;
+        silentOsc.connect(silentGain);
+        silentGain.connect(dest);
+        silentOsc.start();
         const el = new Audio();
         el.srcObject = dest.stream;
         audioOutputRef.current = el;
         void el.play();
       } catch {
-        // MediaStreamDestination not supported; fall back to context.destination
+        // MediaStream not supported; mute-bypass won't work but audio still plays
       }
     }
 
     if (audioContextRef.current.state === "suspended") {
       void audioContextRef.current.resume();
-      void audioOutputRef.current?.play();
+      if (audioOutputRef.current?.paused) {
+        void audioOutputRef.current.play();
+      }
     }
 
     return audioContextRef.current;
@@ -409,7 +417,6 @@ export default function App() {
   function playCue(count: 1 | 2) {
     const context = ensureAudioContext();
     if (context) {
-      const destination: AudioNode = mediaStreamDestRef.current ?? context.destination;
       for (let index = 0; index < count; index += 1) {
         const startAt = context.currentTime + index * 0.3;
         const oscillator = context.createOscillator();
@@ -420,7 +427,7 @@ export default function App() {
         gain.gain.exponentialRampToValueAtTime(0.18, startAt + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, startAt + 0.2);
         oscillator.connect(gain);
-        gain.connect(destination);
+        gain.connect(context.destination);
         oscillator.start(startAt);
         oscillator.stop(startAt + 0.22);
       }
