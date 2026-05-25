@@ -25,6 +25,7 @@ interface SessionState {
   mode: TimerMode;
   remaining: number;
   restSeconds: number;
+  paused: boolean;
 }
 
 const emptySession: SessionState = {
@@ -32,7 +33,8 @@ const emptySession: SessionState = {
   completedIds: [],
   mode: "idle",
   remaining: 0,
-  restSeconds: 0
+  restSeconds: 0,
+  paused: false
 };
 
 const allGroups = MUSCLE_GROUP_OPTIONS.map((option) => option.id);
@@ -120,6 +122,10 @@ export default function App() {
 
     const interval = window.setInterval(() => {
       setSession((current) => {
+        if (current.paused) {
+          return current;
+        }
+
         if (current.mode === "resting") {
           return {
             ...current,
@@ -167,7 +173,8 @@ export default function App() {
             completedIds: completed,
             mode: nextIndex === null ? "finished" : "resting",
             remaining: 0,
-            restSeconds: 0
+            restSeconds: 0,
+            paused: false
           };
         }
 
@@ -261,8 +268,13 @@ export default function App() {
       ...current,
       mode: "sideA",
       remaining: config.settings.timer.sideASeconds,
-      restSeconds: 0
+      restSeconds: 0,
+      paused: false
     }));
+  }
+
+  function togglePause() {
+    setSession((current) => ({ ...current, paused: !current.paused }));
   }
 
   function selectExercise(index: number) {
@@ -407,12 +419,12 @@ export default function App() {
       : session.mode === "sideA" || session.mode === "sideB"
         ? formatSeconds(session.remaining)
         : "--:--";
-  const canStart =
-    Boolean(activeExercise) &&
-    session.mode !== "sideA" &&
-    session.mode !== "sideB" &&
-    !completedIds.has(activeExercise?.instanceId ?? "");
   const isWorkMode = session.mode === "sideA" || session.mode === "sideB";
+  const canStart =
+    isWorkMode ||
+    (Boolean(activeExercise) &&
+      session.mode !== "finished" &&
+      !completedIds.has(activeExercise?.instanceId ?? ""));
   const timerBandClass = `timer-band ${
     isWorkMode
       ? "work"
@@ -567,9 +579,9 @@ export default function App() {
           className="start-button"
           type="button"
           disabled={!canStart}
-          onClick={startActiveExercise}
+          onClick={isWorkMode ? togglePause : startActiveExercise}
         >
-          Start
+          {isWorkMode ? (session.paused ? "Resume" : "Pause") : "Start"}
         </button>
       </section>
 
