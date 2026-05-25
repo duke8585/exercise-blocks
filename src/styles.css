@@ -196,6 +196,34 @@ h2 {
   background: #2e6f5c;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #53645b;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.github-link:hover {
+  opacity: 1;
+}
+
+.github-link svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
 .secondary-button {
   flex: 0 0 auto;
 }
