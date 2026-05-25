@@ -276,6 +276,7 @@ export default function App() {
   function stopActiveExercise() {
     setSession((current) => ({
       ...current,
+      completedIds: [],
       mode: "idle",
       remaining: 0,
       paused: false
