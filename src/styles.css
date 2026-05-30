@@ -170,6 +170,13 @@ h2 {
   margin-top: 12px;
 }
 
+.tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .group-toggle {
   display: flex;
   align-items: center;

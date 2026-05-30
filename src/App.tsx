@@ -577,7 +577,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="group-grid" aria-label="Tags">
+            <div className="tag-grid" aria-label="Tags">
               {allTags.map((tag) => (
                 <label className="group-toggle" key={tag}>
                   <input
