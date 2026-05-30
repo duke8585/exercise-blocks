@@ -137,7 +137,7 @@ describe("storage config", () => {
       config.exercises.some(
         (exercise) =>
           exercise.id === "windshield-wipers" &&
-          exercise.tags.includes("inventory:v2")
+          exercise.tags.includes("inventory:v2:daily-practice")
       )
     ).toBe(true);
   });

@@ -322,7 +322,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "burpee-with-push-up",
     name: "Burpee with push-up",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Start standing, place your hands on the floor, jump or step back into a plank, perform a push-up, then return to standing with a small jump. Keep the trunk braced in the plank and scale by stepping the feet instead of jumping. This is high intensity; skip the push-up or slow down if form breaks."
@@ -331,7 +331,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "burpee-no-push-up",
     name: "Burpee without push-up",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Start standing, bring your hands to the floor, jump or step back to plank, then return to standing and finish with a controlled jump or reach. Keep the movement crisp without collapsing through the low back. This version keeps the conditioning feel while being less demanding than the push-up variation."
@@ -340,7 +340,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "mountain-climbers",
     name: "Mountain climbers",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Start in a high plank with hands under shoulders and body in one long line. Drive one knee toward the chest, switch sides, and keep alternating at a speed you can control. Keep hips from bouncing high and slow down if your shoulders or low back start taking over."
@@ -349,7 +349,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "squat-jumps",
     name: "Squat jumps",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Start with a controlled bodyweight squat, then drive through the floor into a small vertical jump. Land softly, absorb the landing through hips and knees, and reset your position before the next rep. Use regular squats instead if jumping bothers the knees, ankles, or pelvic floor."
@@ -358,7 +358,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "jumping-jacks",
     name: "Jumping jacks",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Jump the feet out as the arms travel overhead, then jump back to the start position. Keep the ribs controlled and land quietly rather than snapping into the floor. Step one foot out at a time for a lower-impact version."
@@ -367,7 +367,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "high-knees",
     name: "High knees",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Run in place while lifting the knees toward hip height or whatever range stays smooth. Keep your torso tall and use quick, light contacts with the floor. March instead of running if you want a lower-impact conditioning option."
@@ -376,7 +376,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "skater-hops",
     name: "Skater hops",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Hop laterally from one foot to the other, letting the free leg travel behind you like a speed skater. Land with a soft knee and keep the knee tracking over the toes. Make the jump smaller or step side to side if balance or impact is the limiting factor."
@@ -385,7 +385,7 @@ const inventoryV1Exercises: Exercise[] = [
     id: "plank-jacks",
     name: "Plank jacks",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v1"],
+    tags: ["inventory:v1:cardio"],
     sideMode: "single",
     description:
       "Start in a high plank and jump both feet out and in like a jumping jack. Keep hands planted, shoulders stable, and hips close to the same height throughout. Step one foot at a time if the jumping version pulls you out of plank position."
@@ -397,7 +397,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "hopping-shaking",
     name: "Hopping / Shaking",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Bounce lightly in place and let the arms, shoulders, and legs shake loose. Keep the impact small and relaxed rather than trying to jump high. Use it as a nervous-system warmup and switch to heel raises or marching if hopping is not comfortable."
@@ -406,7 +406,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "jumping-twists",
     name: "Jumping twists",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Stand tall, make small hops, and rotate the hips and feet side to side while the chest stays relatively forward. Keep the knees soft and the twists light, especially at the start. Step instead of jumping if rotation plus impact feels too aggressive."
@@ -415,7 +415,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "pump-stretch-down-dog-up-dog",
     name: "Pump stretch (down dog to up dog)",
     primaryGroup: "spine_flexion_extension",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Move between a down dog shape and an up dog or cobra shape with slow, continuous control. In down dog, push the floor away and lengthen through the back of the body; in up dog, open the chest without dumping into the low back. This overlaps with the cobra flow, but the down-dog position makes it a distinct full-body pump stretch."
@@ -424,7 +424,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "hindu-push-up",
     name: "Hindu push-up",
     primaryGroup: "chest",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Start in a pike or down dog shape, then swoop the chest forward and low before finishing in an up dog-like position. Reverse or reset back to the starting shape with control. Treat this as a bonus strength flow, roughly 10 clean reps, and scale to the pump stretch if shoulders or low back object."
@@ -433,7 +433,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "straddle",
     name: "Straddle",
     primaryGroup: "adductors",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Sit tall with legs wide in a straddle and knees pointing upward. Hinge forward from the hips or gently shift side to side without forcing the range. Keep the spine long and use hands on the floor for support so the inner thighs can relax gradually."
@@ -442,7 +442,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "90-90-hip-switch",
     name: "90/90 hip switch",
     primaryGroup: "glutes",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
       "Sit with one leg in front and one leg behind, both knees bent around 90 degrees. Spend the first block on one side, then switch to the other side and keep the torso tall as you breathe into the hip. Use hands behind you for support if sitting upright is already enough stretch."
@@ -451,7 +451,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "cossack-squat",
     name: "Cossack squat",
     primaryGroup: "adductors",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
       "Start in a wide stance and shift your weight toward one side, bending that knee while the other leg stays long. Keep the heel of the working side down if possible and use your hands for balance. This is different from a regular squat because the straight leg creates a strong adductor stretch."
@@ -460,7 +460,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "windshield-wipers",
     name: "Windshield wipers",
     primaryGroup: "core",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Lie on your back with knees bent and feet lifted or planted, depending on difficulty. Rotate the legs side to side like windshield wipers while keeping the shoulders heavy on the floor. Make the range smaller if the low back lifts or the motion becomes uncontrolled."
@@ -469,7 +469,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "seated-good-mornings",
     name: "Seated good mornings",
     primaryGroup: "hamstrings",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Sit upright on a sturdy chair or bench with feet flat and a light load held at the chest or across the shoulders. Hinge forward at the hips with a long spine until you feel the hamstrings and back work, then return to upright without rounding. The seated position removes the legs as helpers, so even a small load is plenty."
@@ -478,7 +478,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "hyperextensions",
     name: "Hyperextensions",
     primaryGroup: "back",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Set up on a hyperextension bench or stable surface with the hips supported and feet anchored. Lower the chest with a long spine, then extend back up by driving the hips down rather than cranking through the low back. Stop at a neutral line instead of overarching, and start with body weight only."
@@ -487,7 +487,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "standing-good-mornings",
     name: "Standing good mornings",
     primaryGroup: "hamstrings",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Stand with feet about hip width, knees softly bent, ribs stacked over hips, and a light load held at the chest or across the shoulders. Hinge from the hips while sending them back, letting the chest travel down without rounding the spine. Reverse by driving the hips forward and keep the load conservative until the pattern is automatic."
@@ -496,7 +496,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "jefferson-curl",
     name: "Jefferson curl",
     primaryGroup: "spine_flexion_extension",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Stand on a sturdy surface holding a very light weight in both hands, with softly bent knees. Slowly curl down one segment at a time, letting the spine fully round, then reverse from the pelvis upward to restack the spine. Treat this as controlled spinal flexion mobility, not a heavy lift, and ramp the load up only when the pattern is clean."
@@ -505,7 +505,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "copenhagen-plank",
     name: "Copenhagen plank",
     primaryGroup: "adductors",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
       "Set the top leg's inner foot or shin on a bench so the inner thigh is loaded, prop yourself on the bottom forearm, and let the bottom leg hover just above the floor. Lift the hips into a side plank and hold while keeping the body long. This is the long-lever Copenhagen and it is demanding; drop to the short-lever hold or shorten the block if the adductor starts to grip."
@@ -514,7 +514,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "banded-torso-rotations-standing",
     name: "Banded torso rotations, standing",
     primaryGroup: "core",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
       "Anchor a band at chest height, stand sideways to the anchor, and hold the band with both hands at chest level with arms long. Rotate the trunk away from the anchor while keeping the hips relatively quiet, then return slowly under control. Use the first block for one side and the second block for the other, and keep the band tension light enough that the spine stays long."
@@ -523,7 +523,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "sumo-squat",
     name: "Sumo squat",
     primaryGroup: "adductors",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Stand with feet wider than shoulders and toes turned out, hands together at the chest or holding a light weight. Sit straight down between your hips while keeping the knees tracking over the toes, then drive up through the floor. The wide stance loads the inner thighs and glutes more than a regular squat; stop the depth before the heels lift or the pelvis tucks under hard."
@@ -532,7 +532,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "nordic-curls",
     name: "Nordic curls",
     primaryGroup: "hamstrings",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Kneel on a padded surface with feet anchored under a support and hips and torso stacked in one line. Lower yourself forward by resisting through the hamstrings until you can no longer hold the line, then catch on your hands and push back up. This is brutally hard; use a band, raised hands, or a partial range until the lowering phase is controlled."
@@ -541,7 +541,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "reverse-nordics",
     name: "Reverse Nordics",
     primaryGroup: "quads",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
       "Kneel tall with feet behind you, hips stacked over knees, and torso long. Lean backward by hinging at the knees while keeping a straight line from knees to head, then return to upright. Use a smaller range or place a hand on the floor behind you for support until the quads can manage the lean without the low back arching."
@@ -550,7 +550,7 @@ const inventoryV2Exercises: Exercise[] = [
     id: "single-leg-deadlift",
     name: "Single-leg deadlift",
     primaryGroup: "hamstrings",
-    tags: ["inventory:v2"],
+    tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
       "Stand on one leg with a soft knee and the other leg lightly trailing or hovering. Hinge at the standing hip while the trailing leg counterbalances behind you, letting a light weight in the opposite hand travel toward the floor. Reverse by driving the standing heel down, and keep the standing-side hip from collapsing inward."
@@ -562,7 +562,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "suitcase-carry",
     name: "Suitcase carry",
     primaryGroup: "core",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "leftRight",
     description:
       "Hold a moderately heavy kettlebell in one hand and stand tall with the shoulder packed down and ribs stacked over hips. Walk slowly while resisting the urge to lean toward the loaded side, keeping the trunk quiet so the obliques and side hip do the anti-tilt work. This is the most direct rehearsal for carrying a bag without dumping the load into the neck."
@@ -571,7 +571,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "suitcase-deadlift",
     name: "Suitcase deadlift",
     primaryGroup: "core",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "leftRight",
     description:
       "Stand with a kettlebell on the floor next to one foot and hinge at the hips to pick it up with one hand. Keep both hip points facing forward and don't let the loaded side tip down or the spine side-bend. Stand fully tall before lowering with control; the lift is about resisting the asymmetry, not moving big weight."
@@ -580,7 +580,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "prone-t-raise",
     name: "Prone T raise",
     primaryGroup: "back",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Lie face down with arms out to the sides in a T and thumbs pointing up. Lift the arms only as high as the shoulder blades can pull them back, without shrugging or arching the low back. Squeeze between the shoulder blades and keep the neck long; this targets the mid trap and rhomboids."
@@ -589,7 +589,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "prone-w-raise",
     name: "Prone W raise",
     primaryGroup: "back",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Lie face down with elbows bent and arms in a W, palms facing the floor. Pull the elbows back and down so the shoulder blades retract and slightly depress, ending with the upper arms close to the ribs. Keep the chest down and the neck long instead of lifting off the floor through low back extension."
@@ -598,7 +598,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "scapular-pull-up",
     name: "Scapular pull-up",
     primaryGroup: "back",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Hang from a bar or rings with arms straight and shoulders relaxed up by the ears. Without bending the elbows, pull the shoulder blades down and back so the body rises a few centimetres. Pause briefly at the top and lower under control; this trains the lats and lower traps to anchor the shoulder rather than letting the neck carry the hang."
@@ -607,7 +607,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "band-face-pull-external-rotation",
     name: "Band face pull with external rotation",
     primaryGroup: "shoulders",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Anchor a band at face height and grip it with both hands, palms facing down. Pull the hands toward your face while rotating the forearms up so the knuckles end up pointing at the ceiling and the elbows stay high. Keep the upper traps quiet; the rear delts and external rotators should do the pulling, not the shrug muscles."
@@ -616,7 +616,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "chin-nod",
     name: "Chin nod",
     primaryGroup: "spine_flexion_extension",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Lie on your back with the head resting on the floor and look at the ceiling. Without lifting the head, gently nod the chin toward the throat as if tucking a small double chin, then release. The motion is tiny; the goal is to wake up the deep neck flexors so the SCM and scalenes stop overworking, not to crunch the neck."
@@ -625,7 +625,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "open-book",
     name: "Open book",
     primaryGroup: "spine_flexion_extension",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "leftRight",
     description:
       "Lie on one side with knees stacked and bent at 90 degrees, arms reaching out in front at shoulder height. Keeping the knees pinned together, rotate the top arm and chest open toward the floor behind you, then return slowly. Move with the breath and let the rotation come from the upper back rather than yanking with the arm."
@@ -634,7 +634,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "foam-roller-tspine-extension",
     name: "Foam roller t-spine extension",
     primaryGroup: "spine_flexion_extension",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Place a foam roller across the upper back just below the shoulder blades and lie back over it with hands supporting the head. Let the upper back extend over the roller without flaring the ribs or arching from the low back. Move the roller up an inch at a time to find stiff spots and skip ranges that pinch."
@@ -643,7 +643,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "scapular-push-up",
     name: "Scapular push-up",
     primaryGroup: "shoulders",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Start in a high plank with hands under shoulders, body in a straight line and arms locked. Without bending the elbows, let the shoulder blades sink together between them, then press the floor away so the upper back rounds and the shoulder blades wrap around the rib cage. The arms stay straight throughout; the motion is small and trains the serratus anterior to anchor the scapula so the upper trap stops doing its job."
@@ -652,7 +652,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "dead-hang",
     name: "Dead hang",
     primaryGroup: "back",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Hang from a pull-up bar with both hands at shoulder width, arms straight and feet off the ground. Gently pull the shoulder blades down and back without bending the arms so the shoulders feel packed rather than shrugged up toward the ears, and breathe normally. This decompresses the cervical spine, trains the lats and lower traps to anchor the shoulder, and builds grip endurance as a side effect."
@@ -661,7 +661,7 @@ const inventoryV3Exercises: Exercise[] = [
     id: "weighted-y-raise-hyper-bench",
     name: "Weighted Y raise on hyperextension bench",
     primaryGroup: "back",
-    tags: ["inventory:v3", "neck-shoulder-resilience"],
+    tags: ["inventory:v3:neck-shoulder"],
     sideMode: "single",
     description:
       "Set up face down on a 45-degree hyperextension bench with the hips supported and a light dumbbell in each hand. Let the arms hang in a Y with thumbs up, then lift them by pulling the shoulder blades down and back, ending with the arms roughly in line with the body. Move slowly, drive the motion from the lower trap rather than swinging, and start very light - 2 to 5 kg is plenty before form breaks."
@@ -673,7 +673,7 @@ const inventoryV4Exercises: Exercise[] = [
     id: "plyo-box-step-up",
     name: "Plyo box step-up",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v4"],
+    tags: ["inventory:v4:step-ups"],
     sideMode: "leftRight",
     description:
       "Stand facing the box and step one foot onto it, then drive through that heel to stand fully upright on top before stepping back down. Alternate the leading leg each rep or use the first block for one side and the second for the other. Choose a box height where the hip and knee are around 90 degrees at the bottom of the step; higher is harder on the glutes, lower shifts it toward cardio conditioning."
@@ -682,7 +682,7 @@ const inventoryV4Exercises: Exercise[] = [
     id: "plyo-box-step-up-knee-drive",
     name: "Plyo box step-up with knee drive",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v4"],
+    tags: ["inventory:v4:step-ups"],
     sideMode: "leftRight",
     description:
       "Step one foot onto the box and as you drive up through that heel, continue the motion by pulling the opposite knee up toward the chest at the top. Lower back down with control before the next rep. The knee drive turns a strength step-up into a more athletic, rhythmic movement and briefly challenges single-leg balance on each rep."
@@ -691,7 +691,7 @@ const inventoryV4Exercises: Exercise[] = [
     id: "plyo-box-lateral-step-up",
     name: "Plyo box lateral step-up",
     primaryGroup: "cardio_hiit",
-    tags: ["inventory:v4"],
+    tags: ["inventory:v4:step-ups"],
     sideMode: "leftRight",
     description:
       "Stand beside the box and step the near foot onto it sideways, then press through that foot to bring the other leg up or just stand tall on top before stepping back down. This angle loads the glutes and abductors more than a forward step-up and tends to feel less quad-dominant. Keep the knee of the working leg tracking over the toes rather than caving inward as you push up."
@@ -717,17 +717,17 @@ const inventoryV3RetagIds: readonly string[] = [
 export const seedExercises: Exercise[] = applyRetags(
   applyRetags(
     consolidateExercises([
-      ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
+      ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
       ...inventoryV1Exercises,
       ...inventoryV2Exercises,
       ...inventoryV3Exercises,
       ...inventoryV4Exercises
     ]),
     inventoryV2RetagIds,
-    ["inventory:v2"]
+    ["inventory:v2:daily-practice"]
   ),
   inventoryV3RetagIds,
-  ["inventory:v3", "neck-shoulder-resilience"]
+  ["inventory:v3:neck-shoulder"]
 );
 
 function applyRetags(

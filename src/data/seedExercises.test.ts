@@ -22,7 +22,7 @@ describe("seedExercises", () => {
       seedExercises.some(
         (exercise) =>
           exercise.primaryGroup === "cardio_hiit" &&
-          exercise.tags.includes("inventory:v1")
+          exercise.tags.includes("inventory:v1:cardio")
       )
     ).toBe(true);
 
@@ -38,7 +38,7 @@ describe("seedExercises", () => {
         "windshield-wipers"
       ].every((id) =>
         seedExercises.some(
-          (exercise) => exercise.id === id && exercise.tags.includes("inventory:v2")
+          (exercise) => exercise.id === id && exercise.tags.includes("inventory:v2:daily-practice")
         )
       )
     ).toBe(true);
@@ -61,7 +61,7 @@ describe("seedExercises", () => {
     for (const id of requiredV2Ids) {
       const found = seedExercises.find((exercise) => exercise.id === id);
       expect(found, `missing seed: ${id}`).toBeDefined();
-      expect(found?.tags).toContain("inventory:v2");
+      expect(found?.tags).toContain("inventory:v2:daily-practice");
     }
   });
 
@@ -71,9 +71,9 @@ describe("seedExercises", () => {
     for (const id of retagged) {
       const exercise = seedExercises.find((current) => current.id === id);
       expect(exercise, `missing seed: ${id}`).toBeDefined();
-      expect(exercise?.tags).toContain("inventory:v2");
+      expect(exercise?.tags).toContain("inventory:v2:daily-practice");
       // these originated in v0, so the original tag must survive the retag.
-      expect(exercise?.tags).toContain("inventory:v0");
+      expect(exercise?.tags).toContain("inventory:v0:fundamentals");
     }
   });
 
@@ -93,8 +93,7 @@ describe("seedExercises", () => {
     for (const id of requiredV3Ids) {
       const exercise = seedExercises.find((current) => current.id === id);
       expect(exercise, `missing seed: ${id}`).toBeDefined();
-      expect(exercise?.tags).toContain("inventory:v3");
-      expect(exercise?.tags).toContain("neck-shoulder-resilience");
+      expect(exercise?.tags).toContain("inventory:v3:neck-shoulder");
     }
   });
 
@@ -104,10 +103,9 @@ describe("seedExercises", () => {
     for (const id of retagged) {
       const exercise = seedExercises.find((current) => current.id === id);
       expect(exercise, `missing seed: ${id}`).toBeDefined();
-      expect(exercise?.tags).toContain("inventory:v3");
-      expect(exercise?.tags).toContain("neck-shoulder-resilience");
+      expect(exercise?.tags).toContain("inventory:v3:neck-shoulder");
       // these originated in v0, so the original tag must survive the retag.
-      expect(exercise?.tags).toContain("inventory:v0");
+      expect(exercise?.tags).toContain("inventory:v0:fundamentals");
     }
   });
 });
