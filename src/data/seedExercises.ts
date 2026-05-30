@@ -668,6 +668,36 @@ const inventoryV3Exercises: Exercise[] = [
   }
 ];
 
+const inventoryV4Exercises: Exercise[] = [
+  {
+    id: "plyo-box-step-up",
+    name: "Plyo box step-up",
+    primaryGroup: "cardio_hiit",
+    tags: ["inventory:v4"],
+    sideMode: "leftRight",
+    description:
+      "Stand facing the box and step one foot onto it, then drive through that heel to stand fully upright on top before stepping back down. Alternate the leading leg each rep or use the first block for one side and the second for the other. Choose a box height where the hip and knee are around 90 degrees at the bottom of the step; higher is harder on the glutes, lower shifts it toward cardio conditioning."
+  },
+  {
+    id: "plyo-box-step-up-knee-drive",
+    name: "Plyo box step-up with knee drive",
+    primaryGroup: "cardio_hiit",
+    tags: ["inventory:v4"],
+    sideMode: "leftRight",
+    description:
+      "Step one foot onto the box and as you drive up through that heel, continue the motion by pulling the opposite knee up toward the chest at the top. Lower back down with control before the next rep. The knee drive turns a strength step-up into a more athletic, rhythmic movement and briefly challenges single-leg balance on each rep."
+  },
+  {
+    id: "plyo-box-lateral-step-up",
+    name: "Plyo box lateral step-up",
+    primaryGroup: "cardio_hiit",
+    tags: ["inventory:v4"],
+    sideMode: "leftRight",
+    description:
+      "Stand beside the box and step the near foot onto it sideways, then press through that foot to bring the other leg up or just stand tall on top before stepping back down. This angle loads the glutes and abductors more than a forward step-up and tends to feel less quad-dominant. Keep the knee of the working leg tracking over the toes rather than caving inward as you push up."
+  }
+];
+
 // Existing entries that should also live under inventory:v2. We add the tag
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -690,7 +720,8 @@ export const seedExercises: Exercise[] = applyRetags(
       ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0")),
       ...inventoryV1Exercises,
       ...inventoryV2Exercises,
-      ...inventoryV3Exercises
+      ...inventoryV3Exercises,
+      ...inventoryV4Exercises
     ]),
     inventoryV2RetagIds,
     ["inventory:v2"]
