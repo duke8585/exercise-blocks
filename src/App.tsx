@@ -59,6 +59,8 @@ export default function App() {
     collectLibraryTags(config.exercises)
   );
   const [routine, setRoutine] = useState<RoutineExercise[]>([]);
+  const [routineHistory, setRoutineHistory] = useState<RoutineExercise[][]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const [session, setSession] = useState<SessionState>(emptySession);
   const [message, setMessage] = useState<string>("");
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -251,12 +253,19 @@ export default function App() {
       return;
     }
 
+    setRoutineHistory((prev) => [...prev.slice(0, historyIndex + 1), nextRoutine]);
+    setHistoryIndex((prev) => prev + 1);
     setRoutine(nextRoutine);
-    setSession({
-      ...emptySession,
-      activeIndex: 0
-    });
+    setSession({ ...emptySession, activeIndex: 0 });
     setMessage("");
+  }
+
+  function goToHistoryIndex(index: number) {
+    const target = routineHistory[index];
+    if (!target) return;
+    setHistoryIndex(index);
+    setRoutine(target);
+    setSession(target.length > 0 ? { ...emptySession, activeIndex: 0 } : emptySession);
   }
 
   function startActiveExercise() {
@@ -340,6 +349,8 @@ export default function App() {
     setSelectedGroups(allGroups);
     setSelectedTags(collectLibraryTags(fresh.exercises));
     setRoutine([]);
+    setRoutineHistory([]);
+    setHistoryIndex(-1);
     setSession(emptySession);
     setMessage("Storage reset to defaults.");
   }
@@ -363,6 +374,8 @@ export default function App() {
     setSelectedGroups(allGroups);
     setSelectedTags(collectLibraryTags(parsed.config.exercises));
     setRoutine(importedRoutine);
+    setRoutineHistory(importedRoutine.length > 0 ? [importedRoutine] : []);
+    setHistoryIndex(importedRoutine.length > 0 ? 0 : -1);
     setSession(
       importedRoutine.length > 0 ? { ...emptySession, activeIndex: 0 } : emptySession
     );
@@ -647,7 +660,30 @@ export default function App() {
       <section className="routine-section" aria-labelledby="routine-heading">
         <div className="section-heading">
           <h2 id="routine-heading">Routine</h2>
-          <span>{routine.length} exercises</span>
+          <div className="routine-heading-right">
+            {routineHistory.length > 1 && (
+              <div className="history-nav">
+                <button
+                  type="button"
+                  disabled={historyIndex === 0}
+                  onClick={() => goToHistoryIndex(historyIndex - 1)}
+                  aria-label="Previous routine"
+                >
+                  ←
+                </button>
+                <span>{historyIndex + 1} / {routineHistory.length}</span>
+                <button
+                  type="button"
+                  disabled={historyIndex === routineHistory.length - 1}
+                  onClick={() => goToHistoryIndex(historyIndex + 1)}
+                  aria-label="Next routine"
+                >
+                  →
+                </button>
+              </div>
+            )}
+            <span>{routine.length} exercises</span>
+          </div>
         </div>
 
         {routine.length === 0 ? (
