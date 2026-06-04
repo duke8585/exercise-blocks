@@ -698,6 +698,102 @@ const inventoryV4Exercises: Exercise[] = [
   }
 ];
 
+const inventoryV5Exercises: Exercise[] = [
+  {
+    id: "hip-cars",
+    name: "Hip CARs",
+    primaryGroup: "glutes",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "leftRight",
+    description:
+      "Stand on one leg with a soft knee and move the free leg through the largest circle the hip joint can make without any compensation in the pelvis or spine. Go slowly — the whole rep should take 5 to 10 seconds — and actively reach into end range in every direction rather than letting momentum do the work. Use the first block for one hip and the second for the other. This is active joint mobilisation, not a stretch; keep every other part of the body as still as possible."
+  },
+  {
+    id: "mcgill-curl-up",
+    name: "McGill curl-up",
+    primaryGroup: "core",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "single",
+    description:
+      "Lie on your back with one knee bent and the other leg flat. Slide both hands under the lumbar curve to hold its natural arch — do not flatten the spine. Brace the trunk as if bracing for a punch, then lift only the head and shoulders a few centimetres off the floor, hold for 8 to 10 seconds, and lower slowly. The movement is tiny; the spine does not flex. Alternate the bent leg each set and stop if any neck tension builds."
+  },
+  {
+    id: "mcgill-bird-dog",
+    name: "McGill bird-dog",
+    primaryGroup: "core",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "leftRight",
+    description:
+      "Start on hands and knees with a neutral spine and brace your trunk before moving anything. Extend one arm forward and the opposite leg back until both are roughly parallel to the floor, hold 8 to 10 seconds, then lower with control before switching sides. Keep the pelvis completely level — no rotation, no hip hike. The goal is maximum stiffness through the trunk while the limbs move, not range. Use the first block for one side and the second for the other."
+  },
+  {
+    id: "walking-lunge",
+    name: "Walking lunge",
+    primaryGroup: "quads",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "single",
+    description:
+      "Step forward into a lunge, lower the back knee toward the floor while keeping the front shin roughly vertical, then drive through the front heel and bring the rear foot forward to start the next step. Keep the torso tall and the front knee tracking over the second toe. Walk the full block at a controlled tempo; reduce stride length if the knee or hip flexor feels strained."
+  },
+  {
+    id: "atg-split-squat",
+    name: "ATG split squat",
+    primaryGroup: "quads",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "leftRight",
+    description:
+      "Stand in a split stance with the rear foot elevated on a low surface or flat on the floor. Drive the front knee forward over and past the toes as you lower, reaching as deep a range as the ankle and hip allow, then press back up. ATG means going all the way to the bottom — heel down, shin as vertical as possible, no rounding of the lower back. Start with body weight and progress very slowly; the full range demands significant ankle mobility. Use one block per side."
+  },
+  {
+    id: "banded-clamshell",
+    name: "Banded clamshell",
+    primaryGroup: "abductors",
+    tags: ["inventory:v5:hip-core"],
+    sideMode: "leftRight",
+    description:
+      "Lie on your side with a resistance band just above the knees, hips stacked, and knees bent to about 45 degrees. Keeping the feet together, rotate the top knee toward the ceiling as far as the hip allows without the pelvis rolling back, then lower with control. Keep the movement slow and deliberate rather than bouncing at the top. Use the first block for one side and the second for the other; choose a band tension that makes the last few reps hard without losing pelvic position."
+  }
+];
+
+const inventoryV6Exercises: Exercise[] = [
+  {
+    id: "straight-bridge",
+    name: "Straight bridge",
+    primaryGroup: "glutes",
+    tags: ["inventory:v6:back-bridge"],
+    sideMode: "single",
+    description:
+      "Sit on the floor with legs straight and hands flat behind your hips, fingers pointing forward or slightly out. Press through the heels and hands to lift the hips until the body forms a straight line from shoulders to feet, squeeze the glutes at the top, then lower slowly. Hold the top position for a count or pulse with small controlled dips. This is the second step in the convict conditioning bridge series and the first version where the full posterior chain works as a unit."
+  },
+  {
+    id: "angled-bridge",
+    name: "Angled bridge",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v6:back-bridge"],
+    sideMode: "single",
+    description:
+      "Stand facing away from a sturdy surface at roughly hip height — a bench, a low wall, or the seat of a chair. Place both hands on the edge behind you and walk your feet forward until the body is angled and the hips hang below the hands. Press through the hands to lift and extend the spine, opening the chest toward the ceiling, then pulse or hold. As confidence grows, lower the hand height or increase the angle until you are approaching a full bridge from a standing position."
+  },
+  {
+    id: "full-back-bridge",
+    name: "Full back bridge",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v6:back-bridge"],
+    sideMode: "single",
+    description:
+      "Lie on your back, place the hands by the ears with fingers pointing toward the feet and the feet flat and hip-width apart. Press the floor away, extend the arms and legs simultaneously, and lift into a full wheel with the spine arched and only hands and feet on the floor. Hold the top position, breathe, and add small pulses by bending and re-extending the arms slightly. Come down with control. Build up to this progressively — it demands significant shoulder, thoracic, and hip flexor mobility and should not be forced."
+  },
+  {
+    id: "wall-bridge-walkdown",
+    name: "Wall bridge walkdown",
+    primaryGroup: "spine_flexion_extension",
+    tags: ["inventory:v6:back-bridge"],
+    sideMode: "single",
+    description:
+      "Stand a short step away from a wall and reach both hands overhead to place them flat on it. Walk the hands down the wall by arching the spine and stepping the feet closer, going as far as comfortable, then walk back up. Keep the neck long and move through the upper and middle back rather than hinging only at the lower back. This is a progressive bridge entry for those not yet reaching the floor and the foundation for stand-to-stand bridges."
+  }
+];
+
 // Existing entries that should also live under inventory:v2. We add the tag
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -714,20 +810,39 @@ const inventoryV3RetagIds: readonly string[] = [
   "prone-y-raise"
 ];
 
+const inventoryV5RetagIds: readonly string[] = [
+  "side-plank" // McGill Big 3 — side plank is already in v0
+];
+
+const inventoryV6RetagIds: readonly string[] = [
+  "glute-bridge",
+  "single-leg-glute-bridge"
+];
+
 export const seedExercises: Exercise[] = applyRetags(
   applyRetags(
-    consolidateExercises([
-      ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
-      ...inventoryV1Exercises,
-      ...inventoryV2Exercises,
-      ...inventoryV3Exercises,
-      ...inventoryV4Exercises
-    ]),
-    inventoryV2RetagIds,
-    ["inventory:v2:daily-practice"]
+    applyRetags(
+      applyRetags(
+        consolidateExercises([
+          ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
+          ...inventoryV1Exercises,
+          ...inventoryV2Exercises,
+          ...inventoryV3Exercises,
+          ...inventoryV4Exercises,
+          ...inventoryV5Exercises,
+          ...inventoryV6Exercises
+        ]),
+        inventoryV2RetagIds,
+        ["inventory:v2:daily-practice"]
+      ),
+      inventoryV3RetagIds,
+      ["inventory:v3:neck-shoulder"]
+    ),
+    inventoryV5RetagIds,
+    ["inventory:v5:hip-core"]
   ),
-  inventoryV3RetagIds,
-  ["inventory:v3:neck-shoulder"]
+  inventoryV6RetagIds,
+  ["inventory:v6:back-bridge"]
 );
 
 function applyRetags(
