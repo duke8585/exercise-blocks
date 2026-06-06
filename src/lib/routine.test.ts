@@ -6,49 +6,49 @@ const exercises: Exercise[] = [
   {
     id: "shoulder-1",
     name: "Shoulder 1",
-    primaryGroup: "shoulders",
+    groups: ["shoulders"],
     tags: ["inventory:v1"]
   },
   {
     id: "shoulder-2",
     name: "Shoulder 2",
-    primaryGroup: "shoulders",
+    groups: ["shoulders"],
     tags: ["inventory:v2"]
   },
   {
     id: "shoulder-3",
     name: "Shoulder 3",
-    primaryGroup: "shoulders",
+    groups: ["shoulders"],
     tags: ["inventory:v2"]
   },
   {
     id: "chest-1",
     name: "Chest 1",
-    primaryGroup: "chest",
+    groups: ["chest"],
     tags: ["inventory:v1"]
   },
   {
     id: "chest-2",
     name: "Chest 2",
-    primaryGroup: "chest",
+    groups: ["chest"],
     tags: ["inventory:v2"]
   },
   {
     id: "chest-3",
     name: "Chest 3",
-    primaryGroup: "chest",
+    groups: ["chest"],
     tags: ["inventory:v2"]
   },
   {
     id: "abductor-1",
     name: "Abductor 1",
-    primaryGroup: "abductors",
+    groups: ["abductors"],
     tags: ["inventory:v1"]
   }
 ];
 
 describe("generateRoutine", () => {
-  it("only selects exercises from checked primary groups", () => {
+  it("only selects exercises from checked groups", () => {
     const routine = generateRoutine(
       exercises,
       ["shoulders", "chest"],
@@ -60,7 +60,7 @@ describe("generateRoutine", () => {
     expect(routine).toHaveLength(6);
     expect(
       routine.every((exercise) =>
-        ["shoulders", "chest"].includes(exercise.primaryGroup)
+        exercise.groups.some((g) => ["shoulders", "chest"].includes(g))
       )
     ).toBe(true);
   });
@@ -110,7 +110,7 @@ describe("generateRoutine", () => {
     expect(
       routine.every(
         (exercise) =>
-          ["shoulders", "chest"].includes(exercise.primaryGroup) &&
+          exercise.groups.some((g) => ["shoulders", "chest"].includes(g)) &&
           exercise.tags.includes("inventory:v2")
       )
     ).toBe(true);
@@ -154,7 +154,7 @@ describe("generateRoutine", () => {
     );
 
     expect(routine).toHaveLength(4);
-    expect(routine.every((exercise) => exercise.primaryGroup !== "abductors")).toBe(
+    expect(routine.every((exercise) => !exercise.groups.includes("abductors"))).toBe(
       true
     );
   });
@@ -162,7 +162,9 @@ describe("generateRoutine", () => {
 
 function countGroups(routine: Exercise[]): Partial<Record<MuscleGroup, number>> {
   return routine.reduce<Partial<Record<MuscleGroup, number>>>((counts, exercise) => {
-    counts[exercise.primaryGroup] = (counts[exercise.primaryGroup] ?? 0) + 1;
+    // Count against the first (primary) group for balance checking
+    const primary = exercise.groups[0];
+    counts[primary] = (counts[primary] ?? 0) + 1;
     return counts;
   }, {});
 }

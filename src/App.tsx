@@ -590,18 +590,47 @@ export default function App() {
               </div>
             </div>
 
-            <div className="tag-grid" aria-label="Tags">
-              {allTags.map((tag) => (
-                <label className="group-toggle" key={tag}>
-                  <input
-                    checked={selectedTags.includes(tag)}
-                    type="checkbox"
-                    onChange={() => toggleTag(tag)}
-                  />
-                  <span>{tag}</span>
-                </label>
-              ))}
-            </div>
+            {(() => {
+              const userTags = allTags.filter((t) => !t.startsWith("inventory:"));
+              const inventoryTags = allTags.filter((t) => t.startsWith("inventory:"));
+              return (
+                <>
+                  {userTags.length > 0 && (
+                    <div className="tag-grid" aria-label="Tags">
+                      {userTags.map((tag) => (
+                        <label className="group-toggle" key={tag}>
+                          <input
+                            checked={selectedTags.includes(tag)}
+                            type="checkbox"
+                            onChange={() => toggleTag(tag)}
+                          />
+                          <span>{tag}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                  {inventoryTags.length > 0 && (
+                    <details>
+                      <summary className="inventory-tags-summary">
+                        Inventory versions ({inventoryTags.length})
+                      </summary>
+                      <div className="tag-grid" aria-label="Inventory tags">
+                        {inventoryTags.map((tag) => (
+                          <label className="group-toggle" key={tag}>
+                            <input
+                              checked={selectedTags.includes(tag)}
+                              type="checkbox"
+                              onChange={() => toggleTag(tag)}
+                            />
+                            <span>{tag}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </details>
+                  )}
+                </>
+              );
+            })()}
           </div>
         ) : null}
 
@@ -715,7 +744,7 @@ export default function App() {
                       <span>
                         <strong>{exercise.name}</strong>
                         <small>
-                          {labelForGroup(exercise.primaryGroup)}
+                          {labelForGroup(exercise.groups[0])}
                           {exercise.sideMode === "leftRight" ? " · left/right" : ""}
                         </small>
                       </span>
@@ -830,7 +859,7 @@ function exerciseDetailText(exercise: RoutineExercise): string {
       ? "Use the first block for one side and the second block for the other."
       : "Use both timer blocks for steady, controlled work.";
 
-  return `${labelForGroup(exercise.primaryGroup)} focus. ${sideHint}`;
+  return `${labelForGroup(exercise.groups[0])} focus. ${sideHint}`;
 }
 
 function formatSeconds(seconds: number): string {

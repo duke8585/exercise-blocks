@@ -27,7 +27,7 @@ export function generateRoutine(
           new Set(
             exercises
               .filter((exercise) => matchesTags(exercise))
-              .map((exercise) => exercise.primaryGroup)
+              .flatMap((exercise) => exercise.groups)
           )
         )
       : selectedGroups;
@@ -35,7 +35,7 @@ export function generateRoutine(
   const groups = candidateGroups.filter((group) =>
     exercises.some(
       (exercise) =>
-        exercise.primaryGroup === group && matchesTags(exercise)
+        exercise.groups.includes(group) && matchesTags(exercise)
     )
   );
 
@@ -50,7 +50,7 @@ export function generateRoutine(
       shuffle(
         exercises.filter(
           (exercise) =>
-            exercise.primaryGroup === group && matchesTags(exercise)
+            exercise.groups.includes(group) && matchesTags(exercise)
         ),
         rng
       )

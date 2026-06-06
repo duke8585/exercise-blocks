@@ -27,7 +27,7 @@ export interface ExerciseLink {
 export interface Exercise {
   id: string;
   name: string;
-  primaryGroup: MuscleGroup;
+  groups: MuscleGroup[];
   tags: string[];
   sideMode?: SideMode;
   description?: string;

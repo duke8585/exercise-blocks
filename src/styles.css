@@ -224,6 +224,14 @@ h2 {
   accent-color: #2e6f5c;
 }
 
+.inventory-tags-summary {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  color: #5a6e63;
+  cursor: pointer;
+  user-select: none;
+}
+
 .primary-button,
 .start-button {
   border-color: #215747;

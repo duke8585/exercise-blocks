@@ -22,11 +22,11 @@ export const EXPORT_DOCUMENTATION = {
   dataModel: {
     version: "Must be 1 for the current app.",
     exercises:
-      "Array of exercise objects. Required fields: id, name, primaryGroup, tags. Optional fields: sideMode, description, notes, links.",
+      "Array of exercise objects. Required fields: id, name, groups, tags. Optional fields: sideMode, description, notes, links.",
     tags:
       "Array of string tags. Built-in catalog tags use inventory:v0, inventory:v1, and inventory:v2. Custom imported exercises without tags receive inventory:custom.",
-    primaryGroup:
-      "Must be one of the known muscle group ids listed in muscleGroups.",
+    groups:
+      "Ordered array of muscle group ids (most relevant first). Must contain at least one value from muscleGroups. Legacy 'primaryGroup' (single string) is also accepted for backwards compatibility.",
     sideMode: "Use leftRight for side-specific exercises, or single otherwise.",
     links:
       "Optional array of { label, url } objects. Useful for YouTube or reference links.",
@@ -201,12 +201,17 @@ function coerceExercises(
 
     const id = coerceText(item.id);
     const name = coerceText(item.name);
-    const primaryGroup = coerceMuscleGroup(item.primaryGroup);
+
+    // Accept new `groups` array or legacy `primaryGroup` string for backwards compat
+    const legacyPrimary = coerceMuscleGroup(item.primaryGroup);
+    const groups =
+      coerceGroups(item.groups) ??
+      (legacyPrimary ? [legacyPrimary] : undefined);
 
     if (
       !id ||
       !name ||
-      !primaryGroup ||
+      !groups ||
       (!options.allowDuplicateIds && seenIds.has(id))
     ) {
       continue;
@@ -216,6 +221,7 @@ function coerceExercises(
       seenIds.add(id);
     }
     const seedExercise = seedExerciseById.get(id);
+    const resolvedGroups = groups.length > 0 ? groups : seedExercise?.groups ?? groups;
     const sideMode = coerceSideMode(item.sideMode) ?? seedExercise?.sideMode;
     const description = coerceText(item.description) ?? seedExercise?.description;
     const notes = coerceText(item.notes) ?? seedExercise?.notes;
@@ -230,7 +236,7 @@ function coerceExercises(
     exercises.push({
       id,
       name,
-      primaryGroup,
+      groups: resolvedGroups,
       tags,
       ...(sideMode ? { sideMode } : {}),
       ...(description ? { description } : {}),
@@ -331,6 +337,16 @@ function coerceMuscleGroup(value: unknown): MuscleGroup | undefined {
   return typeof value === "string" && muscleGroupIds.has(value as MuscleGroup)
     ? (value as MuscleGroup)
     : undefined;
+}
+
+function coerceGroups(value: unknown): MuscleGroup[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+  const valid = Array.from(
+    new Set(value.flatMap((v) => (coerceMuscleGroup(v) ? [v as MuscleGroup] : [])))
+  );
+  return valid.length > 0 ? valid : undefined;
 }
 
 function coerceSideMode(value: unknown): SideMode | undefined {

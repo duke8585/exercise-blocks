@@ -74,7 +74,7 @@ describe("storage config", () => {
         {
           id: "custom",
           name: "Custom move",
-          primaryGroup: "core",
+          groups: ["core"],
           tags: ["inventory:custom"]
         }
       ]);

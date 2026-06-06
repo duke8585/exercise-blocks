@@ -21,7 +21,7 @@ describe("seedExercises", () => {
     expect(
       seedExercises.some(
         (exercise) =>
-          exercise.primaryGroup === "cardio_hiit" &&
+          exercise.groups[0] === "cardio_hiit" &&
           exercise.tags.includes("inventory:v1:cardio")
       )
     ).toBe(true);
