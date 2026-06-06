@@ -846,7 +846,7 @@ function NumberSetting({ label, max, min, value, onCommit }: NumberSettingProps)
 }
 
 function youtubeSearchUrl(exerciseName: string): string {
-  return `https://www.youtube.com/results?search_query=${encodeURIComponent(`#shorts ${exerciseName}`)}`;
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(`${exerciseName} exercise #shorts`)}`;
 }
 
 function labelForGroup(group: MuscleGroup): string {
