@@ -753,20 +753,26 @@ export default function App() {
                       </span>
                     </button>
                     <p className="exercise-description">{detail}</p>
-                    {exercise.links && exercise.links.length > 0 ? (
-                      <div className="exercise-links">
-                        {exercise.links.map((link) => (
-                          <a
-                            href={link.url}
-                            key={`${exercise.instanceId}-${link.url}`}
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            {link.label}
-                          </a>
-                        ))}
-                      </div>
-                    ) : null}
+                    <div className="exercise-links">
+                      <a
+                        className="yt-shorts-link"
+                        href={youtubeSearchUrl(exercise.name)}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        ▶ #shorts
+                      </a>
+                      {exercise.links?.map((link) => (
+                        <a
+                          href={link.url}
+                          key={`${exercise.instanceId}-${link.url}`}
+                          rel="noreferrer"
+                          target="_blank"
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </li>
               );
@@ -837,6 +843,10 @@ function NumberSetting({ label, max, min, value, onCommit }: NumberSettingProps)
       />
     </label>
   );
+}
+
+function youtubeSearchUrl(exerciseName: string): string {
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(`#shorts ${exerciseName}`)}`;
 }
 
 function labelForGroup(group: MuscleGroup): string {

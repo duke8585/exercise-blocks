@@ -493,6 +493,12 @@ h2 {
   text-decoration: none;
 }
 
+.yt-shorts-link {
+  border-color: #f0c4c4 !important;
+  color: #b91c1c !important;
+  background: #fff5f5 !important;
+}
+
 .state-pill {
   min-width: 64px;
   border-radius: 999px;
