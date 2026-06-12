@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- left plate outer -->
+  <rect x="1" y="10" width="5" height="12" rx="2" fill="#2e6f5c"/>
+  <!-- left plate inner -->
+  <rect x="6" y="12" width="3" height="8" rx="1" fill="#2e6f5c"/>
+  <!-- bar -->
+  <rect x="9" y="14.5" width="14" height="3" rx="1.5" fill="#2e6f5c"/>
+  <!-- right plate inner -->
+  <rect x="23" y="12" width="3" height="8" rx="1" fill="#2e6f5c"/>
+  <!-- right plate outer -->
+  <rect x="26" y="10" width="5" height="12" rx="2" fill="#2e6f5c"/>
+</svg>
