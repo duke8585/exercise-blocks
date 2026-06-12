@@ -32,6 +32,8 @@ export const EXPORT_DOCUMENTATION = {
       "Optional array of { label, url } objects. Useful for YouTube or reference links.",
     settings:
       "routineCount is the number of exercises to generate. timer.sideASeconds and timer.sideBSeconds are positive integers.",
+    starredIds:
+      "Array of exercise ids that the user has starred. Persisted and exported so stars survive a JSON round-trip.",
     currentWorkout:
       "Optional generated workout snapshot. exercises is an ordered array of exercise objects. Importing this replaces the visible routine list, but it is not saved to localStorage."
   },
@@ -55,6 +57,7 @@ export function defaultStoredConfig(): StoredAppConfig {
   return {
     version: 1,
     exercises: seedExercises,
+    starredIds: [],
     settings: {
       routineCount: DEFAULT_ROUTINE_COUNT,
       timer: DEFAULT_TIMER
@@ -65,11 +68,13 @@ export function defaultStoredConfig(): StoredAppConfig {
 export function createStoredConfig(
   exercises: Exercise[],
   routineCount: number,
-  timer: TimerConfig
+  timer: TimerConfig,
+  starredIds: string[] = []
 ): StoredAppConfig {
   return coerceStoredConfig({
     version: 1,
     exercises,
+    starredIds,
     settings: {
       routineCount,
       timer
@@ -167,6 +172,7 @@ export function coerceStoredConfig(
   return {
     version: 1,
     exercises: exercises.length > 0 ? exercises : fallback.exercises,
+    starredIds: coerceStringArray(source.starredIds),
     settings: {
       routineCount:
         coercePositiveInteger(settings.routineCount) ??
@@ -311,6 +317,11 @@ function coerceLinks(value: unknown): ExerciseLink[] {
 
     return [{ label, url }];
   });
+}
+
+function coerceStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((v): v is string => typeof v === "string");
 }
 
 function coerceText(value: unknown): string | undefined {

@@ -58,6 +58,8 @@ export default function App() {
   const [selectedTags, setSelectedTags] = useState<string[]>(() =>
     collectLibraryTags(config.exercises)
   );
+  const [starredOnly, setStarredOnly] = useState(false);
+  const starredIds = useMemo(() => new Set(config.starredIds), [config.starredIds]);
   const [routine, setRoutine] = useState<RoutineExercise[]>([]);
   const [routineHistory, setRoutineHistory] = useState<RoutineExercise[][]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -236,10 +238,22 @@ export default function App() {
     );
   }
 
+  function toggleStar(id: string) {
+    setConfig((current) => ({
+      ...current,
+      starredIds: current.starredIds.includes(id)
+        ? current.starredIds.filter((sid) => sid !== id)
+        : [...current.starredIds, id]
+    }));
+  }
+
   function generate() {
+    const eligible = starredOnly
+      ? config.exercises.filter((e) => starredIds.has(e.id))
+      : config.exercises;
     const nextRoutine = toRoutineExercises(
       generateRoutine(
-        config.exercises,
+        eligible,
         selectedGroups,
         selectedTags,
         config.settings.routineCount
@@ -576,6 +590,20 @@ export default function App() {
           </div>
         </div>
 
+        <div className="filter-section">
+          <label className="starred-filter-toggle">
+            <input
+              type="checkbox"
+              checked={starredOnly}
+              onChange={() => setStarredOnly((v) => !v)}
+            />
+            <span>⭐ Starred only</span>
+            {starredIds.size > 0 && (
+              <span className="starred-count">{starredIds.size}</span>
+            )}
+          </label>
+        </div>
+
         {allTags.length > 0 ? (
           <div className="filter-section">
             <div className="filter-heading">
@@ -753,25 +781,35 @@ export default function App() {
                       </span>
                     </button>
                     <p className="exercise-description">{detail}</p>
-                    <div className="exercise-links">
-                      <a
-                        className="yt-shorts-link"
-                        href={youtubeSearchUrl(exercise.name)}
-                        rel="noreferrer"
-                        target="_blank"
-                      >
-                        ▶ #shorts
-                      </a>
-                      {exercise.links?.map((link) => (
+                    <div className="exercise-card-footer">
+                      <div className="exercise-links">
                         <a
-                          href={link.url}
-                          key={`${exercise.instanceId}-${link.url}`}
+                          className="yt-shorts-link"
+                          href={youtubeSearchUrl(exercise.name)}
                           rel="noreferrer"
                           target="_blank"
                         >
-                          {link.label}
+                          ▶ #shorts
                         </a>
-                      ))}
+                        {exercise.links?.map((link) => (
+                          <a
+                            href={link.url}
+                            key={`${exercise.instanceId}-${link.url}`}
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {link.label}
+                          </a>
+                        ))}
+                      </div>
+                      <button
+                        className={`star-button ${starredIds.has(exercise.id) ? "starred" : ""}`}
+                        type="button"
+                        aria-label={starredIds.has(exercise.id) ? "Unstar exercise" : "Star exercise"}
+                        onClick={() => toggleStar(exercise.id)}
+                      >
+                        {starredIds.has(exercise.id) ? "★" : "☆"}
+                      </button>
                     </div>
                   </div>
                 </li>

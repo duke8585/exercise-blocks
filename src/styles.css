@@ -475,11 +475,69 @@ h2 {
   line-height: 1.35;
 }
 
+.exercise-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
 .exercise-links {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0 12px 12px 54px;
+  margin: 0 0 8px 54px;
+}
+
+.star-button {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 4px 10px 8px;
+  cursor: pointer;
+  color: #c9a000;
+  opacity: 0.4;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.star-button:hover {
+  opacity: 0.8;
+}
+
+.star-button.starred {
+  opacity: 1;
+}
+
+.star-button:active {
+  transform: scale(1.3);
+}
+
+.starred-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.93rem;
+  color: #1c2321;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.starred-filter-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2e6f5c;
+}
+
+.starred-count {
+  background: #f5e97a;
+  color: #6b5a00;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 1px 7px;
 }
 
 .exercise-links a {

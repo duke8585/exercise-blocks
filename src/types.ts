@@ -43,6 +43,7 @@ export interface TimerConfig {
 export interface StoredAppConfig {
   version: 1;
   exercises: Exercise[];
+  starredIds: string[];
   settings: {
     routineCount: number;
     timer: TimerConfig;
