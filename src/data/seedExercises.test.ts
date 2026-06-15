@@ -109,6 +109,16 @@ describe("seedExercises", () => {
     }
   });
 
+  it("carries the functional-minimalist v8 additions", () => {
+    const requiredV8Ids = ["farmer-carry", "pull-up", "parallel-bar-dip", "broad-jump"];
+
+    for (const id of requiredV8Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v8:functional-minimalist");
+    }
+  });
+
   it("groups the glute-medius / flat-feet set into v7 without dropping prior tags", () => {
     const retagged = ["banded-clamshell", "lateral-band-walk", "single-leg-glute-bridge"];
 
