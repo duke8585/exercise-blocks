@@ -819,30 +819,45 @@ const inventoryV6RetagIds: readonly string[] = [
   "single-leg-glute-bridge"
 ];
 
+// Glute-medius / flat-feet correction set. The premise (from the source short)
+// is that a collapsed arch is usually driven by a weak gluteus medius letting
+// the femur rotate in and the knee cave, not by an inherently weak foot. All
+// three movements already exist in earlier inventories, so we retag rather than
+// duplicate and keep the original descriptions authoritative.
+const inventoryV7RetagIds: readonly string[] = [
+  "banded-clamshell", // v5
+  "lateral-band-walk", // v0
+  "single-leg-glute-bridge" // v0
+];
+
 export const seedExercises: Exercise[] = applyRetags(
   applyRetags(
     applyRetags(
       applyRetags(
-        consolidateExercises([
-          ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
-          ...inventoryV1Exercises,
-          ...inventoryV2Exercises,
-          ...inventoryV3Exercises,
-          ...inventoryV4Exercises,
-          ...inventoryV5Exercises,
-          ...inventoryV6Exercises
-        ]),
-        inventoryV2RetagIds,
-        ["inventory:v2:daily-practice"]
+        applyRetags(
+          consolidateExercises([
+            ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
+            ...inventoryV1Exercises,
+            ...inventoryV2Exercises,
+            ...inventoryV3Exercises,
+            ...inventoryV4Exercises,
+            ...inventoryV5Exercises,
+            ...inventoryV6Exercises
+          ]),
+          inventoryV2RetagIds,
+          ["inventory:v2:daily-practice"]
+        ),
+        inventoryV3RetagIds,
+        ["inventory:v3:neck-shoulder"]
       ),
-      inventoryV3RetagIds,
-      ["inventory:v3:neck-shoulder"]
+      inventoryV5RetagIds,
+      ["inventory:v5:hip-core"]
     ),
-    inventoryV5RetagIds,
-    ["inventory:v5:hip-core"]
+    inventoryV6RetagIds,
+    ["inventory:v6:back-bridge"]
   ),
-  inventoryV6RetagIds,
-  ["inventory:v6:back-bridge"]
+  inventoryV7RetagIds,
+  ["inventory:v7:glute-medius"]
 );
 
 function applyRetags(

@@ -108,4 +108,18 @@ describe("seedExercises", () => {
       expect(exercise?.tags).toContain("inventory:v0:fundamentals");
     }
   });
+
+  it("groups the glute-medius / flat-feet set into v7 without dropping prior tags", () => {
+    const retagged = ["banded-clamshell", "lateral-band-walk", "single-leg-glute-bridge"];
+
+    for (const id of retagged) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v7:glute-medius");
+      // each originated in an earlier inventory, so a prior inventory tag survives.
+      expect(
+        exercise?.tags.some((tag) => tag !== "inventory:v7:glute-medius" && tag.startsWith("inventory:v"))
+      ).toBe(true);
+    }
+  });
 });
