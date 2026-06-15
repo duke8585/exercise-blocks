@@ -1,4 +1,4 @@
-import type { Exercise, MuscleGroup } from "../types";
+import type { Exercise, Intensity, MuscleGroup } from "../types";
 
 type SeedExerciseInput = Omit<Exercise, "tags"> & { tags?: string[] };
 
@@ -873,7 +873,43 @@ const inventoryV7RetagIds: readonly string[] = [
   "single-leg-glute-bridge" // v0
 ];
 
-export const seedExercises: Exercise[] = applyRetags(
+// Ramp signal for routine ordering. Only the extremes are tagged; everything
+// untagged stays "work". Warmups are mobility / nervous-system prep that are
+// safe to do cold and should lead a session.
+const warmupIntensityIds: readonly string[] = [
+  "cat-cow",
+  "thread-the-needle",
+  "cobra-to-childs-pose",
+  "wall-angels",
+  "hopping-shaking",
+  "pump-stretch-down-dog-up-dog",
+  "90-90-hip-switch",
+  "open-book",
+  "foam-roller-tspine-extension",
+  "chin-nod",
+  "hip-cars",
+  "straddle"
+];
+
+// Peaks are loaded, explosive, or advanced movements that should not open a
+// session cold; the ramp ordering pushes them toward the end.
+const peakIntensityIds: readonly string[] = [
+  "suitcase-deadlift",
+  "suitcase-carry",
+  "farmer-carry",
+  "nordic-curls",
+  "reverse-nordics",
+  "copenhagen-plank",
+  "single-leg-deadlift",
+  "atg-split-squat",
+  "full-back-bridge",
+  "pull-up",
+  "parallel-bar-dip",
+  "broad-jump",
+  "weighted-y-raise-hyper-bench"
+];
+
+const taggedSeedExercises: Exercise[] = applyRetags(
   applyRetags(
     applyRetags(
       applyRetags(
@@ -903,6 +939,23 @@ export const seedExercises: Exercise[] = applyRetags(
   inventoryV7RetagIds,
   ["inventory:v7:glute-medius"]
 );
+
+export const seedExercises: Exercise[] = applyIntensity(
+  applyIntensity(taggedSeedExercises, warmupIntensityIds, "warmup"),
+  peakIntensityIds,
+  "peak"
+);
+
+function applyIntensity(
+  exercises: Exercise[],
+  ids: readonly string[],
+  intensity: Intensity
+): Exercise[] {
+  const idSet = new Set(ids);
+  return exercises.map((exercise) =>
+    idSet.has(exercise.id) ? { ...exercise, intensity } : exercise
+  );
+}
 
 function applyRetags(
   exercises: Exercise[],

@@ -142,6 +142,34 @@ describe("generateRoutine", () => {
     ).toEqual([]);
   });
 
+  it("spreads movement patterns by avoiding heavily overlapping picks", () => {
+    // Two near-identical compounds plus one low-overlap isolation move, all in
+    // the quads group. Without the diversity heuristic a 2-pick routine could be
+    // both compounds; with it, the isolation move must make the cut.
+    const pool: Exercise[] = [
+      { id: "iso", name: "Iso", groups: ["quads"], tags: ["t"] },
+      { id: "compound-a", name: "Compound A", groups: ["quads", "glutes", "core"], tags: ["t"] },
+      { id: "compound-b", name: "Compound B", groups: ["quads", "glutes", "core"], tags: ["t"] }
+    ];
+
+    const routine = generateRoutine(pool, ["quads"], [], 2, fixedRng());
+
+    expect(routine).toHaveLength(2);
+    expect(routine.some((exercise) => exercise.id === "iso")).toBe(true);
+  });
+
+  it("ramps the routine order from warmup to peak", () => {
+    const pool: Exercise[] = [
+      { id: "peak-1", name: "Peak", groups: ["quads"], tags: ["t"], intensity: "peak" },
+      { id: "work-1", name: "Work", groups: ["chest"], tags: ["t"] },
+      { id: "warm-1", name: "Warm", groups: ["core"], tags: ["t"], intensity: "warmup" }
+    ];
+
+    const routine = generateRoutine(pool, ["quads", "chest", "core"], [], 3, fixedRng());
+
+    expect(routine.map((exercise) => exercise.id)).toEqual(["warm-1", "work-1", "peak-1"]);
+  });
+
   it("excludes groups that match tags only through other exercises", () => {
     // abductor-1 is only tagged inventory:v1, so an inventory:v2 filter must
     // drop the abductors group entirely even when groups are unrestricted.

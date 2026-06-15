@@ -119,6 +119,17 @@ describe("seedExercises", () => {
     }
   });
 
+  it("tags ramp intensity on the extremes only", () => {
+    const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
+    const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");
+    const work = seedExercises.find((exercise) => exercise.id === "bodyweight-squat");
+
+    expect(warmup?.intensity).toBe("warmup");
+    expect(peak?.intensity).toBe("peak");
+    // untagged movements stay on the default and are treated as "work"
+    expect(work?.intensity).toBeUndefined();
+  });
+
   it("groups the glute-medius / flat-feet set into v7 without dropping prior tags", () => {
     const retagged = ["banded-clamshell", "lateral-band-walk", "single-leg-glute-bridge"];
 
