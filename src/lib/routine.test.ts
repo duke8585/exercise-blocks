@@ -158,6 +158,52 @@ describe("generateRoutine", () => {
     expect(routine.some((exercise) => exercise.id === "iso")).toBe(true);
   });
 
+  it("composes about a third warmups and leads with them", () => {
+    const warmups: Exercise[] = ["core", "quads", "chest", "back", "shoulders"].map(
+      (group, index) => ({
+        id: `warm-${index}`,
+        name: `Warm ${index}`,
+        groups: [group as MuscleGroup],
+        tags: ["t"],
+        intensity: "warmup" as const
+      })
+    );
+    const work: Exercise[] = ["core", "quads", "chest", "back", "shoulders"].map(
+      (group, index) => ({
+        id: `work-${index}`,
+        name: `Work ${index}`,
+        groups: [group as MuscleGroup],
+        tags: ["t"]
+      })
+    );
+
+    const routine = generateRoutine([...warmups, ...work], [], [], 9, fixedRng());
+
+    expect(routine).toHaveLength(9);
+    // round(9 / 3) = 3 warmups, capped by the five available.
+    const warmupCount = routine.filter((e) => e.intensity === "warmup").length;
+    expect(warmupCount).toBe(3);
+    // warmups form the leading block.
+    expect(routine.slice(0, 3).every((e) => e.intensity === "warmup")).toBe(true);
+    expect(routine.slice(3).every((e) => e.intensity !== "warmup")).toBe(true);
+  });
+
+  it("never repeats a warmup just to hit the third", () => {
+    // Only one warmup is eligible, so the routine gets exactly one and fills the
+    // rest from the work pool rather than duplicating the warmup.
+    const pool: Exercise[] = [
+      { id: "warm", name: "Warm", groups: ["core"], tags: ["t"], intensity: "warmup" },
+      { id: "work-a", name: "Work A", groups: ["quads"], tags: ["t"] },
+      { id: "work-b", name: "Work B", groups: ["chest"], tags: ["t"] },
+      { id: "work-c", name: "Work C", groups: ["back"], tags: ["t"] }
+    ];
+
+    const routine = generateRoutine(pool, [], [], 4, fixedRng());
+
+    expect(routine).toHaveLength(4);
+    expect(routine.filter((e) => e.id === "warm")).toHaveLength(1);
+  });
+
   it("ramps the routine order from warmup to peak", () => {
     const pool: Exercise[] = [
       { id: "peak-1", name: "Peak", groups: ["quads"], tags: ["t"], intensity: "peak" },
