@@ -108,4 +108,39 @@ describe("seedExercises", () => {
       expect(exercise?.tags).toContain("inventory:v0:fundamentals");
     }
   });
+
+  it("carries the functional-minimalist v8 additions", () => {
+    const requiredV8Ids = ["farmer-carry", "pull-up", "parallel-bar-dip", "broad-jump"];
+
+    for (const id of requiredV8Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v8:functional-minimalist");
+    }
+  });
+
+  it("tags ramp intensity on the extremes only", () => {
+    const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
+    const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");
+    const work = seedExercises.find((exercise) => exercise.id === "bodyweight-squat");
+
+    expect(warmup?.intensity).toBe("warmup");
+    expect(peak?.intensity).toBe("peak");
+    // untagged movements stay on the default and are treated as "work"
+    expect(work?.intensity).toBeUndefined();
+  });
+
+  it("groups the glute-medius / flat-feet set into v7 without dropping prior tags", () => {
+    const retagged = ["banded-clamshell", "lateral-band-walk", "single-leg-glute-bridge"];
+
+    for (const id of retagged) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v7:glute-medius");
+      // each originated in an earlier inventory, so a prior inventory tag survives.
+      expect(
+        exercise?.tags.some((tag) => tag !== "inventory:v7:glute-medius" && tag.startsWith("inventory:v"))
+      ).toBe(true);
+    }
+  });
 });

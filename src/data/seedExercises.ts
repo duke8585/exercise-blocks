@@ -1,4 +1,4 @@
-import type { Exercise, MuscleGroup } from "../types";
+import type { Exercise, Intensity, MuscleGroup } from "../types";
 
 type SeedExerciseInput = Omit<Exercise, "tags"> & { tags?: string[] };
 
@@ -794,7 +794,50 @@ const inventoryV6Exercises: Exercise[] = [
   }
 ];
 
-// Existing entries that should also live under inventory:v2. We add the tag
+// BUILTSIMPLE "5 things" functional-minimalist additions. Most of the pillars
+// (calisthenics, weighted rotations, several plyos, suitcase carries) already
+// live in earlier inventories; these are the concrete movements the library was
+// still missing.
+const inventoryV8Exercises: Exercise[] = [
+  {
+    id: "farmer-carry",
+    name: "Farmer carry",
+    groups: ["core", "back"],
+    tags: ["inventory:v8:functional-minimalist"],
+    sideMode: "single",
+    description:
+      "Hold a moderately heavy weight in each hand and stand tall with the shoulders packed down and ribs stacked over the hips. Walk slowly and smoothly for the whole block, keeping the trunk quiet and the weights from swinging into your legs. Unlike the suitcase carry, the load is balanced on both sides, so the focus shifts to posture, grip endurance, and a steady stride rather than resisting a side tilt."
+  },
+  {
+    id: "pull-up",
+    name: "Pull-up",
+    groups: ["back", "biceps", "shoulders"],
+    tags: ["inventory:v8:functional-minimalist"],
+    sideMode: "single",
+    description:
+      "Hang from a bar with hands a little wider than shoulders, then pull the shoulder blades down and drive the elbows toward the ribs until the chin clears the bar. Lower under control to a full hang without letting the shoulders shrug up to the ears. This is demanding; use a band, a box for assisted reps, or slow negatives if you cannot yet manage clean full-range reps."
+  },
+  {
+    id: "parallel-bar-dip",
+    name: "Parallel bar dip",
+    groups: ["chest", "triceps", "shoulders"],
+    tags: ["inventory:v8:functional-minimalist"],
+    sideMode: "single",
+    description:
+      "Support yourself on parallel bars with arms straight and a slight forward lean of the torso. Bend the elbows to lower until the shoulders are roughly level with the elbows, then press back up without locking out aggressively. Keep the shoulders down and away from the ears throughout; scale to bench dips or band-assisted reps if the front of the shoulder feels strained."
+  },
+  {
+    id: "broad-jump",
+    name: "Broad jump",
+    groups: ["cardio_hiit", "quads", "glutes", "hamstrings"],
+    tags: ["inventory:v8:functional-minimalist"],
+    sideMode: "single",
+    description:
+      "Stand with feet hip width, hinge and swing the arms back, then drive both feet into the floor to jump forward as far as you can control. Land softly on both feet with bent hips and knees, absorbing the impact before resetting for the next rep. This trains horizontal power and fast-twitch fibres; keep the reps crisp and stop the block before fatigue turns the landings sloppy."
+  }
+];
+
+
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
 const inventoryV2RetagIds: readonly string[] = [
@@ -819,31 +862,100 @@ const inventoryV6RetagIds: readonly string[] = [
   "single-leg-glute-bridge"
 ];
 
-export const seedExercises: Exercise[] = applyRetags(
+// Glute-medius / flat-feet correction set. The premise (from the source short)
+// is that a collapsed arch is usually driven by a weak gluteus medius letting
+// the femur rotate in and the knee cave, not by an inherently weak foot. All
+// three movements already exist in earlier inventories, so we retag rather than
+// duplicate and keep the original descriptions authoritative.
+const inventoryV7RetagIds: readonly string[] = [
+  "banded-clamshell", // v5
+  "lateral-band-walk", // v0
+  "single-leg-glute-bridge" // v0
+];
+
+// Ramp signal for routine ordering. Only the extremes are tagged; everything
+// untagged stays "work". Warmups are mobility / nervous-system prep that are
+// safe to do cold and should lead a session.
+const warmupIntensityIds: readonly string[] = [
+  "cat-cow",
+  "thread-the-needle",
+  "cobra-to-childs-pose",
+  "wall-angels",
+  "hopping-shaking",
+  "pump-stretch-down-dog-up-dog",
+  "90-90-hip-switch",
+  "open-book",
+  "foam-roller-tspine-extension",
+  "chin-nod",
+  "hip-cars",
+  "straddle"
+];
+
+// Peaks are loaded, explosive, or advanced movements that should not open a
+// session cold; the ramp ordering pushes them toward the end.
+const peakIntensityIds: readonly string[] = [
+  "suitcase-deadlift",
+  "suitcase-carry",
+  "farmer-carry",
+  "nordic-curls",
+  "reverse-nordics",
+  "copenhagen-plank",
+  "single-leg-deadlift",
+  "atg-split-squat",
+  "full-back-bridge",
+  "pull-up",
+  "parallel-bar-dip",
+  "broad-jump",
+  "weighted-y-raise-hyper-bench"
+];
+
+const taggedSeedExercises: Exercise[] = applyRetags(
   applyRetags(
     applyRetags(
       applyRetags(
-        consolidateExercises([
-          ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
-          ...inventoryV1Exercises,
-          ...inventoryV2Exercises,
-          ...inventoryV3Exercises,
-          ...inventoryV4Exercises,
-          ...inventoryV5Exercises,
-          ...inventoryV6Exercises
-        ]),
-        inventoryV2RetagIds,
-        ["inventory:v2:daily-practice"]
+        applyRetags(
+          consolidateExercises([
+            ...inventoryV0Exercises.map((exercise) => addInventoryTag(exercise, "inventory:v0:fundamentals")),
+            ...inventoryV1Exercises,
+            ...inventoryV2Exercises,
+            ...inventoryV3Exercises,
+            ...inventoryV4Exercises,
+            ...inventoryV5Exercises,
+            ...inventoryV6Exercises,
+            ...inventoryV8Exercises
+          ]),
+          inventoryV2RetagIds,
+          ["inventory:v2:daily-practice"]
+        ),
+        inventoryV3RetagIds,
+        ["inventory:v3:neck-shoulder"]
       ),
-      inventoryV3RetagIds,
-      ["inventory:v3:neck-shoulder"]
+      inventoryV5RetagIds,
+      ["inventory:v5:hip-core"]
     ),
-    inventoryV5RetagIds,
-    ["inventory:v5:hip-core"]
+    inventoryV6RetagIds,
+    ["inventory:v6:back-bridge"]
   ),
-  inventoryV6RetagIds,
-  ["inventory:v6:back-bridge"]
+  inventoryV7RetagIds,
+  ["inventory:v7:glute-medius"]
 );
+
+export const seedExercises: Exercise[] = applyIntensity(
+  applyIntensity(taggedSeedExercises, warmupIntensityIds, "warmup"),
+  peakIntensityIds,
+  "peak"
+);
+
+function applyIntensity(
+  exercises: Exercise[],
+  ids: readonly string[],
+  intensity: Intensity
+): Exercise[] {
+  const idSet = new Set(ids);
+  return exercises.map((exercise) =>
+    idSet.has(exercise.id) ? { ...exercise, intensity } : exercise
+  );
+}
 
 function applyRetags(
   exercises: Exercise[],

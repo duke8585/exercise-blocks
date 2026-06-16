@@ -19,6 +19,11 @@ export type MuscleGroup = (typeof MUSCLE_GROUP_OPTIONS)[number]["id"];
 
 export type SideMode = "leftRight" | "single";
 
+// Rough ramp signal used to order a generated routine from light to heavy so a
+// session never opens on a loaded lift. Only the extremes are tagged in the
+// seed library; everything untagged is treated as "work".
+export type Intensity = "warmup" | "work" | "peak";
+
 export interface ExerciseLink {
   label: string;
   url: string;
@@ -30,6 +35,7 @@ export interface Exercise {
   groups: MuscleGroup[];
   tags: string[];
   sideMode?: SideMode;
+  intensity?: Intensity;
   description?: string;
   notes?: string;
   links?: ExerciseLink[];

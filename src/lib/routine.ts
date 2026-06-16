@@ -1,4 +1,17 @@
-import type { Exercise, MuscleGroup, RoutineExercise } from "../types";
+import type { Exercise, Intensity, MuscleGroup, RoutineExercise } from "../types";
+
+// Order in which a generated routine ramps up. Untagged exercises default to
+// "work" so only the extremes need a value in the library.
+const INTENSITY_RANK: Record<Intensity, number> = {
+  warmup: 0,
+  work: 1,
+  peak: 2
+};
+
+// Two exercises count as redundant when they share at least this many muscle
+// groups. Used to steer the picker away from, e.g., five squat-pattern moves in
+// one routine without touching group balance.
+const REDUNDANT_GROUP_OVERLAP = 2;
 
 export function generateRoutine(
   exercises: Exercise[],
@@ -80,7 +93,7 @@ export function generateRoutine(
       );
 
       if (candidates.length > 0) {
-        picked = candidates[Math.floor(rng() * candidates.length)];
+        picked = pickLeastRedundant(candidates, routine, rng);
         break;
       }
     }
@@ -94,7 +107,49 @@ export function generateRoutine(
     usedIds.add(picked.id);
   }
 
-  return routine;
+  return orderByIntensity(routine);
+}
+
+// Among the eligible candidates for a group, prefer the ones that overlap the
+// fewest already-chosen exercises by muscle group, then pick randomly among
+// that least-redundant set. This keeps group balance intact (the group was
+// already chosen by the round-robin) while spreading movement patterns so a
+// routine does not stack near-identical compounds.
+function pickLeastRedundant(
+  candidates: Exercise[],
+  chosen: Exercise[],
+  rng: () => number
+): Exercise {
+  let lowestPenalty = Infinity;
+  const penalties = candidates.map((candidate) => {
+    const penalty = chosen.reduce(
+      (sum, picked) =>
+        sum + (sharedGroupCount(candidate, picked) >= REDUNDANT_GROUP_OVERLAP ? 1 : 0),
+      0
+    );
+    if (penalty < lowestPenalty) {
+      lowestPenalty = penalty;
+    }
+    return penalty;
+  });
+
+  const leastRedundant = candidates.filter(
+    (_, index) => penalties[index] === lowestPenalty
+  );
+  return leastRedundant[Math.floor(rng() * leastRedundant.length)];
+}
+
+function sharedGroupCount(a: Exercise, b: Exercise): number {
+  const groups = new Set(b.groups);
+  return a.groups.reduce((count, group) => count + (groups.has(group) ? 1 : 0), 0);
+}
+
+// Stable sort that ramps the routine from warmup to peak. Array.prototype.sort
+// is stable, so exercises of equal intensity keep their generated order.
+function orderByIntensity(routine: Exercise[]): Exercise[] {
+  return [...routine].sort(
+    (a, b) => INTENSITY_RANK[a.intensity ?? "work"] - INTENSITY_RANK[b.intensity ?? "work"]
+  );
 }
 
 export function toRoutineExercises(exercises: Exercise[]): RoutineExercise[] {
