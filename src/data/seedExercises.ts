@@ -838,6 +838,44 @@ const inventoryV8Exercises: Exercise[] = [
 ];
 
 
+// Big-toe / overpronation correction set. The premise (from the source the
+// request came from) is that when the foot overpronates and rolls inward during
+// running — dragging the knee into a slight valgus / "X-leg" position — the big
+// toe and the muscles that anchor the inner arch are usually too weak to resist
+// it. These drills strengthen the big toe and intrinsic foot muscles so the foot
+// can hold its arch and push off straight. None of these movements exist yet, so
+// they are seeded fresh under their own import tag.
+const inventoryV9Exercises: Exercise[] = [
+  {
+    id: "short-foot-doming",
+    name: "Short foot (foot doming)",
+    groups: ["calves"],
+    tags: ["inventory:v9:big-toe-pronation"],
+    sideMode: "leftRight",
+    description:
+      "Sit or stand with the foot flat and weight spread evenly across the heel, the big-toe ball, and the little-toe ball. Without curling or gripping the toes, draw the ball of the foot back toward the heel so the arch lifts into a small dome, hold a few seconds, then release. This wakes up the abductor hallucis and the deep intrinsic muscles that stop the arch from collapsing inward when you run, which is the root of overpronation. Use the first block for one foot and the second for the other, and keep the toes long and relaxed throughout."
+  },
+  {
+    id: "banded-big-toe-press",
+    name: "Banded big toe press",
+    groups: ["calves"],
+    tags: ["inventory:v9:big-toe-pronation"],
+    sideMode: "leftRight",
+    description:
+      "Loop a light resistance band around the big toe and anchor the other end to something sturdy so the band pulls the toe up toward you. Starting with the toe lifted, press the big toe down and slightly forward against the band, then return slowly under control. This loads the flexor hallucis longus so the big toe can drive a strong, straight push-off instead of letting the foot roll inward. Use one block per foot and keep the rest of the foot quiet with the band tension light enough to move smoothly."
+  },
+  {
+    id: "toe-yoga-splits",
+    name: "Toe yoga (big toe lifts and splits)",
+    groups: ["calves"],
+    tags: ["inventory:v9:big-toe-pronation"],
+    sideMode: "leftRight",
+    description:
+      "With the foot flat on the floor, press all the toes down, then lift only the big toe while keeping the other four pinned to the floor. Reverse it by pressing the big toe down and lifting only the other four toes, alternating slowly between the two patterns. This separates the big toe's control from the rest of the foot so it can anchor the inner arch during stance and resist pronation. Use one block per foot, expect it to feel clumsy at first, and coach the toes with a hand if they will not move independently yet."
+  }
+];
+
+
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
 const inventoryV2RetagIds: readonly string[] = [
@@ -922,7 +960,8 @@ const taggedSeedExercises: Exercise[] = applyRetags(
             ...inventoryV4Exercises,
             ...inventoryV5Exercises,
             ...inventoryV6Exercises,
-            ...inventoryV8Exercises
+            ...inventoryV8Exercises,
+            ...inventoryV9Exercises
           ]),
           inventoryV2RetagIds,
           ["inventory:v2:daily-practice"]

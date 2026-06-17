@@ -119,6 +119,16 @@ describe("seedExercises", () => {
     }
   });
 
+  it("carries the big-toe / overpronation v9 additions", () => {
+    const requiredV9Ids = ["short-foot-doming", "banded-big-toe-press", "toe-yoga-splits"];
+
+    for (const id of requiredV9Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v9:big-toe-pronation");
+    }
+  });
+
   it("tags ramp intensity on the extremes only", () => {
     const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
     const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");

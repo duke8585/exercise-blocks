@@ -23,6 +23,7 @@ The app helps create short exercise routines from a local exercise library. A us
   - `inventory:v1`: cardio/HIIT additions
   - `inventory:v2`: requested warmup/mobility sequence
   - `inventory:v3`: neck/shoulder resilience set (also tagged `neck-shoulder-resilience`)
+  - `inventory:v9:big-toe-pronation`: big-toe / overpronation correction drills
 - Supported primary muscle groups:
   - spine flexion/extension
   - glutes
