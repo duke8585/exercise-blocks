@@ -875,6 +875,31 @@ const inventoryV9Exercises: Exercise[] = [
   }
 ];
 
+// Hamstring injury rehab / prevention set. These are eccentric-friendly knee-flexion
+// curls that load the hamstring through range without the heavy spinal demand of a
+// deadlift, so they suit rebuilding a strained hamstring. Both movements are new to
+// the library, so they are seeded fresh under their own import tag.
+const inventoryV10Exercises: Exercise[] = [
+  {
+    id: "ball-trx-hamstring-curl",
+    name: "Stability ball / TRX hamstring curl",
+    groups: ["hamstrings", "glutes", "core"],
+    tags: ["inventory:v10:hamstring-injury"],
+    sideMode: "single",
+    description:
+      "Lie on your back with your heels resting on top of a stability or medicine ball and your arms on the floor for support. Lift your hips so the body forms a straight line from shoulders to heels, then bend the knees to roll the ball in and pull the heels toward your butt before straightening the legs again under control. Keep the hips up the whole time so the hamstrings and glutes share the work instead of dropping between reps. The variant most relevant for an injured hamstring is the same movement with the heels in TRX straps instead of a ball: straighten the legs out long, then pull the heels back toward you while lifting the butt, starting with a small range and progressing as the hamstring tolerates it."
+  },
+  {
+    id: "prone-banded-leg-curl",
+    name: "Prone banded leg curl",
+    groups: ["hamstrings"],
+    tags: ["inventory:v10:hamstring-injury"],
+    sideMode: "leftRight",
+    description:
+      "Lie face down with a resistance band anchored in front of you and looped around one ankle, legs long and hips pressed gently into the floor. Curl the heel toward your butt against the band's pull, squeeze briefly at the top, then lower slowly without letting the band yank the leg straight. Keep the pelvis flat so the hamstring does the work rather than arching the low back. Use the first block for one leg and the second for the other, and pick a band tension you can control through the full range."
+  }
+];
+
 
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -961,7 +986,8 @@ const taggedSeedExercises: Exercise[] = applyRetags(
             ...inventoryV5Exercises,
             ...inventoryV6Exercises,
             ...inventoryV8Exercises,
-            ...inventoryV9Exercises
+            ...inventoryV9Exercises,
+            ...inventoryV10Exercises
           ]),
           inventoryV2RetagIds,
           ["inventory:v2:daily-practice"]

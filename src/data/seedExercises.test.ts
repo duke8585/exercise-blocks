@@ -129,6 +129,16 @@ describe("seedExercises", () => {
     }
   });
 
+  it("carries the hamstring-injury v10 additions", () => {
+    const requiredV10Ids = ["ball-trx-hamstring-curl", "prone-banded-leg-curl"];
+
+    for (const id of requiredV10Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v10:hamstring-injury");
+    }
+  });
+
   it("tags ramp intensity on the extremes only", () => {
     const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
     const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");
