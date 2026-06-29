@@ -18,6 +18,24 @@ const REDUNDANT_GROUP_OVERLAP = 2;
 // are eligible, so a narrow filter simply yields fewer of them.
 const WARMUP_FRACTION = 1 / 3;
 
+// Build a routine in three conceptual stages:
+//
+//   1. Budget — reserve ~WARMUP_FRACTION of the slots for warmup-intensity
+//      moves (capped at how many distinct warmups are eligible), the rest go to
+//      "everything else" (work + peak).
+//   2. Draw — fill each pool with the same balanced picker: a round-robin that
+//      weights equally per selected group (not per exercise), plus a diversity
+//      step that avoids stacking patterns that overlap by >=2 muscle groups.
+//   3. Order — concatenate then stable-sort by intensity so warmups lead as a
+//      block and loaded peak movements trail.
+//
+// Caveat: group balance and pattern diversity are enforced *within each pool
+// separately*, not across the whole routine. The warmup block and the rest
+// block are each internally balanced, but a given muscle group can still surface
+// once in each (e.g. a warmup and a work move that share it). This keeps the
+// warmup/rest split simple and is acceptable at typical routine lengths; if
+// global balance ever matters more than the 1/3 split, the two pools would need
+// to share a single round-robin instead.
 export function generateRoutine(
   exercises: Exercise[],
   selectedGroups: MuscleGroup[],
