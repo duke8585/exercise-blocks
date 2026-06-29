@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   MUSCLE_GROUP_OPTIONS,
+  type Exercise,
   type MuscleGroup,
   type RoutineExercise,
   type StoredAppConfig
@@ -783,14 +784,19 @@ export default function App() {
                     <p className="exercise-description">{detail}</p>
                     <div className="exercise-card-footer">
                       <div className="exercise-links">
-                        <a
-                          className="yt-shorts-link"
-                          href={youtubeSearchUrl(exercise.name)}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          ▶ #shorts
-                        </a>
+                        {(() => {
+                          const video = exerciseVideoLink(exercise);
+                          return (
+                            <a
+                              className="yt-shorts-link"
+                              href={video.href}
+                              rel="noreferrer"
+                              target="_blank"
+                            >
+                              {video.label}
+                            </a>
+                          );
+                        })()}
                         {exercise.links?.map((link) => (
                           <a
                             href={link.url}
@@ -885,6 +891,17 @@ function NumberSetting({ label, max, min, value, onCommit }: NumberSettingProps)
 
 function youtubeSearchUrl(exerciseName: string): string {
   return `https://www.youtube.com/results?search_query=${encodeURIComponent(`${exerciseName} exercise #shorts`)}`;
+}
+
+// When an exercise carries an explicit demonstration video, link straight to it
+// with a label that reflects whether it is a YouTube Short or a normal video.
+// Otherwise fall back to the generic "#shorts" search.
+function exerciseVideoLink(exercise: Exercise): { href: string; label: string } {
+  if (exercise.videoUrl) {
+    const isShort = exercise.videoUrl.includes("/shorts/");
+    return { href: exercise.videoUrl, label: isShort ? "▶ #shorts" : "▶ video" };
+  }
+  return { href: youtubeSearchUrl(exercise.name), label: "▶ #shorts" };
 }
 
 function labelForGroup(group: MuscleGroup): string {

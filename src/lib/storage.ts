@@ -22,7 +22,7 @@ export const EXPORT_DOCUMENTATION = {
   dataModel: {
     version: "Must be 1 for the current app.",
     exercises:
-      "Array of exercise objects. Required fields: id, name, groups, tags. Optional fields: sideMode, description, notes, links.",
+      "Array of exercise objects. Required fields: id, name, groups, tags. Optional fields: sideMode, description, notes, links, videoUrl.",
     tags:
       "Array of string tags. Built-in catalog tags use inventory:v0, inventory:v1, and inventory:v2. Custom imported exercises without tags receive inventory:custom.",
     groups:
@@ -30,6 +30,8 @@ export const EXPORT_DOCUMENTATION = {
     sideMode: "Use leftRight for side-specific exercises, or single otherwise.",
     links:
       "Optional array of { label, url } objects. Useful for YouTube or reference links.",
+    videoUrl:
+      "Optional explicit demonstration video URL; replaces the generic YouTube search button on the card.",
     settings:
       "routineCount is the number of exercises to generate. timer.sideASeconds and timer.sideBSeconds are positive integers.",
     starredIds:
@@ -233,6 +235,7 @@ function coerceExercises(
     const notes = coerceText(item.notes) ?? seedExercise?.notes;
     const links = coerceLinks(item.links);
     const fallbackLinks = seedExercise?.links ?? [];
+    const videoUrl = coerceVideoUrl(item.videoUrl) ?? seedExercise?.videoUrl;
     const tags = mergeTags(
       coerceTags(item.tags),
       seedExercise?.tags,
@@ -251,7 +254,8 @@ function coerceExercises(
         ? { links }
         : fallbackLinks.length > 0
           ? { links: fallbackLinks }
-          : {})
+          : {}),
+      ...(videoUrl ? { videoUrl } : {})
     });
   }
 
@@ -317,6 +321,11 @@ function coerceLinks(value: unknown): ExerciseLink[] {
 
     return [{ label, url }];
   });
+}
+
+function coerceVideoUrl(value: unknown): string | undefined {
+  const url = coerceText(value);
+  return url && isSafeUrl(url) ? url : undefined;
 }
 
 function coerceStringArray(value: unknown): string[] {
