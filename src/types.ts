@@ -39,6 +39,9 @@ export interface Exercise {
   description?: string;
   notes?: string;
   links?: ExerciseLink[];
+  // Explicit demonstration video; when set the card links straight here instead
+  // of running the generic YouTube search.
+  videoUrl?: string;
 }
 
 export interface TimerConfig {

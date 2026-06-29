@@ -900,6 +900,76 @@ const inventoryV10Exercises: Exercise[] = [
   }
 ];
 
+// Flexibility / splits set from MovementbyDavid. Each movement carries an explicit
+// demonstration video, so the card links straight to it instead of the generic
+// YouTube search. The first two are standalone Shorts; the rest come from his
+// middle-split routine, bookmarked at the point where the sequence is demonstrated.
+const middleSplitRoutineVideo = "https://youtu.be/hsNvqUmCAAo?t=352";
+
+const inventoryV11Exercises: Exercise[] = [
+  {
+    id: "hamstring-stretch",
+    name: "Hamstring stretch (toe touch)",
+    groups: ["hamstrings"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "single",
+    videoUrl: "https://www.youtube.com/shorts/un-7qdS1Tx4",
+    description:
+      "Stand tall with feet close together, then hinge from the hips and reach toward your toes while keeping the knees soft rather than locked. Let the spine round gently and breathe into the back of the legs instead of bouncing for extra range. To progress, work toward straighter knees and flatter feet over time, and back off the moment the stretch turns into a sharp pull behind the knee."
+  },
+  {
+    id: "hip-flexor-stretch",
+    name: "Hip flexor stretch",
+    groups: ["quads"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "leftRight",
+    videoUrl: "https://www.youtube.com/shorts/zE1Yl9VhJuw",
+    description:
+      "Drop into a half-kneeling lunge with one knee down and the other foot planted in front, then tuck the pelvis under so the front of the back hip lengthens. Keep the torso tall and squeeze the glute on the kneeling side to deepen the stretch without arching the low back. For a harder variation reach the same-side arm overhead and lean slightly away; use the first block for one hip and the second for the other."
+  },
+  {
+    id: "butterfly-stretch",
+    name: "Butterfly stretch",
+    groups: ["adductors"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "single",
+    videoUrl: middleSplitRoutineVideo,
+    description:
+      "Sit tall with the soles of your feet together and let the knees fall open toward the floor. Hold the feet and hinge forward from the hips with a long spine rather than rounding hard through the back. Let the knees relax down with gravity instead of pushing them, and ease off if you feel pinching on the inside of the hips."
+  },
+  {
+    id: "pigeon-pose",
+    name: "Pigeon pose",
+    groups: ["glutes", "abductors"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "leftRight",
+    videoUrl: middleSplitRoutineVideo,
+    description:
+      "From all fours, bring one shin forward across the mat and stretch the other leg long behind you, keeping the hips square to the floor. Sink the front hip toward the ground and walk the hands forward to fold over the front leg as it opens up. Keep the back leg's toes pointing straight back and support the front hip with a cushion if it floats; use the first block for one side and the second for the other."
+  },
+  {
+    id: "middle-split-practice",
+    name: "Middle split practice",
+    groups: ["adductors"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "single",
+    videoUrl: middleSplitRoutineVideo,
+    description:
+      "Set up facing a wall or in a wide straddle and slowly slide the feet apart, keeping the toes and knees pointing upward so the stretch stays in the inner thighs. Support yourself on your hands or forearms and ease into the end range without bouncing, holding where the adductors feel a strong but tolerable stretch. Progress the width gradually over many sessions rather than forcing depth in any single one."
+  },
+  // Reuse the existing v2 Straddle as the routine's Pancake stretch: this minimal
+  // record only adds the v11 tag and the demonstration video. The authoritative
+  // straddle (consolidated first) keeps its original description.
+  {
+    id: "straddle",
+    name: "Straddle",
+    groups: ["adductors"],
+    tags: ["inventory:v11:flexibility-splits"],
+    sideMode: "single",
+    videoUrl: middleSplitRoutineVideo
+  }
+];
+
 
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -987,7 +1057,8 @@ const taggedSeedExercises: Exercise[] = applyRetags(
             ...inventoryV6Exercises,
             ...inventoryV8Exercises,
             ...inventoryV9Exercises,
-            ...inventoryV10Exercises
+            ...inventoryV10Exercises,
+            ...inventoryV11Exercises
           ]),
           inventoryV2RetagIds,
           ["inventory:v2:daily-practice"]

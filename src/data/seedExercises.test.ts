@@ -139,6 +139,37 @@ describe("seedExercises", () => {
     }
   });
 
+  it("carries the flexibility/splits v11 additions with explicit videos", () => {
+    const requiredV11Ids = [
+      "hamstring-stretch",
+      "hip-flexor-stretch",
+      "butterfly-stretch",
+      "pigeon-pose",
+      "middle-split-practice"
+    ];
+
+    for (const id of requiredV11Ids) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toContain("inventory:v11:flexibility-splits");
+    }
+
+    const hamstring = seedExercises.find((current) => current.id === "hamstring-stretch");
+    expect(hamstring?.videoUrl).toBe("https://www.youtube.com/shorts/un-7qdS1Tx4");
+  });
+
+  it("reuses the existing Straddle as the v11 pancake without dropping prior tags", () => {
+    const straddle = seedExercises.find((current) => current.id === "straddle");
+
+    expect(straddle, "missing seed: straddle").toBeDefined();
+    expect(straddle?.tags).toContain("inventory:v11:flexibility-splits");
+    // straddle originated in v2, so its original tag must survive consolidation.
+    expect(straddle?.tags).toContain("inventory:v2:daily-practice");
+    expect(straddle?.videoUrl).toBe("https://youtu.be/hsNvqUmCAAo?t=352");
+    // the authoritative v2 description must not be clobbered by the minimal v11 record.
+    expect(straddle?.description).toBeTruthy();
+  });
+
   it("tags ramp intensity on the extremes only", () => {
     const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
     const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");

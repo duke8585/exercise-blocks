@@ -18,6 +18,7 @@ The app helps create short exercise routines from a local exercise library. A us
   - optional `description`
   - optional `notes`
   - optional `links`
+  - optional `videoUrl` (explicit demo video; replaces the generic YouTube search button)
 - Built-in inventory tags:
   - `inventory:v0`: original exercise library
   - `inventory:v1`: cardio/HIIT additions
@@ -25,6 +26,7 @@ The app helps create short exercise routines from a local exercise library. A us
   - `inventory:v3`: neck/shoulder resilience set (also tagged `neck-shoulder-resilience`)
   - `inventory:v9:big-toe-pronation`: big-toe / overpronation correction drills
   - `inventory:v10:hamstring-injury`: hamstring injury rehab/prevention curls
+  - `inventory:v11:flexibility-splits`: MovementbyDavid flexibility/splits stretches (with explicit videos)
 - Supported primary muscle groups:
   - spine flexion/extension
   - glutes
