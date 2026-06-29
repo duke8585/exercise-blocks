@@ -13,6 +13,11 @@ const INTENSITY_RANK: Record<Intensity, number> = {
 // one routine without touching group balance.
 const REDUNDANT_GROUP_OVERLAP = 2;
 
+// Roughly what share of a routine should be warmups. The rest of the slots go to
+// "everything else" (work + peak). Warmups are capped at how many distinct ones
+// are eligible, so a narrow filter simply yields fewer of them.
+const WARMUP_FRACTION = 1 / 3;
+
 export function generateRoutine(
   exercises: Exercise[],
   selectedGroups: MuscleGroup[],
@@ -56,30 +61,78 @@ export function generateRoutine(
     return [];
   }
 
+  // Compose the routine as roughly one third warmups + two thirds everything
+  // else. Warmups are capped at how many distinct ones are eligible so we never
+  // repeat a warmup just to hit the third; any shortfall rolls into the rest.
+  const eligible = uniqueById(
+    exercises.filter(
+      (exercise) =>
+        matchesTags(exercise) &&
+        exercise.groups.some((group) => groups.includes(group))
+    )
+  );
+  const warmupPool = eligible.filter((exercise) => exercise.intensity === "warmup");
+  const restPool = eligible.filter((exercise) => exercise.intensity !== "warmup");
+
+  const targetWarmups = Math.min(
+    Math.round(targetCount * WARMUP_FRACTION),
+    warmupPool.length
+  );
+  const warmups = selectFrom(warmupPool, groups, targetWarmups, rng, []);
+  const remaining = targetCount - warmups.length;
+  // If there is no non-warmup material, fall back to warmups so the routine
+  // still reaches the requested length.
+  const restSource = restPool.length > 0 ? restPool : warmupPool;
+  const rest = selectFrom(restSource, groups, remaining, rng, warmups);
+
+  // orderByIntensity ranks warmup < work < peak, so the warmups land up front as
+  // a block and the loaded movements trail.
+  return orderByIntensity([...warmups, ...rest]);
+}
+
+// Pick `count` exercises from `pool`, balanced across the selected groups present
+// in the pool (equal weight per group) and steered away from redundant patterns.
+// `chosenSeed` is prior picks the diversity check should also account for. Mirrors
+// the round-robin used before the warmup/rest split, scoped to a subset.
+function selectFrom(
+  pool: Exercise[],
+  groups: MuscleGroup[],
+  count: number,
+  rng: () => number,
+  chosenSeed: Exercise[]
+): Exercise[] {
+  if (count <= 0 || pool.length === 0) {
+    return [];
+  }
+
+  const poolGroups = groups.filter((group) =>
+    pool.some((exercise) => exercise.groups.includes(group))
+  );
+  if (poolGroups.length === 0) {
+    return [];
+  }
+
   const exercisesByGroup = new Map<MuscleGroup, Exercise[]>();
-  for (const group of groups) {
+  for (const group of poolGroups) {
     exercisesByGroup.set(
       group,
       shuffle(
-        exercises.filter(
-          (exercise) =>
-            exercise.groups.includes(group) && matchesTags(exercise)
-        ),
+        pool.filter((exercise) => exercise.groups.includes(group)),
         rng
       )
     );
   }
 
-  const eligible = groups.flatMap((group) => exercisesByGroup.get(group) ?? []);
+  const eligible = poolGroups.flatMap((group) => exercisesByGroup.get(group) ?? []);
   const usedIds = new Set<string>();
-  const routine: Exercise[] = [];
-  let groupOrder = shuffle([...groups], rng);
+  const result: Exercise[] = [];
+  let groupOrder = shuffle([...poolGroups], rng);
   let cursor = 0;
 
-  while (routine.length < targetCount) {
+  while (result.length < count) {
     if (usedIds.size >= eligible.length) {
       usedIds.clear();
-      groupOrder = shuffle([...groups], rng);
+      groupOrder = shuffle([...poolGroups], rng);
       cursor = 0;
     }
 
@@ -93,7 +146,7 @@ export function generateRoutine(
       );
 
       if (candidates.length > 0) {
-        picked = pickLeastRedundant(candidates, routine, rng);
+        picked = pickLeastRedundant(candidates, [...chosenSeed, ...result], rng);
         break;
       }
     }
@@ -103,11 +156,21 @@ export function generateRoutine(
       continue;
     }
 
-    routine.push(picked);
+    result.push(picked);
     usedIds.add(picked.id);
   }
 
-  return orderByIntensity(routine);
+  return result;
+}
+
+function uniqueById(exercises: Exercise[]): Exercise[] {
+  const byId = new Map<string, Exercise>();
+  for (const exercise of exercises) {
+    if (!byId.has(exercise.id)) {
+      byId.set(exercise.id, exercise);
+    }
+  }
+  return Array.from(byId.values());
 }
 
 // Among the eligible candidates for a group, prefer the ones that overlap the

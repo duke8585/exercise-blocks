@@ -423,7 +423,7 @@ const inventoryV2Exercises: Exercise[] = [
   {
     id: "hindu-push-up",
     name: "Hindu push-up",
-    groups: ["chest", "shoulders", "spine_flexion_extension"],
+    groups: ["chest", "shoulders", "spine_flexion_extension", "cardio_hiit"],
     tags: ["inventory:v2:daily-practice"],
     sideMode: "single",
     description:
@@ -450,7 +450,7 @@ const inventoryV2Exercises: Exercise[] = [
   {
     id: "cossack-squat",
     name: "Cossack squat",
-    groups: ["adductors", "quads", "glutes"],
+    groups: ["adductors", "quads", "glutes", "cardio_hiit"],
     tags: ["inventory:v2:daily-practice"],
     sideMode: "leftRight",
     description:
@@ -729,7 +729,7 @@ const inventoryV5Exercises: Exercise[] = [
   {
     id: "walking-lunge",
     name: "Walking lunge",
-    groups: ["quads", "glutes", "hamstrings"],
+    groups: ["quads", "glutes", "hamstrings", "cardio_hiit"],
     tags: ["inventory:v5:hip-core"],
     sideMode: "single",
     description:
