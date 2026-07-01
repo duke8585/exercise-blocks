@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent } from "react";
 import {
   MUSCLE_GROUP_OPTIONS,
   type Exercise,
@@ -39,6 +39,7 @@ const emptySession: SessionState = {
 };
 
 const allGroups = MUSCLE_GROUP_OPTIONS.map((option) => option.id);
+const SWIPE_COMPLETE_THRESHOLD = 90;
 
 function collectLibraryTags(exercises: StoredAppConfig["exercises"]): string[] {
   return Array.from(
@@ -69,6 +70,10 @@ export default function App() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioOutputRef = useRef<HTMLAudioElement | null>(null);
   const routineItemRefs = useRef<Array<HTMLLIElement | null>>([]);
+  const [drag, setDrag] = useState<
+    { index: number; startX: number; startY: number; deltaX: number; deltaY: number } | null
+  >(null);
+  const suppressNextClickRef = useRef(false);
 
   const completedIds = useMemo(
     () => new Set(session.completedIds),
@@ -323,6 +328,87 @@ export default function App() {
       mode: current.mode === "finished" ? "idle" : current.mode,
       restSeconds: current.mode === "resting" ? current.restSeconds : 0
     }));
+  }
+
+  function completeExercise(index: number) {
+    const exercise = routine[index];
+    if (!exercise) {
+      return;
+    }
+
+    let advanced = false;
+    setSession((current) => {
+      const completed = Array.from(
+        new Set([...current.completedIds, exercise.instanceId])
+      );
+
+      if (current.activeIndex !== index) {
+        return { ...current, completedIds: completed };
+      }
+
+      advanced = true;
+      const nextIndex = index + 1 < routine.length ? index + 1 : null;
+      return {
+        activeIndex: nextIndex,
+        completedIds: completed,
+        mode: nextIndex === null ? "finished" : "resting",
+        remaining: 0,
+        restSeconds: 0,
+        paused: false
+      };
+    });
+
+    if (advanced) {
+      playCue(2);
+    }
+  }
+
+  function handleCardPointerDown(event: PointerEvent<HTMLDivElement>, index: number) {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    // Pointer capture keeps move/up events targeting this card even if the
+    // finger/cursor drifts outside its bounds mid-swipe. It also retargets
+    // the resulting compatibility "click" event onto this element instead of
+    // the nested <button>, so tap-to-select can't rely on the button's
+    // onClick firing once a drag has started here - handlePointerUp below
+    // drives selection directly instead.
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setDrag({ index, startX: event.clientX, startY: event.clientY, deltaX: 0, deltaY: 0 });
+  }
+
+  function handleCardPointerMove(event: PointerEvent<HTMLDivElement>, index: number) {
+    setDrag((current) => {
+      if (!current || current.index !== index) {
+        return current;
+      }
+
+      const deltaX = event.clientX - current.startX;
+      const deltaY = event.clientY - current.startY;
+      if (Math.abs(deltaY) > Math.abs(deltaX) + 10) {
+        return null;
+      }
+
+      return { ...current, deltaX, deltaY };
+    });
+  }
+
+  function handleCardPointerUp(index: number) {
+    setDrag((current) => {
+      if (!current || current.index !== index) {
+        return null;
+      }
+
+      suppressNextClickRef.current = true;
+      if (Math.abs(current.deltaX) > SWIPE_COMPLETE_THRESHOLD) {
+        completeExercise(index);
+      } else if (Math.max(Math.abs(current.deltaX), Math.abs(current.deltaY)) < 8) {
+        selectExercise(index);
+      }
+
+      return null;
+    });
   }
 
   function resetSession() {
@@ -753,6 +839,9 @@ export default function App() {
               const isDone = completedIds.has(exercise.instanceId);
               const detail = exerciseDetailText(exercise);
 
+              const isDragging = drag?.index === index;
+              const dragDeltaX = isDragging ? drag.deltaX : 0;
+
               return (
                 <li
                   className={`routine-item ${isActive ? "active" : ""} ${
@@ -763,11 +852,34 @@ export default function App() {
                     routineItemRefs.current[index] = node;
                   }}
                 >
-                  <div className="routine-card">
+                  <div
+                    className="swipe-hint"
+                    aria-hidden="true"
+                    style={{ opacity: Math.min(Math.abs(dragDeltaX) / SWIPE_COMPLETE_THRESHOLD, 1) }}
+                  >
+                    Swipe to mark done
+                  </div>
+                  <div
+                    className="routine-card"
+                    style={{
+                      transform: dragDeltaX ? `translateX(${dragDeltaX}px)` : undefined,
+                      transition: isDragging ? "none" : "transform 0.2s ease"
+                    }}
+                    onPointerDown={(event) => handleCardPointerDown(event, index)}
+                    onPointerMove={(event) => handleCardPointerMove(event, index)}
+                    onPointerUp={() => handleCardPointerUp(index)}
+                    onPointerCancel={() => setDrag(null)}
+                  >
                     <button
                       className="routine-select"
                       type="button"
-                      onClick={() => selectExercise(index)}
+                      onClick={() => {
+                        if (suppressNextClickRef.current) {
+                          suppressNextClickRef.current = false;
+                          return;
+                        }
+                        selectExercise(index);
+                      }}
                     >
                       <span className="routine-index">{index + 1}</span>
                       <span>

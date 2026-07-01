@@ -402,12 +402,28 @@ h2 {
      sticky timer band that lives at the top of the viewport. */
   scroll-margin-top: 96px;
   scroll-margin-bottom: 24px;
+  position: relative;
+}
+
+.swipe-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #2e6f5c;
+  color: #ffffff;
+  font-weight: 700;
+  pointer-events: none;
 }
 
 .routine-card {
+  position: relative;
   border: 1px solid #d4ddd6;
   border-radius: 8px;
   background: #fffefa;
+  touch-action: pan-y;
 }
 
 .routine-select {
