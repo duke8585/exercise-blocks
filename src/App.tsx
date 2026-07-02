@@ -47,6 +47,20 @@ function collectLibraryTags(exercises: StoredAppConfig["exercises"]): string[] {
   ).sort((a, b) => a.localeCompare(b));
 }
 
+function findNextQueuedIndex(
+  list: RoutineExercise[],
+  completedIds: Iterable<string>,
+  fromIndex: number
+): number | null {
+  const completed = new Set(completedIds);
+  for (let index = fromIndex; index < list.length; index += 1) {
+    if (!completed.has(list[index].instanceId)) {
+      return index;
+    }
+  }
+  return null;
+}
+
 export default function App() {
   const [config, setConfig] = useState<StoredAppConfig>(() => {
     if (typeof window === "undefined") {
@@ -174,8 +188,8 @@ export default function App() {
             ? Array.from(new Set([...current.completedIds, currentExercise.instanceId]))
             : current.completedIds;
           const nextIndex =
-            current.activeIndex !== null && current.activeIndex + 1 < routine.length
-              ? current.activeIndex + 1
+            current.activeIndex !== null
+              ? findNextQueuedIndex(routine, completed, current.activeIndex + 1)
               : null;
 
           playCue(2);
@@ -347,7 +361,7 @@ export default function App() {
       }
 
       advanced = true;
-      const nextIndex = index + 1 < routine.length ? index + 1 : null;
+      const nextIndex = findNextQueuedIndex(routine, completed, index + 1);
       return {
         activeIndex: nextIndex,
         completedIds: completed,
@@ -365,6 +379,15 @@ export default function App() {
 
   function handleCardPointerDown(event: PointerEvent<HTMLDivElement>, index: number) {
     if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    // Leave links and the star button alone entirely - no capture, no drag
+    // tracking - so they keep their native click behavior untouched.
+    if (
+      event.target instanceof HTMLElement &&
+      event.target.closest(".exercise-links, .star-button")
+    ) {
       return;
     }
 
