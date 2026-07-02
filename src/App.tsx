@@ -40,6 +40,15 @@ const emptySession: SessionState = {
 
 const allGroups = MUSCLE_GROUP_OPTIONS.map((option) => option.id);
 const SWIPE_COMPLETE_THRESHOLD = 90;
+// Matches .routine-list's CSS `gap`, so the slide-to-make-room animation
+// closes/opens the exact same space the dragged card actually occupies.
+const ROUTINE_LIST_GAP = 8;
+
+interface ReorderSnapshotItem {
+  id: string;
+  documentTop: number;
+  height: number;
+}
 
 function collectLibraryTags(exercises: StoredAppConfig["exercises"]): string[] {
   return Array.from(
@@ -88,9 +97,14 @@ export default function App() {
     { index: number; startX: number; startY: number; deltaX: number; deltaY: number } | null
   >(null);
   const suppressNextClickRef = useRef(false);
-  const [reorderDrag, setReorderDrag] = useState<
-    { id: string; startY: number; offsetY: number; insertionIndex: number } | null
-  >(null);
+  const [reorderDrag, setReorderDrag] = useState<{
+    id: string;
+    startY: number;
+    startScrollY: number;
+    offsetY: number;
+    insertionIndex: number;
+    snapshot: ReorderSnapshotItem[];
+  } | null>(null);
   const reorderPointerYRef = useRef(0);
 
   const completedIds = useMemo(
@@ -101,17 +115,16 @@ export default function App() {
     session.activeIndex === null ? null : routine[session.activeIndex] ?? null;
   const selectedCount = selectedGroups.length;
 
-  const reorderOthers = reorderDrag
-    ? routine.filter((exercise) => exercise.instanceId !== reorderDrag.id)
-    : null;
-  const dropBeforeId =
-    reorderOthers && reorderDrag
-      ? reorderOthers[reorderDrag.insertionIndex]?.instanceId ?? null
-      : null;
-  const dropAtEndId =
-    reorderOthers && reorderDrag && reorderDrag.insertionIndex >= reorderOthers.length
-      ? reorderOthers[reorderOthers.length - 1]?.instanceId ?? null
-      : null;
+  // Position of the dragged card in the pre-drag order, and its height, used
+  // below to figure out which other cards should slide out of the way to
+  // open a gap at the insertion point.
+  const reorderOriginalIndex = reorderDrag
+    ? reorderDrag.snapshot.findIndex((item) => item.id === reorderDrag.id)
+    : -1;
+  const reorderDraggedSpan =
+    reorderDrag && reorderOriginalIndex !== -1
+      ? reorderDrag.snapshot[reorderOriginalIndex].height + ROUTINE_LIST_GAP
+      : 0;
 
   // Drop any selected tags that no longer exist after a library swap (e.g.
   // import or clear-storage may not have touched selectedTags directly).
@@ -173,9 +186,9 @@ export default function App() {
       const viewportHeight = window.innerHeight;
       let dy = 0;
       if (y < EDGE) {
-        dy = -MAX_SPEED * (1 - y / EDGE);
+        dy = -MAX_SPEED * Math.min(1, 1 - y / EDGE);
       } else if (y > viewportHeight - EDGE) {
-        dy = MAX_SPEED * (1 - (viewportHeight - y) / EDGE);
+        dy = MAX_SPEED * Math.min(1, 1 - (viewportHeight - y) / EDGE);
       }
 
       if (dy !== 0) {
@@ -427,16 +440,34 @@ export default function App() {
     }
   }
 
+  function captureReorderSnapshot(): ReorderSnapshotItem[] {
+    const scrollY = window.scrollY;
+    return routine.map((exercise, index) => {
+      const rect = routineItemRefs.current[index]?.getBoundingClientRect();
+      return {
+        id: exercise.instanceId,
+        documentTop: (rect?.top ?? 0) + scrollY,
+        height: rect?.height ?? 0
+      };
+    });
+  }
+
   // Counts how many other cards' midpoints sit above pointerY, i.e. how many
-  // of them the dragged card should land after. Reads live DOM rects instead
-  // of tracking positions in state, so it stays correct for variable-height
-  // cards without needing to reflow siblings mid-drag.
-  function computeInsertionIndex(draggedId: string, pointerY: number): number {
+  // of them the dragged card should land after. Uses a snapshot of positions
+  // taken at drag-start (in document coordinates, so it stays valid through
+  // auto-scroll) rather than re-measuring live rects - the other cards are
+  // now animated out of the way mid-drag, so their live rects no longer
+  // reflect their original slot and would throw the calculation off.
+  function computeInsertionIndex(
+    snapshot: ReorderSnapshotItem[],
+    draggedId: string,
+    documentPointerY: number
+  ): number {
     let insertionIndex = 0;
     let settled = false;
 
-    for (let i = 0; i < routine.length; i += 1) {
-      if (routine[i].instanceId === draggedId) {
+    for (const item of snapshot) {
+      if (item.id === draggedId) {
         continue;
       }
 
@@ -444,9 +475,7 @@ export default function App() {
         continue;
       }
 
-      const node = routineItemRefs.current[i];
-      const rect = node?.getBoundingClientRect();
-      if (rect && pointerY < rect.top + rect.height / 2) {
+      if (documentPointerY < item.documentTop + item.height / 2) {
         settled = true;
         continue;
       }
@@ -463,24 +492,34 @@ export default function App() {
     }
 
     event.currentTarget.setPointerCapture(event.pointerId);
+    const snapshot = captureReorderSnapshot();
     setReorderDrag({
       id,
       startY: event.clientY,
+      startScrollY: window.scrollY,
       offsetY: 0,
-      insertionIndex: routine.findIndex((exercise) => exercise.instanceId === id)
+      insertionIndex: snapshot.findIndex((item) => item.id === id),
+      snapshot
     });
   }
 
   function updateReorderTargeting(pointerY: number) {
+    const documentPointerY = pointerY + window.scrollY;
     setReorderDrag((current) => {
       if (!current) {
         return current;
       }
 
+      // The dragged card is still normally laid out (only translated), so it
+      // scrolls with the page like everything else. Auto-scroll during the
+      // drag needs an extra correction term here so the card stays glued to
+      // the pointer's on-screen position instead of drifting as the page
+      // scrolls out from under it.
+      const scrollDelta = window.scrollY - current.startScrollY;
       return {
         ...current,
-        offsetY: pointerY - current.startY,
-        insertionIndex: computeInsertionIndex(current.id, pointerY)
+        offsetY: pointerY - current.startY + scrollDelta,
+        insertionIndex: computeInsertionIndex(current.snapshot, current.id, documentPointerY)
       };
     });
   }
@@ -1034,16 +1073,36 @@ export default function App() {
 
               const isReordering = reorderDrag?.id === exercise.instanceId;
               const reorderOffsetY = isReordering ? reorderDrag.offsetY : 0;
-              const isDropBefore = !isReordering && dropBeforeId === exercise.instanceId;
-              const isDropAfter = !isReordering && dropAtEndId === exercise.instanceId;
+
+              // While another card is being dragged, shift this one out of
+              // the way to open a gap at the spot the dragged card would
+              // land in - the "cards jump behind the one being dragged"
+              // effect. positionAmongOthers is this card's index once the
+              // dragged card is (conceptually) removed from the list.
+              let shiftY = 0;
+              if (reorderDrag && !isReordering && reorderOriginalIndex !== -1) {
+                const positionAmongOthers = index < reorderOriginalIndex ? index : index - 1;
+                const insertionIndex = reorderDrag.insertionIndex;
+                if (
+                  insertionIndex < reorderOriginalIndex &&
+                  positionAmongOthers >= insertionIndex &&
+                  positionAmongOthers < reorderOriginalIndex
+                ) {
+                  shiftY = reorderDraggedSpan;
+                } else if (
+                  insertionIndex > reorderOriginalIndex &&
+                  positionAmongOthers >= reorderOriginalIndex &&
+                  positionAmongOthers < insertionIndex
+                ) {
+                  shiftY = -reorderDraggedSpan;
+                }
+              }
 
               return (
                 <li
                   className={`routine-item ${isActive ? "active" : ""} ${
                     isDone ? "done" : ""
-                  } ${isReordering ? "reordering" : ""} ${
-                    isDropBefore ? "drop-before" : ""
-                  } ${isDropAfter ? "drop-after" : ""}`}
+                  } ${isReordering ? "reordering" : ""}`}
                   key={exercise.instanceId}
                   ref={(node) => {
                     routineItemRefs.current[index] = node;
@@ -1061,7 +1120,8 @@ export default function App() {
                     style={{
                       transform: [
                         dragDeltaX ? `translateX(${dragDeltaX}px)` : "",
-                        reorderOffsetY ? `translateY(${reorderOffsetY}px)` : ""
+                        reorderOffsetY ? `translateY(${reorderOffsetY}px)` : "",
+                        shiftY ? `translateY(${shiftY}px)` : ""
                       ]
                         .filter(Boolean)
                         .join(" ") || undefined,
