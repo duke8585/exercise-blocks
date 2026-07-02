@@ -1021,7 +1021,9 @@ const warmupIntensityIds: readonly string[] = [
   "foam-roller-tspine-extension",
   "chin-nod",
   "hip-cars",
-  "straddle"
+  "straddle",
+  "jumping-jacks",
+  "jumping-twists"
 ];
 
 // Peaks are loaded, explosive, or advanced movements that should not open a
