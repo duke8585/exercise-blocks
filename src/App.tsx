@@ -88,6 +88,10 @@ export default function App() {
     { index: number; startX: number; startY: number; deltaX: number; deltaY: number } | null
   >(null);
   const suppressNextClickRef = useRef(false);
+  const [reorderDrag, setReorderDrag] = useState<
+    { id: string; startY: number; offsetY: number; insertionIndex: number } | null
+  >(null);
+  const reorderPointerYRef = useRef(0);
 
   const completedIds = useMemo(
     () => new Set(session.completedIds),
@@ -96,6 +100,18 @@ export default function App() {
   const activeExercise =
     session.activeIndex === null ? null : routine[session.activeIndex] ?? null;
   const selectedCount = selectedGroups.length;
+
+  const reorderOthers = reorderDrag
+    ? routine.filter((exercise) => exercise.instanceId !== reorderDrag.id)
+    : null;
+  const dropBeforeId =
+    reorderOthers && reorderDrag
+      ? reorderOthers[reorderDrag.insertionIndex]?.instanceId ?? null
+      : null;
+  const dropAtEndId =
+    reorderOthers && reorderDrag && reorderDrag.insertionIndex >= reorderOthers.length
+      ? reorderOthers[reorderOthers.length - 1]?.instanceId ?? null
+      : null;
 
   // Drop any selected tags that no longer exist after a library swap (e.g.
   // import or clear-storage may not have touched selectedTags directly).
@@ -139,6 +155,40 @@ export default function App() {
       block: "center"
     });
   }, [session.activeIndex, routine]);
+
+  // Auto-scroll the page while a card-reorder drag is held near the top or
+  // bottom edge of the viewport, so a card can be dragged past whatever
+  // happens to be on-screen right now.
+  useEffect(() => {
+    if (!reorderDrag) {
+      return;
+    }
+
+    const EDGE = 72;
+    const MAX_SPEED = 16;
+    let rafId: number;
+
+    function tick() {
+      const y = reorderPointerYRef.current;
+      const viewportHeight = window.innerHeight;
+      let dy = 0;
+      if (y < EDGE) {
+        dy = -MAX_SPEED * (1 - y / EDGE);
+      } else if (y > viewportHeight - EDGE) {
+        dy = MAX_SPEED * (1 - (viewportHeight - y) / EDGE);
+      }
+
+      if (dy !== 0) {
+        window.scrollBy(0, dy);
+        updateReorderTargeting(y);
+      }
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [reorderDrag !== null]);
 
   useEffect(() => {
     if (!["sideA", "sideB", "resting"].includes(session.mode)) {
@@ -375,6 +425,117 @@ export default function App() {
     if (advanced) {
       playCue(2);
     }
+  }
+
+  // Counts how many other cards' midpoints sit above pointerY, i.e. how many
+  // of them the dragged card should land after. Reads live DOM rects instead
+  // of tracking positions in state, so it stays correct for variable-height
+  // cards without needing to reflow siblings mid-drag.
+  function computeInsertionIndex(draggedId: string, pointerY: number): number {
+    let insertionIndex = 0;
+    let settled = false;
+
+    for (let i = 0; i < routine.length; i += 1) {
+      if (routine[i].instanceId === draggedId) {
+        continue;
+      }
+
+      if (settled) {
+        continue;
+      }
+
+      const node = routineItemRefs.current[i];
+      const rect = node?.getBoundingClientRect();
+      if (rect && pointerY < rect.top + rect.height / 2) {
+        settled = true;
+        continue;
+      }
+
+      insertionIndex += 1;
+    }
+
+    return insertionIndex;
+  }
+
+  function handleReorderHandlePointerDown(event: PointerEvent<HTMLButtonElement>, id: string) {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setReorderDrag({
+      id,
+      startY: event.clientY,
+      offsetY: 0,
+      insertionIndex: routine.findIndex((exercise) => exercise.instanceId === id)
+    });
+  }
+
+  function updateReorderTargeting(pointerY: number) {
+    setReorderDrag((current) => {
+      if (!current) {
+        return current;
+      }
+
+      return {
+        ...current,
+        offsetY: pointerY - current.startY,
+        insertionIndex: computeInsertionIndex(current.id, pointerY)
+      };
+    });
+  }
+
+  function handleReorderHandlePointerMove(event: PointerEvent<HTMLButtonElement>) {
+    reorderPointerYRef.current = event.clientY;
+    updateReorderTargeting(event.clientY);
+  }
+
+  function commitReorder(id: string, insertionIndex: number) {
+    const draggedItem = routine.find((exercise) => exercise.instanceId === id);
+    if (!draggedItem) {
+      return;
+    }
+
+    const activeInstanceId =
+      session.activeIndex === null ? null : routine[session.activeIndex]?.instanceId ?? null;
+
+    const reordered = routine.filter((exercise) => exercise.instanceId !== id);
+    reordered.splice(insertionIndex, 0, draggedItem);
+
+    if (reordered.every((exercise, index) => exercise.instanceId === routine[index]?.instanceId)) {
+      return;
+    }
+
+    setRoutine(reordered);
+    setRoutineHistory((current) => {
+      if (historyIndex < 0 || !current[historyIndex]) {
+        return current;
+      }
+      const next = [...current];
+      next[historyIndex] = reordered;
+      return next;
+    });
+
+    if (activeInstanceId !== null) {
+      const newActiveIndex = reordered.findIndex(
+        (exercise) => exercise.instanceId === activeInstanceId
+      );
+      setSession((current) => ({
+        ...current,
+        activeIndex: newActiveIndex === -1 ? current.activeIndex : newActiveIndex
+      }));
+    }
+  }
+
+  function handleReorderHandlePointerUp() {
+    setReorderDrag((current) => {
+      if (!current) {
+        return null;
+      }
+
+      commitReorder(current.id, current.insertionIndex);
+      return null;
+    });
   }
 
   function handleCardPointerDown(event: PointerEvent<HTMLDivElement>, index: number) {
@@ -641,6 +802,12 @@ export default function App() {
         </div>
       </header>
 
+      <p className="workflow-hint">
+        Pick your filters below, hit <strong>Generate routine</strong>, then drag{" "}
+        <span aria-hidden="true">⠿</span> to reorder or swipe a card right to gray it
+        out — then hit <strong>Start</strong>.
+      </p>
+
       <section className="panel controls-panel" aria-labelledby="settings-heading">
         <div className="section-heading">
           <h2 id="settings-heading">Settings</h2>
@@ -865,11 +1032,18 @@ export default function App() {
               const isDragging = drag?.index === index;
               const dragDeltaX = isDragging ? drag.deltaX : 0;
 
+              const isReordering = reorderDrag?.id === exercise.instanceId;
+              const reorderOffsetY = isReordering ? reorderDrag.offsetY : 0;
+              const isDropBefore = !isReordering && dropBeforeId === exercise.instanceId;
+              const isDropAfter = !isReordering && dropAtEndId === exercise.instanceId;
+
               return (
                 <li
                   className={`routine-item ${isActive ? "active" : ""} ${
                     isDone ? "done" : ""
-                  }`}
+                  } ${isReordering ? "reordering" : ""} ${
+                    isDropBefore ? "drop-before" : ""
+                  } ${isDropAfter ? "drop-after" : ""}`}
                   key={exercise.instanceId}
                   ref={(node) => {
                     routineItemRefs.current[index] = node;
@@ -885,37 +1059,66 @@ export default function App() {
                   <div
                     className="routine-card"
                     style={{
-                      transform: dragDeltaX ? `translateX(${dragDeltaX}px)` : undefined,
-                      transition: isDragging ? "none" : "transform 0.2s ease"
+                      transform: [
+                        dragDeltaX ? `translateX(${dragDeltaX}px)` : "",
+                        reorderOffsetY ? `translateY(${reorderOffsetY}px)` : ""
+                      ]
+                        .filter(Boolean)
+                        .join(" ") || undefined,
+                      transition: isDragging || isReordering ? "none" : "transform 0.2s ease",
+                      zIndex: isReordering ? 1 : undefined
                     }}
                     onPointerDown={(event) => handleCardPointerDown(event, index)}
                     onPointerMove={(event) => handleCardPointerMove(event, index)}
                     onPointerUp={() => handleCardPointerUp(index)}
                     onPointerCancel={() => setDrag(null)}
                   >
-                    <button
-                      className="routine-select"
-                      type="button"
-                      onClick={() => {
-                        if (suppressNextClickRef.current) {
-                          suppressNextClickRef.current = false;
-                          return;
-                        }
-                        selectExercise(index);
-                      }}
-                    >
-                      <span className="routine-index">{index + 1}</span>
-                      <span>
-                        <strong>{exercise.name}</strong>
-                        <small>
-                          {labelForGroup(exercise.groups[0])}
-                          {exercise.sideMode === "leftRight" ? " · left/right" : ""}
-                        </small>
-                      </span>
-                      <span className="state-pill">
-                        {isDone ? "Done" : isActive ? "Active" : "Queued"}
-                      </span>
-                    </button>
+                    <div className="routine-card-top">
+                      <button
+                        className="reorder-handle"
+                        type="button"
+                        aria-label="Drag to reorder"
+                        onPointerDown={(event) => {
+                          event.stopPropagation();
+                          handleReorderHandlePointerDown(event, exercise.instanceId);
+                        }}
+                        onPointerMove={(event) => {
+                          event.stopPropagation();
+                          handleReorderHandlePointerMove(event);
+                        }}
+                        onPointerUp={(event) => {
+                          event.stopPropagation();
+                          handleReorderHandlePointerUp();
+                        }}
+                        onPointerCancel={() => setReorderDrag(null)}
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        ⠿
+                      </button>
+                      <button
+                        className="routine-select"
+                        type="button"
+                        onClick={() => {
+                          if (suppressNextClickRef.current) {
+                            suppressNextClickRef.current = false;
+                            return;
+                          }
+                          selectExercise(index);
+                        }}
+                      >
+                        <span className="routine-index">{index + 1}</span>
+                        <span>
+                          <strong>{exercise.name}</strong>
+                          <small>
+                            {labelForGroup(exercise.groups[0])}
+                            {exercise.sideMode === "leftRight" ? " · left/right" : ""}
+                          </small>
+                        </span>
+                        <span className="state-pill">
+                          {isDone ? "Done" : isActive ? "Active" : "Queued"}
+                        </span>
+                      </button>
+                    </div>
                     <p className="exercise-description">{detail}</p>
                     <div className="exercise-card-footer">
                       <div className="exercise-links">
