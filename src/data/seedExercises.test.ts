@@ -170,10 +170,11 @@ describe("seedExercises", () => {
     expect(straddle?.description).toBeTruthy();
   });
 
-  it("tags ramp intensity on the extremes only", () => {
+  it("tags ramp intensity as warmup, peak, or the untagged work default", () => {
     const warmup = seedExercises.find((exercise) => exercise.id === "cat-cow");
     const peak = seedExercises.find((exercise) => exercise.id === "suitcase-deadlift");
-    const work = seedExercises.find((exercise) => exercise.id === "bodyweight-squat");
+    // push-up is deliberately left on the work default in the intensity review.
+    const work = seedExercises.find((exercise) => exercise.id === "push-up");
 
     expect(warmup?.intensity).toBe("warmup");
     expect(peak?.intensity).toBe("peak");

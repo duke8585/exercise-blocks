@@ -1006,42 +1006,110 @@ const inventoryV7RetagIds: readonly string[] = [
   "single-leg-glute-bridge" // v0
 ];
 
-// Ramp signal for routine ordering. Only the extremes are tagged; everything
-// untagged stays "work". Warmups are mobility / nervous-system prep that are
-// safe to do cold and should lead a session.
+// Ramp signal for routine ordering. Warmups and peaks are tagged explicitly;
+// everything untagged stays "work". Warmups are mobility / nervous-system prep
+// and low-intensity activation that are safe to do cold and should lead a
+// session. Reviewed and set per-exercise from the intensity worksheet.
 const warmupIntensityIds: readonly string[] = [
+  // v0 fundamentals
   "cat-cow",
   "thread-the-needle",
   "cobra-to-childs-pose",
+  "quadruped-hip-extension",
+  "side-lying-leg-raise",
+  "standing-hip-abduction",
+  "lateral-band-walk",
+  "bodyweight-squat",
+  "wall-sit",
+  "hamstring-walkout",
+  "standing-calf-raise",
+  "dead-bug",
+  "side-plank",
   "wall-angels",
+  "chest-squeeze-pulse",
+  "prone-y-raise",
+  "superman-pull",
+  "reverse-snow-angel",
+  // v1 cardio
+  "jumping-jacks",
+  "high-knees",
+  "skater-hops",
+  // v2 daily-practice
   "hopping-shaking",
-  "pump-stretch-down-dog-up-dog",
+  "jumping-twists",
+  "straddle",
   "90-90-hip-switch",
+  // v3 neck/shoulder
+  "prone-t-raise",
+  "prone-w-raise",
+  "band-face-pull-external-rotation",
+  "chin-nod",
   "open-book",
   "foam-roller-tspine-extension",
-  "chin-nod",
+  "scapular-push-up",
+  "dead-hang",
+  // v5 hip-core
   "hip-cars",
-  "straddle",
-  "jumping-jacks",
-  "jumping-twists"
+  "mcgill-curl-up",
+  "mcgill-bird-dog",
+  "banded-clamshell",
+  // v9 big-toe / pronation
+  "short-foot-doming",
+  "banded-big-toe-press",
+  "toe-yoga-splits",
+  // v11 flexibility / splits
+  "hamstring-stretch",
+  "hip-flexor-stretch",
+  "butterfly-stretch",
+  "pigeon-pose",
+  "middle-split-practice"
 ];
 
 // Peaks are loaded, explosive, or advanced movements that should not open a
-// session cold; the ramp ordering pushes them toward the end.
+// session cold; the ramp ordering pushes them toward the end. Reviewed and set
+// per-exercise from the intensity worksheet.
 const peakIntensityIds: readonly string[] = [
-  "suitcase-deadlift",
-  "suitcase-carry",
-  "farmer-carry",
+  // v0 fundamentals
+  "single-leg-glute-bridge",
+  "copenhagen-short-lever",
+  "single-leg-rdl-reach",
+  "pike-push-up",
+  "bench-dip",
+  "close-grip-push-up",
+  // v1 cardio
+  "burpee-with-push-up",
+  "squat-jumps",
+  // v2 daily-practice
+  "hindu-push-up",
+  "cossack-squat",
+  "seated-good-mornings",
+  "hyperextensions",
+  "standing-good-mornings",
+  "jefferson-curl",
+  "copenhagen-plank",
+  "sumo-squat",
   "nordic-curls",
   "reverse-nordics",
-  "copenhagen-plank",
   "single-leg-deadlift",
+  // v3 neck/shoulder
+  "suitcase-carry",
+  "suitcase-deadlift",
+  "weighted-y-raise-hyper-bench",
+  // v4 step-ups
+  "plyo-box-lateral-step-up",
+  // v5 hip-core
   "atg-split-squat",
+  // v6 back-bridge
+  "straight-bridge",
   "full-back-bridge",
+  "wall-bridge-walkdown",
+  // v8 functional-minimalist
   "pull-up",
   "parallel-bar-dip",
   "broad-jump",
-  "weighted-y-raise-hyper-bench"
+  // v10 hamstring-injury
+  "ball-trx-hamstring-curl",
+  "prone-banded-leg-curl"
 ];
 
 const taggedSeedExercises: Exercise[] = applyRetags(
