@@ -4,6 +4,7 @@ import {
   type CurrentWorkout,
   type Exercise,
   type ExerciseLink,
+  type Intensity,
   type MuscleGroup,
   type SideMode,
   type StoredAppConfig,
@@ -28,6 +29,8 @@ export const EXPORT_DOCUMENTATION = {
     groups:
       "Ordered array of muscle group ids (most relevant first). Must contain at least one value from muscleGroups. Legacy 'primaryGroup' (single string) is also accepted for backwards compatibility.",
     sideMode: "Use leftRight for side-specific exercises, or single otherwise.",
+    intensity:
+      "Optional ramp signal: warmup, work, or peak. Generated routines are ordered warmup first and peak last. Omitted exercises are treated as work.",
     links:
       "Optional array of { label, url } objects. Useful for YouTube or reference links.",
     videoUrl:
@@ -51,6 +54,7 @@ const muscleGroupIds = new Set<MuscleGroup>(
   MUSCLE_GROUP_OPTIONS.map((option) => option.id)
 );
 const sideModes = new Set<SideMode>(["leftRight", "single"]);
+const intensities = new Set<Intensity>(["warmup", "work", "peak"]);
 const seedExerciseById = new Map(
   seedExercises.map((exercise) => [exercise.id, exercise])
 );
@@ -231,6 +235,11 @@ function coerceExercises(
     const seedExercise = seedExerciseById.get(id);
     const resolvedGroups = groups.length > 0 ? groups : seedExercise?.groups ?? groups;
     const sideMode = coerceSideMode(item.sideMode) ?? seedExercise?.sideMode;
+    // Preserve the ramp signal through a storage round-trip, falling back to the
+    // seed value so libraries persisted before intensity was carried here (which
+    // dropped the field entirely) self-heal to the authoritative classification
+    // on the next load instead of collapsing every move to the "work" default.
+    const intensity = coerceIntensity(item.intensity) ?? seedExercise?.intensity;
     const description = coerceText(item.description) ?? seedExercise?.description;
     const notes = coerceText(item.notes) ?? seedExercise?.notes;
     const links = coerceLinks(item.links);
@@ -248,6 +257,7 @@ function coerceExercises(
       groups: resolvedGroups,
       tags,
       ...(sideMode ? { sideMode } : {}),
+      ...(intensity ? { intensity } : {}),
       ...(description ? { description } : {}),
       ...(notes ? { notes } : {}),
       ...(links.length > 0
@@ -372,6 +382,12 @@ function coerceGroups(value: unknown): MuscleGroup[] | undefined {
 function coerceSideMode(value: unknown): SideMode | undefined {
   return typeof value === "string" && sideModes.has(value as SideMode)
     ? (value as SideMode)
+    : undefined;
+}
+
+function coerceIntensity(value: unknown): Intensity | undefined {
+  return typeof value === "string" && intensities.has(value as Intensity)
+    ? (value as Intensity)
     : undefined;
 }
 

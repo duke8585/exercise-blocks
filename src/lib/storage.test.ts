@@ -45,6 +45,40 @@ describe("storage config", () => {
     }
   });
 
+  it("preserves the intensity ramp signal through a round trip", () => {
+    const warmup = seedExercises.find((exercise) => exercise.intensity === "warmup");
+    const peak = seedExercises.find((exercise) => exercise.intensity === "peak");
+    expect(warmup?.intensity).toBe("warmup");
+    expect(peak?.intensity).toBe("peak");
+
+    const config = createStoredConfig([warmup!, peak!], 10, {
+      sideASeconds: 30,
+      sideBSeconds: 30
+    });
+    const parsed = parseConfigJson(formatConfigJson(config));
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      const byId = new Map(parsed.config.exercises.map((e) => [e.id, e]));
+      expect(byId.get(warmup!.id)?.intensity).toBe("warmup");
+      expect(byId.get(peak!.id)?.intensity).toBe("peak");
+    }
+  });
+
+  it("restores intensity from the seed for libraries persisted without it", () => {
+    const peak = seedExercises.find((exercise) => exercise.intensity === "peak")!;
+    // Simulates localStorage written before intensity was carried through the
+    // coercer: the field is absent from the stored JSON.
+    const strippedStored = JSON.stringify({
+      version: 1,
+      exercises: [{ id: peak.id, name: peak.name, groups: peak.groups }],
+      settings: {}
+    });
+    const config = loadStoredConfig({ getItem: () => strippedStored });
+
+    expect(config.exercises.find((e) => e.id === peak.id)?.intensity).toBe("peak");
+  });
+
   it("reports malformed JSON without replacing config", () => {
     const parsed = parseConfigJson("{not json");
 
