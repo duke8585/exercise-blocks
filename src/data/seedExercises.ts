@@ -970,6 +970,36 @@ const inventoryV11Exercises: Exercise[] = [
   }
 ];
 
+// Posterior-chain mobility set from Calisthenic Movement's "Never Skip This
+// Exercise Again!". The reverse plank is pitched as warm-up / cool-down mobility
+// that opens the pecs, front delts, and biceps while loading the back side of the
+// body; the crab walk is its horizontal, moving progression. Both are new to the
+// library and carry the demonstration video directly.
+const reversePlankVideo = "https://youtu.be/ABzfaaVlZIU";
+
+const inventoryV12Exercises: Exercise[] = [
+  {
+    id: "reverse-plank",
+    name: "Reverse plank",
+    groups: ["back", "shoulders", "glutes", "hamstrings", "core"],
+    tags: ["inventory:v12:reverse-plank"],
+    sideMode: "single",
+    videoUrl: reversePlankVideo,
+    description:
+      "Sit with your legs extended and place your hands behind you with the fingers pointing backward — that shoulder position stretches the front delts and pecs and lets you draw the shoulders back and bring the shoulder blades together to open the chest. Lift your hips as high as you can toward a straight line from shoulders to heels, chest open, and never let the shoulders hunch. Keep the lower back neutral rather than arching, and engage the abs a little to hold the line. If the full version is too much because the back is weak or the biceps, pecs, and shoulders are tight, bend the knees to shorten the lever and just lift the hips as high as possible. It works well as a warm-up before training or a cool-down after, and fits back day or a full-body session as a mobility and back-focused movement."
+  },
+  {
+    id: "crab-walk",
+    name: "Crab walk",
+    groups: ["back", "shoulders", "glutes", "hamstrings", "triceps", "core"],
+    tags: ["inventory:v12:reverse-plank"],
+    sideMode: "single",
+    videoUrl: reversePlankVideo,
+    description:
+      "Start in the reverse-plank position on your hands and feet and hold the body as horizontal as possible, hips lifted. From there, walk forward and backward on your hands and feet without letting the hips sag or the shoulders hunch. Keep the chest open and the lower back neutral so the posterior chain and the backs of the shoulders keep doing the work through the movement. This is a progression on the static reverse plank, so shorten the range or drop back to the held position if you can't keep the hips up."
+  }
+];
+
 
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -1062,7 +1092,9 @@ const warmupIntensityIds: readonly string[] = [
   "hip-flexor-stretch",
   "butterfly-stretch",
   "pigeon-pose",
-  "middle-split-practice"
+  "middle-split-practice",
+  // v12 reverse-plank (crab-walk stays on the work default as a progression)
+  "reverse-plank"
 ];
 
 // Peaks are loaded, explosive, or advanced movements that should not open a
@@ -1128,7 +1160,8 @@ const taggedSeedExercises: Exercise[] = applyRetags(
             ...inventoryV8Exercises,
             ...inventoryV9Exercises,
             ...inventoryV10Exercises,
-            ...inventoryV11Exercises
+            ...inventoryV11Exercises,
+            ...inventoryV12Exercises
           ]),
           inventoryV2RetagIds,
           ["inventory:v2:daily-practice"]
