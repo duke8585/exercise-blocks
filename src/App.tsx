@@ -4,9 +4,11 @@ import {
   type Exercise,
   type MuscleGroup,
   type RoutineExercise,
-  type StoredAppConfig
+  type StoredAppConfig,
+  type WorkoutPreset
 } from "./types";
-import { generateRoutine, toRoutineExercises } from "./lib/routine";
+import { buildWorkout, generateRoutine, toRoutineExercises } from "./lib/routine";
+import { workoutPresets } from "./data/workoutPresets";
 import {
   createStoredConfig,
   createExportFilename,
@@ -350,6 +352,29 @@ export default function App() {
     setRoutine(nextRoutine);
     setSession({ ...emptySession, activeIndex: 0 });
     setMessage("");
+  }
+
+  // Workouts bypass the group/tag filters entirely: the preset is the list.
+  function loadWorkout(preset: WorkoutPreset) {
+    const { exercises, missingIds } = buildWorkout(preset, config.exercises);
+    if (exercises.length === 0) {
+      setMessage(`${preset.name}: none of its exercises are in the library.`);
+      return;
+    }
+
+    const nextRoutine = toRoutineExercises(exercises);
+    setRoutineHistory((prev) => [...prev.slice(0, historyIndex + 1), nextRoutine]);
+    setHistoryIndex((prev) => prev + 1);
+    setRoutine(nextRoutine);
+    setSession({ ...emptySession, activeIndex: 0 });
+    setMessage(
+      missingIds.length > 0
+        ? `${preset.name}: skipped ${missingIds.length} exercise(s) missing from the library (${missingIds.join(", ")}).`
+        : ""
+    );
+    document
+      .getElementById("routine-heading")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function goToHistoryIndex(index: number) {
@@ -845,10 +870,31 @@ export default function App() {
       </header>
 
       <p className="workflow-hint">
-        Pick your filters below, hit <strong>Generate routine</strong>, then drag{" "}
+        Load a fixed <strong>workout</strong>, or pick filters and hit{" "}
+        <strong>Generate routine</strong>. Then drag{" "}
         <span aria-hidden="true">⠿</span> to reorder or swipe a card right to gray it
         out — then hit <strong>Start</strong>.
       </p>
+
+      <section className="panel workouts-panel" aria-labelledby="workouts-heading">
+        <div className="section-heading">
+          <h2 id="workouts-heading">Workouts</h2>
+          <span>fixed lists, ignore filters</span>
+        </div>
+        <div className="workout-grid">
+          {workoutPresets.map((preset) => (
+            <button
+              className="workout-button"
+              key={preset.id}
+              type="button"
+              onClick={() => loadWorkout(preset)}
+            >
+              <strong>{preset.name}</strong>
+              <span>{preset.focus}</span>
+            </button>
+          ))}
+        </div>
+      </section>
 
       <section className="panel controls-panel" aria-labelledby="settings-heading">
         <div className="section-heading">

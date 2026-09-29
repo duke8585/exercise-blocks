@@ -54,6 +54,12 @@ The app helps create short exercise routines from a local exercise library. A us
 - Duplicates are avoided when enough eligible exercises exist.
 - Generated routine state is temporary and is not restored after reload.
 
+### Workouts
+
+- Built-in fixed workouts (A/B split): Lower + Core, Upper, Mobility, HIIT. Defined in `src/data/workoutPresets.ts` as explicit lists of exercise ids.
+- Loading a workout replaces the routine with that exact list, sorted warmup -> work -> peak. Group and tag filters are ignored (and left untouched).
+- Ids missing from the current library are skipped with a notice.
+
 ### Timer Behavior
 
 - Each exercise runs one work block (default 60 seconds).

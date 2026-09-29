@@ -67,3 +67,12 @@ export interface CurrentWorkout {
 export interface RoutineExercise extends Exercise {
   instanceId: string;
 }
+
+// A fixed, hand-built session: an explicit list of library exercise ids that
+// loads straight into the routine instead of going through the random picker.
+export interface WorkoutPreset {
+  id: string;
+  name: string;
+  focus: string;
+  exerciseIds: string[];
+}

@@ -184,6 +184,32 @@ h2 {
   margin-top: 14px;
 }
 
+.workout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.workout-button {
+  display: grid;
+  gap: 2px;
+  min-height: 56px;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.workout-button strong {
+  font-size: 0.95rem;
+  color: #1c2321;
+}
+
+.workout-button span {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #53645b;
+}
+
 .filter-heading {
   display: flex;
   align-items: center;

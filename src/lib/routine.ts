@@ -1,4 +1,10 @@
-import type { Exercise, Intensity, MuscleGroup, RoutineExercise } from "../types";
+import type {
+  Exercise,
+  Intensity,
+  MuscleGroup,
+  RoutineExercise,
+  WorkoutPreset
+} from "../types";
 
 // Order in which a generated routine ramps up. Untagged exercises default to
 // "work" so only the extremes need a value in the library.
@@ -231,6 +237,29 @@ function orderByIntensity(routine: Exercise[]): Exercise[] {
   return [...routine].sort(
     (a, b) => INTENSITY_RANK[a.intensity ?? "work"] - INTENSITY_RANK[b.intensity ?? "work"]
   );
+}
+
+// Resolve a preset against the current library (so edited descriptions or
+// intensities apply) and ramp it warmup -> peak. Ids no longer in the library
+// are reported rather than failing the whole workout.
+export function buildWorkout(
+  preset: WorkoutPreset,
+  library: Exercise[]
+): { exercises: Exercise[]; missingIds: string[] } {
+  const byId = new Map(library.map((exercise) => [exercise.id, exercise]));
+  const exercises: Exercise[] = [];
+  const missingIds: string[] = [];
+
+  for (const id of preset.exerciseIds) {
+    const exercise = byId.get(id);
+    if (exercise) {
+      exercises.push(exercise);
+    } else {
+      missingIds.push(id);
+    }
+  }
+
+  return { exercises: orderByIntensity(exercises), missingIds };
 }
 
 export function toRoutineExercises(exercises: Exercise[]): RoutineExercise[] {
