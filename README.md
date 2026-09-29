@@ -56,10 +56,10 @@ The app helps create short exercise routines from a local exercise library. A us
 
 ### Timer Behavior
 
-- Each exercise runs side A, then side B.
-- Default timer config is 30 seconds and 30 seconds.
-- At the side switch and exercise completion, the app uses a short beep and mobile vibration where supported.
-- The side switch uses a single beep; exercise completion/rest uses a double beep.
+- Each exercise runs one work block (default 60 seconds).
+- A single beep marks the halfway point for every exercise; for left/right exercises that is the side switch, and the timer label shows Side A / Side B.
+- Exercise completion/rest uses a double beep, with mobile vibration where supported.
+- Configs saved with the older side A / side B timer are migrated by summing both values.
 - The sticky timer panel is orange/red during work blocks and green during rest.
 - After an exercise completes:
   - the exercise is checked off in the current session
@@ -94,8 +94,7 @@ The only durable app data is the exercise library, number of exercises, and time
   "settings": {
     "routineCount": 10,
     "timer": {
-      "sideASeconds": 30,
-      "sideBSeconds": 30
+      "exerciseSeconds": 60
     }
   },
   "currentWorkout": {

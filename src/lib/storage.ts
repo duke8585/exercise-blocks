@@ -14,8 +14,7 @@ import {
 export const STORAGE_KEY = "daily-routine-organizer-config";
 export const DEFAULT_ROUTINE_COUNT = 10;
 export const DEFAULT_TIMER: TimerConfig = {
-  sideASeconds: 30,
-  sideBSeconds: 30
+  exerciseSeconds: 60
 };
 export const EXPORT_DOCUMENTATION = {
   purpose:
@@ -36,7 +35,7 @@ export const EXPORT_DOCUMENTATION = {
     videoUrl:
       "Optional explicit demonstration video URL; replaces the generic YouTube search button on the card.",
     settings:
-      "routineCount is the number of exercises to generate. timer.sideASeconds and timer.sideBSeconds are positive integers.",
+      "routineCount is the number of exercises to generate. timer.exerciseSeconds is a positive integer: the work block per exercise, with a cue at the halfway point. Legacy timer.sideASeconds + timer.sideBSeconds are summed into it on import.",
     starredIds:
       "Array of exercise ids that the user has starred. Persisted and exported so stars survive a JSON round-trip.",
     currentWorkout:
@@ -184,15 +183,24 @@ export function coerceStoredConfig(
         coercePositiveInteger(settings.routineCount) ??
         fallback.settings.routineCount,
       timer: {
-        sideASeconds:
-          coercePositiveInteger(timer.sideASeconds) ??
-          fallback.settings.timer.sideASeconds,
-        sideBSeconds:
-          coercePositiveInteger(timer.sideBSeconds) ??
-          fallback.settings.timer.sideBSeconds
+        exerciseSeconds:
+          coercePositiveInteger(timer.exerciseSeconds) ??
+          coerceLegacySideTimer(timer) ??
+          fallback.settings.timer.exerciseSeconds
       }
     }
   };
+}
+
+// Configs saved before the single work block stored separate side A / side B
+// durations; their sum is the same total work time per exercise.
+function coerceLegacySideTimer(timer: Record<string, unknown>): number | undefined {
+  const sideA = coercePositiveInteger(timer.sideASeconds);
+  const sideB = coercePositiveInteger(timer.sideBSeconds);
+  if (sideA === undefined && sideB === undefined) {
+    return undefined;
+  }
+  return (sideA ?? sideB ?? 0) + (sideB ?? sideA ?? 0);
 }
 
 function coerceExercises(

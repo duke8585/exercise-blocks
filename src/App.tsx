@@ -18,13 +18,16 @@ import {
   STORAGE_KEY
 } from "./lib/storage";
 
-type TimerMode = "idle" | "sideA" | "sideB" | "resting" | "finished";
+type TimerMode = "idle" | "working" | "resting" | "finished";
 
 interface SessionState {
   activeIndex: number | null;
   completedIds: string[];
   mode: TimerMode;
   remaining: number;
+  // Length of the running work block, captured at start so a settings change
+  // mid-exercise can't move the halfway cue.
+  workSeconds: number;
   restSeconds: number;
   paused: boolean;
 }
@@ -34,6 +37,7 @@ const emptySession: SessionState = {
   completedIds: [],
   mode: "idle",
   remaining: 0,
+  workSeconds: 0,
   restSeconds: 0,
   paused: false
 };
@@ -204,7 +208,7 @@ export default function App() {
   }, [reorderDrag !== null]);
 
   useEffect(() => {
-    if (!["sideA", "sideB", "resting"].includes(session.mode)) {
+    if (!["working", "resting"].includes(session.mode)) {
       return;
     }
 
@@ -221,27 +225,15 @@ export default function App() {
           };
         }
 
-        if (current.mode === "sideA") {
+        if (current.mode === "working") {
           if (current.remaining > 1) {
+            const remaining = current.remaining - 1;
+            if (current.workSeconds >= 2 && remaining === halfwayMark(current.workSeconds)) {
+              playCue(1);
+            }
             return {
               ...current,
-              remaining: current.remaining - 1
-            };
-          }
-
-          playCue(1);
-          return {
-            ...current,
-            mode: "sideB",
-            remaining: config.settings.timer.sideBSeconds
-          };
-        }
-
-        if (current.mode === "sideB") {
-          if (current.remaining > 1) {
-            return {
-              ...current,
-              remaining: current.remaining - 1
+              remaining
             };
           }
 
@@ -261,6 +253,7 @@ export default function App() {
             completedIds: completed,
             mode: nextIndex === null ? "finished" : "resting",
             remaining: 0,
+            workSeconds: 0,
             restSeconds: 0,
             paused: false
           };
@@ -271,7 +264,7 @@ export default function App() {
     }, 1000);
 
     return () => window.clearInterval(interval);
-  }, [config.settings.timer.sideBSeconds, routine, session.mode]);
+  }, [routine, session.mode]);
 
   function updateStoredConfig(nextConfig: StoredAppConfig) {
     setConfig(nextConfig);
@@ -283,25 +276,27 @@ export default function App() {
     }
 
     updateStoredConfig(
-      createStoredConfig(config.exercises, value, config.settings.timer)
+      createStoredConfig(
+        config.exercises,
+        value,
+        config.settings.timer,
+        config.starredIds
+      )
     );
   }
 
-  function updateTimer(partialTimer: Partial<StoredAppConfig["settings"]["timer"]>) {
-    if (
-      (partialTimer.sideASeconds !== undefined &&
-        !Number.isFinite(partialTimer.sideASeconds)) ||
-      (partialTimer.sideBSeconds !== undefined &&
-        !Number.isFinite(partialTimer.sideBSeconds))
-    ) {
+  function updateExerciseSeconds(exerciseSeconds: number) {
+    if (!Number.isFinite(exerciseSeconds)) {
       return;
     }
 
     updateStoredConfig(
-      createStoredConfig(config.exercises, config.settings.routineCount, {
-        ...config.settings.timer,
-        ...partialTimer
-      })
+      createStoredConfig(
+        config.exercises,
+        config.settings.routineCount,
+        { exerciseSeconds },
+        config.starredIds
+      )
     );
   }
 
@@ -373,8 +368,9 @@ export default function App() {
     ensureAudioContext();
     setSession((current) => ({
       ...current,
-      mode: "sideA",
-      remaining: config.settings.timer.sideASeconds,
+      mode: "working",
+      remaining: config.settings.timer.exerciseSeconds,
+      workSeconds: config.settings.timer.exerciseSeconds,
       restSeconds: 0,
       paused: false
     }));
@@ -395,7 +391,7 @@ export default function App() {
   }
 
   function selectExercise(index: number) {
-    if (session.mode === "sideA" || session.mode === "sideB") {
+    if (session.mode === "working") {
       return;
     }
 
@@ -430,6 +426,7 @@ export default function App() {
         completedIds: completed,
         mode: nextIndex === null ? "finished" : "resting",
         remaining: 0,
+        workSeconds: 0,
         restSeconds: 0,
         paused: false
       };
@@ -775,12 +772,18 @@ export default function App() {
     }
   }
 
+  const inSecondHalf =
+    session.mode === "working" && session.remaining <= halfwayMark(session.workSeconds);
   const timerLabel =
-    session.mode === "sideA"
-      ? "Side A"
-      : session.mode === "sideB"
-        ? "Side B"
-        : session.mode === "resting"
+    session.mode === "working"
+      ? activeExercise?.sideMode === "leftRight"
+        ? inSecondHalf
+          ? "Side B"
+          : "Side A"
+        : inSecondHalf
+          ? "Work · 2nd half"
+          : "Work"
+      : session.mode === "resting"
           ? "Rest"
           : session.mode === "finished"
             ? "Done"
@@ -788,10 +791,10 @@ export default function App() {
   const timerValue =
     session.mode === "resting"
       ? formatSeconds(session.restSeconds)
-      : session.mode === "sideA" || session.mode === "sideB"
+      : session.mode === "working"
         ? formatSeconds(session.remaining)
         : "--:--";
-  const isWorkMode = session.mode === "sideA" || session.mode === "sideB";
+  const isWorkMode = session.mode === "working";
   const canStart =
     isWorkMode ||
     (Boolean(activeExercise) &&
@@ -864,18 +867,11 @@ export default function App() {
             onCommit={updateRoutineCount}
           />
           <NumberSetting
-            label="Side A"
-            max={300}
-            min={5}
-            value={config.settings.timer.sideASeconds}
-            onCommit={(sideASeconds) => updateTimer({ sideASeconds })}
-          />
-          <NumberSetting
-            label="Side B"
-            max={300}
-            min={5}
-            value={config.settings.timer.sideBSeconds}
-            onCommit={(sideBSeconds) => updateTimer({ sideBSeconds })}
+            label="Seconds"
+            max={600}
+            min={10}
+            value={config.settings.timer.exerciseSeconds}
+            onCommit={updateExerciseSeconds}
           />
         </div>
 
@@ -1319,10 +1315,15 @@ function exerciseDetailText(exercise: RoutineExercise): string {
 
   const sideHint =
     exercise.sideMode === "leftRight"
-      ? "Use the first block for one side and the second block for the other."
-      : "Use both timer blocks for steady, controlled work.";
+      ? "Switch sides at the halfway beep."
+      : "Keep a steady, controlled pace through the whole block.";
 
   return `${labelForGroup(exercise.groups[0])} focus. ${sideHint}`;
+}
+
+// Remaining-seconds value at which the halfway cue fires.
+function halfwayMark(workSeconds: number): number {
+  return Math.floor(workSeconds / 2);
 }
 
 function formatSeconds(seconds: number): string {

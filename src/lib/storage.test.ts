@@ -21,10 +21,7 @@ describe("storage config", () => {
         seedExercises[1]
       ],
       8,
-      {
-        sideASeconds: 25,
-        sideBSeconds: 35
-      }
+      { exerciseSeconds: 45 }
     );
     const parsed = parseConfigJson(formatConfigJson(config));
 
@@ -36,12 +33,23 @@ describe("storage config", () => {
         links: [{ label: "Reference", url: "https://example.com/cat-cow" }]
       });
       expect(parsed.config.settings.routineCount).toBe(8);
-      expect(parsed.config.settings.timer).toEqual({
-        sideASeconds: 25,
-        sideBSeconds: 35
-      });
+      expect(parsed.config.settings.timer).toEqual({ exerciseSeconds: 45 });
       expect(parsed.config).not.toHaveProperty("routine");
       expect(parsed.config).not.toHaveProperty("progress");
+    }
+  });
+
+  it("sums a legacy side A / side B timer into the single work block", () => {
+    const legacy = JSON.stringify({
+      version: 1,
+      exercises: [seedExercises[0]],
+      settings: { routineCount: 10, timer: { sideASeconds: 25, sideBSeconds: 35 } }
+    });
+    const parsed = parseConfigJson(legacy);
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.config.settings.timer).toEqual({ exerciseSeconds: 60 });
     }
   });
 
@@ -51,10 +59,7 @@ describe("storage config", () => {
     expect(warmup?.intensity).toBe("warmup");
     expect(peak?.intensity).toBe("peak");
 
-    const config = createStoredConfig([warmup!, peak!], 10, {
-      sideASeconds: 30,
-      sideBSeconds: 30
-    });
+    const config = createStoredConfig([warmup!, peak!], 10, { exerciseSeconds: 60 });
     const parsed = parseConfigJson(formatConfigJson(config));
 
     expect(parsed.ok).toBe(true);
@@ -157,10 +162,7 @@ describe("storage config", () => {
 
   it("adds missing built-in inventory when loading older localStorage", () => {
     const oldStoredConfig = formatConfigJson(
-      createStoredConfig([seedExercises[0]], 10, {
-        sideASeconds: 30,
-        sideBSeconds: 30
-      })
+      createStoredConfig([seedExercises[0]], 10, { exerciseSeconds: 60 })
     );
     const config = loadStoredConfig({
       getItem: () => oldStoredConfig

@@ -44,9 +44,10 @@ export interface Exercise {
   videoUrl?: string;
 }
 
+// One work block per exercise. A single cue marks the halfway point, which is
+// the side switch for left/right exercises.
 export interface TimerConfig {
-  sideASeconds: number;
-  sideBSeconds: number;
+  exerciseSeconds: number;
 }
 
 export interface StoredAppConfig {
