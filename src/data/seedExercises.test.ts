@@ -195,4 +195,45 @@ describe("seedExercises", () => {
       ).toBe(true);
     }
   });
+
+  it("carries the v13 equipment set with stacked equipment tags", () => {
+    const v13 = seedExercises.filter((exercise) =>
+      exercise.tags.includes("inventory:v13:equipment")
+    );
+    const equipmentTags = ["trx", "dumbbell", "hyper-bench"];
+
+    expect(v13.length).toBeGreaterThan(0);
+    for (const exercise of v13) {
+      expect(
+        exercise.tags.some((tag) => equipmentTags.includes(tag)),
+        `missing equipment tag: ${exercise.id}`
+      ).toBe(true);
+      expect(exercise.description, `missing description: ${exercise.id}`).toBeTruthy();
+    }
+
+    const weightedBackExtension = seedExercises.find(
+      (exercise) => exercise.id === "weighted-back-extension"
+    );
+    expect(weightedBackExtension?.tags).toEqual(
+      expect.arrayContaining(["hyper-bench", "dumbbell"])
+    );
+    expect(weightedBackExtension?.intensity).toBe("peak");
+  });
+
+  it("retags existing kit exercises with equipment tags without dropping prior tags", () => {
+    const expected: Array<[string, string[]]> = [
+      ["ball-trx-hamstring-curl", ["trx"]],
+      ["hyperextensions", ["hyper-bench"]],
+      ["weighted-y-raise-hyper-bench", ["hyper-bench", "dumbbell"]],
+      ["farmer-carry", ["dumbbell"]]
+    ];
+
+    for (const [id, tags] of expected) {
+      const exercise = seedExercises.find((current) => current.id === id);
+      expect(exercise, `missing seed: ${id}`).toBeDefined();
+      expect(exercise?.tags).toEqual(expect.arrayContaining(tags));
+      expect(exercise?.tags.some((tag) => tag.startsWith("inventory:v"))).toBe(true);
+      expect(exercise?.tags).not.toContain("inventory:v13:equipment");
+    }
+  });
 });

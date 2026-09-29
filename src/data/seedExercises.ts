@@ -1000,6 +1000,351 @@ const inventoryV12Exercises: Exercise[] = [
   }
 ];
 
+// Home-gym equipment set: suspension trainer (TRX), a pair of adjustable
+// dumbbells (roughly 8-84 lb each) and a 45-degree hyperextension bench. Every
+// entry carries the batch inventory tag plus one or more equipment tags, so the
+// tag filter can narrow a routine to what is set up today. Existing entries
+// that already use this kit are retagged below instead of duplicated.
+const inventoryV13Tag = "inventory:v13:equipment";
+
+const inventoryV13Exercises: Exercise[] = [
+  {
+    id: "trx-assisted-squat",
+    name: "TRX assisted squat",
+    groups: ["quads", "glutes"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face the anchor holding both handles with the arms straight and the straps taut. Sit back and down into a deep squat, using the straps only as much as you need to keep the chest tall and the heels down, then stand back up. Use it to groove depth and open the hips and ankles before loaded leg work; lean back more to make the bottom position easier."
+  },
+  {
+    id: "trx-ytw-raise",
+    name: "TRX Y-T-W raise",
+    groups: ["back", "shoulders"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face the anchor holding the handles with straight arms, body leaning back in a plank. Pull yourself up by sweeping the arms into a Y, lower, then a T, lower, then a W with the elbows tucked, cycling through the three shapes. Drive each rep from the shoulder blades moving down and back rather than bending the elbows, and walk the feet back to make it lighter."
+  },
+  {
+    id: "trx-low-row",
+    name: "TRX low row",
+    groups: ["back", "biceps", "shoulders"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face the anchor holding the handles, walk the feet forward and lean back until the body is a straight plank at a steep angle. Row the handles to the lower ribs with the elbows close to the body, squeeze the shoulder blades together at the top, then lower with control. Keep the hips from sagging; walking the feet closer to under the anchor makes it harder, walking them back makes it easier."
+  },
+  {
+    id: "trx-face-pull",
+    name: "TRX face pull",
+    groups: ["shoulders", "back"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face the anchor with an overhand grip and lean back in a plank. Pull the handles toward the forehead with the elbows high and wide, finishing with the hands beside the ears and the knuckles turned up so the rear delts and rotator cuff do the work. Lower slowly; keep the lean shallow at first, because this targets small muscles that tire fast."
+  },
+  {
+    id: "trx-chest-press",
+    name: "TRX chest press",
+    groups: ["chest", "shoulders", "triceps", "core"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face away from the anchor holding the handles at chest height with straight arms and lean forward in a plank. Lower the chest between the hands like a push-up, keeping the straps from rubbing the arms, then press back to straight arms. The unstable handles make the core and shoulders work harder than a floor push-up; step the feet back toward the anchor to make it harder."
+  },
+  {
+    id: "trx-biceps-curl",
+    name: "TRX biceps curl",
+    groups: ["biceps"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face the anchor with an underhand grip, arms straight in front at shoulder height, and lean back. Keeping the elbows high and still, curl the handles toward the forehead so the body rises, then lower with control. Only the elbows bend; walk the feet forward to increase the load."
+  },
+  {
+    id: "trx-triceps-extension",
+    name: "TRX triceps extension",
+    groups: ["triceps", "core"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face away from the anchor holding the handles overhead with straight arms, leaning forward. Bend only at the elbows so the head moves between the hands, then press back to straight arms. Keep the elbows pointed forward and the body in a rigid plank; a steeper lean makes it much harder, so start fairly upright."
+  },
+  {
+    id: "trx-fallout",
+    name: "TRX fallout",
+    groups: ["core", "shoulders"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Face away from the anchor holding the handles in front of the hips with straight arms, leaning slightly forward. Let the arms rise overhead as the body falls forward into a long plank, then pull the hands back down to return. This is an anti-extension ab rollout: stop before the lower back arches and keep the ribs pulled down throughout."
+  },
+  {
+    id: "trx-side-plank-reach-through",
+    name: "TRX side plank reach-through",
+    groups: ["core", "abductors"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "leftRight",
+    description:
+      "Put both feet in the foot cradles, stacked, and hold a side plank on the forearm. Reach the top arm under the body and rotate the chest toward the floor, then open back up to the ceiling. The suspended feet make the side hip and obliques fight for stability; drop to a static hold if the hips start to sag."
+  },
+  {
+    id: "trx-power-pull",
+    name: "TRX power pull",
+    groups: ["back", "core", "shoulders"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "leftRight",
+    description:
+      "Hold one handle with the strap taut, lean back and let the free arm reach toward the anchor side so the chest rotates open. Row the working hand to the ribs while rotating the chest back toward the anchor and reaching the free arm up and behind. This combines a one-arm row with trunk rotation, so move smoothly and let the hips turn with the chest."
+  },
+  {
+    id: "trx-atomic-push-up",
+    name: "TRX atomic push-up",
+    groups: ["chest", "core", "triceps"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "Put both feet in the foot cradles and set up in a push-up position with the hands under the shoulders. Do one push-up, then pull the knees to the chest, extend the legs back out, and repeat. It is a demanding core and push combination; keep the hips level during the push-up and drop the tuck if form fades."
+  },
+  {
+    id: "trx-pike",
+    name: "TRX pike",
+    groups: ["core", "shoulders"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "single",
+    description:
+      "With both feet in the foot cradles and hands under the shoulders in a high plank, lift the hips toward the ceiling with straight legs until the body forms an inverted V, then lower back to the plank. Move slowly and keep the shoulders stacked over the hands. Bend the knees into a tuck if the full pike pulls the lower back out of position."
+  },
+  {
+    id: "trx-assisted-pistol",
+    name: "TRX assisted pistol squat",
+    groups: ["quads", "glutes"],
+    tags: [inventoryV13Tag, "trx"],
+    sideMode: "leftRight",
+    description:
+      "Face the anchor holding both handles and stand on one leg with the other leg reaching forward. Sit down as deep as you can control on the standing leg, keeping the heel down and the knee tracking over the toes, then drive back up using the straps as little as possible. It is a single-leg strength builder, so lean on the straps more rather than letting the knee cave."
+  },
+  {
+    id: "db-halo",
+    name: "DB halo",
+    groups: ["shoulders", "core"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand tall holding one light dumbbell by the ends in front of the chest. Circle it slowly around the head, close to the skull, keeping the ribs down and the hips still, then reverse direction halfway through. It warms up shoulder rotation and upper-back mobility; 8-15 lb is plenty."
+  },
+  {
+    id: "db-standing-side-bend",
+    name: "DB standing side bend",
+    groups: ["core"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "leftRight",
+    description:
+      "Stand tall with one dumbbell hanging at your side and the other hand on the hip. Bend sideways toward the weight, sliding it down the leg, then pull back up past vertical using the opposite side of the waist. Stay in one plane without leaning forward or twisting; start around 15-30 lb and move slowly."
+  },
+  {
+    id: "db-goblet-squat",
+    name: "DB goblet squat",
+    groups: ["quads", "glutes", "core"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Hold one dumbbell vertically against the chest with both hands under the top end. Squat down between the heels with the chest tall and the elbows inside the knees, then drive up through the whole foot. The front load keeps the torso upright and the core braced; start around 25-45 lb."
+  },
+  {
+    id: "db-reverse-lunge",
+    name: "DB reverse lunge",
+    groups: ["quads", "glutes", "hamstrings"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand holding a dumbbell in each hand at your sides. Step one foot back and lower until both knees are about 90 degrees, then drive through the front heel to return and alternate legs. Stepping back is kinder to the knees than a forward lunge; keep the torso upright and start around 15-30 lb per hand."
+  },
+  {
+    id: "db-single-arm-row",
+    name: "DB single-arm row",
+    groups: ["back", "biceps"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "leftRight",
+    description:
+      "Brace one hand and knee on a bench, or stagger the stance and hinge with the free hand on the knee, holding a dumbbell under the shoulder. Row it toward the hip with the elbow close to the body, pause with the shoulder blade pulled back, then lower to a full stretch. Keep the back flat and avoid twisting the torso to cheat the weight up; 30-60 lb works for most."
+  },
+  {
+    id: "db-floor-press",
+    name: "DB floor press",
+    groups: ["chest", "triceps"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Lie on your back with knees bent and a dumbbell in each hand, upper arms on the floor at about 45 degrees from the body. Press the weights up over the chest, then lower until the upper arms touch the floor lightly. The floor limits the range, which protects the shoulders and puts the focus on lockout; start around 25-45 lb per hand."
+  },
+  {
+    id: "db-lateral-raise",
+    name: "DB lateral raise",
+    groups: ["shoulders"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand with a light dumbbell in each hand at your sides and a soft bend in the elbows. Raise the arms out to the sides to shoulder height, leading with the elbows, then lower slowly. Don't shrug or swing; 8-15 lb is usually enough."
+  },
+  {
+    id: "db-hammer-curl",
+    name: "DB hammer curl",
+    groups: ["biceps"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand with a dumbbell in each hand, palms facing each other. Curl the weights up without letting the elbows drift forward, then lower fully. The neutral grip hits the brachialis and forearms along with the biceps; start around 15-30 lb and keep the torso still."
+  },
+  {
+    id: "db-skull-crusher",
+    name: "DB skull crusher",
+    groups: ["triceps"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Lie on your back on the floor or a bench with a dumbbell in each hand, arms straight over the shoulders and palms facing each other. Bend only at the elbows to lower the weights beside the head, then extend back up. Keep the upper arms still and angled slightly back; start light, around 10-20 lb per hand."
+  },
+  {
+    id: "db-pullover",
+    name: "DB pullover",
+    groups: ["back", "chest"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Lie on your back holding one dumbbell with both hands over the chest, elbows softly bent. Lower it in an arc behind the head until you feel the lats and chest stretch, keeping the ribs down, then pull it back over the chest. It also opens overhead mobility; start around 20-35 lb and stop the arc before the lower back arches."
+  },
+  {
+    id: "db-hip-thrust",
+    name: "DB hip thrust",
+    groups: ["glutes", "hamstrings"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Sit with the upper back against a bench edge, knees bent and feet flat, with a dumbbell held on the hip crease. Drive through the heels to lift the hips until the body is flat from shoulders to knees, squeeze the glutes, then lower. Tuck the chin and keep the ribs down so the glutes rather than the lower back finish the rep; this takes heavy loads, 40-84 lb."
+  },
+  {
+    id: "db-russian-twist",
+    name: "DB Russian twist",
+    groups: ["core"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Sit with knees bent, lean back to about 45 degrees with a long spine, and hold one dumbbell at the chest. Rotate the chest and weight side to side, moving from the ribs rather than just swinging the arms. Keep the heels down for stability or lift them to make it harder; 10-25 lb is plenty."
+  },
+  {
+    id: "db-calf-raise",
+    name: "DB calf raise",
+    groups: ["calves"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand with the balls of the feet on a step or plate and a dumbbell in each hand. Lower the heels into a full stretch, pause, then rise as high as possible onto the toes and hold for a beat. Go slowly through the whole range rather than bouncing; the calves handle heavy loads, 30-60 lb per hand."
+  },
+  {
+    id: "db-romanian-deadlift",
+    name: "DB Romanian deadlift",
+    groups: ["hamstrings", "glutes", "back"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand holding a dumbbell in each hand in front of the thighs, knees softly bent. Push the hips back and slide the weights down the front of the legs with a flat back until the hamstrings are fully stretched, then drive the hips forward to stand. This is a hip hinge, not a squat, so keep the shins nearly vertical; start around 35-60 lb per hand and build toward the top of the set."
+  },
+  {
+    id: "db-overhead-press",
+    name: "DB standing overhead press",
+    groups: ["shoulders", "triceps", "core"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Stand with the feet hip width apart and a dumbbell in each hand at shoulder height. Press the weights straight overhead until the arms are locked and the biceps are beside the ears, then lower under control. Squeeze the glutes and keep the ribs down so the lower back doesn't arch; start around 20-40 lb per hand."
+  },
+  {
+    id: "db-bulgarian-split-squat",
+    name: "DB Bulgarian split squat",
+    groups: ["quads", "glutes"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "leftRight",
+    description:
+      "Stand in front of a bench with the top of the back foot resting on it and a dumbbell in each hand. Lower straight down until the front thigh is about parallel, then drive up through the front foot. A longer stance biases the glutes and a shorter one the quads; it is brutal, so start around 15-30 lb per hand."
+  },
+  {
+    id: "db-renegade-row",
+    name: "DB renegade row",
+    groups: ["back", "core", "shoulders"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Set up in a high plank gripping two dumbbells on the floor, feet wider than hip width. Row one dumbbell to the ribs without letting the hips rotate, set it down, then row the other side. The plank is the hard part, so keep the load moderate, around 15-30 lb, and widen the feet for more stability."
+  },
+  {
+    id: "db-thruster",
+    name: "DB thruster",
+    groups: ["cardio_hiit", "quads", "shoulders"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Hold a dumbbell in each hand at shoulder height and squat to full depth. Drive up out of the squat and use that momentum to press the weights straight overhead in one flowing motion, then lower them back to the shoulders as you sink into the next squat. It is a full-body conditioning move, so pick a load you can move fast, around 15-30 lb per hand."
+  },
+  {
+    id: "db-swing",
+    name: "DB swing",
+    groups: ["cardio_hiit", "glutes", "hamstrings"],
+    tags: [inventoryV13Tag, "dumbbell"],
+    sideMode: "single",
+    description:
+      "Hold one dumbbell by the end with both hands, feet a little wider than the hips. Hike it back between the legs by hinging hard at the hips, then snap the hips forward so the weight floats to chest height, letting it fall back into the next hinge. The power comes from the hips, not the arms or a squat; start around 25-45 lb and keep the back flat."
+  },
+  {
+    id: "side-hyperextension",
+    name: "Side hyperextension",
+    groups: ["core", "glutes"],
+    tags: [inventoryV13Tag, "hyper-bench"],
+    sideMode: "leftRight",
+    description:
+      "Lie sideways on the hyperextension bench with the hip on the pad and the feet stacked and anchored. Lower the upper body sideways toward the floor, then lift back up past neutral using the top obliques and side hip. Keep the body in one plane without rotating; hold a plate or dumbbell at the chest only once body weight is easy."
+  },
+  {
+    id: "glute-biased-back-extension",
+    name: "Glute-biased back extension",
+    groups: ["glutes", "hamstrings"],
+    tags: [inventoryV13Tag, "hyper-bench"],
+    sideMode: "single",
+    description:
+      "Set the pad low enough that the hips can fold over it, turn the feet out slightly and round the upper back with the chin tucked. Lower, then lift by squeezing the glutes and pushing the hips into the pad, stopping when the body is in a straight line. Rounding the upper back takes the spinal erectors out so the glutes drive the movement."
+  },
+  {
+    id: "weighted-back-extension",
+    name: "Weighted back extension",
+    groups: ["back", "glutes", "hamstrings"],
+    tags: [inventoryV13Tag, "hyper-bench", "dumbbell"],
+    sideMode: "single",
+    description:
+      "Set up on the hyperextension bench with the hips on the pad and a dumbbell hugged to the chest. Hinge down with a long spine, then extend back to a straight line from head to heels without overarching at the top. This is the loaded progression of the body-weight hyperextension; start around 15-30 lb and add weight only while the reps stay smooth."
+  }
+];
+
+// Existing entries that already use the home-gym kit get the matching equipment
+// tag, so filtering by equipment surfaces them alongside the v13 additions.
+const equipmentRetags: ReadonlyArray<[readonly string[], readonly string[]]> = [
+  [["ball-trx-hamstring-curl"], ["trx"]],
+  [
+    [
+      "weighted-y-raise-hyper-bench",
+      "suitcase-carry",
+      "suitcase-deadlift",
+      "farmer-carry",
+      "jefferson-curl",
+      "seated-good-mornings",
+      "standing-good-mornings",
+      "single-leg-deadlift"
+    ],
+    ["dumbbell"]
+  ],
+  [["hyperextensions", "weighted-y-raise-hyper-bench"], ["hyper-bench"]]
+];
+
 
 // instead of duplicating the entry, so the original description and side mode
 // stay authoritative.
@@ -1094,7 +1439,12 @@ const warmupIntensityIds: readonly string[] = [
   "pigeon-pose",
   "middle-split-practice",
   // v12 reverse-plank (crab-walk stays on the work default as a progression)
-  "reverse-plank"
+  "reverse-plank",
+  // v13 equipment
+  "trx-assisted-squat",
+  "trx-ytw-raise",
+  "db-halo",
+  "db-standing-side-bend"
 ];
 
 // Peaks are loaded, explosive, or advanced movements that should not open a
@@ -1141,10 +1491,21 @@ const peakIntensityIds: readonly string[] = [
   "broad-jump",
   // v10 hamstring-injury
   "ball-trx-hamstring-curl",
-  "prone-banded-leg-curl"
+  "prone-banded-leg-curl",
+  // v13 equipment
+  "trx-atomic-push-up",
+  "trx-pike",
+  "trx-assisted-pistol",
+  "db-romanian-deadlift",
+  "db-overhead-press",
+  "db-bulgarian-split-squat",
+  "db-renegade-row",
+  "db-thruster",
+  "db-swing",
+  "weighted-back-extension"
 ];
 
-const taggedSeedExercises: Exercise[] = applyRetags(
+const inventoryTaggedExercises: Exercise[] = applyRetags(
   applyRetags(
     applyRetags(
       applyRetags(
@@ -1161,7 +1522,8 @@ const taggedSeedExercises: Exercise[] = applyRetags(
             ...inventoryV9Exercises,
             ...inventoryV10Exercises,
             ...inventoryV11Exercises,
-            ...inventoryV12Exercises
+            ...inventoryV12Exercises,
+            ...inventoryV13Exercises
           ]),
           inventoryV2RetagIds,
           ["inventory:v2:daily-practice"]
@@ -1177,6 +1539,11 @@ const taggedSeedExercises: Exercise[] = applyRetags(
   ),
   inventoryV7RetagIds,
   ["inventory:v7:glute-medius"]
+);
+
+const taggedSeedExercises: Exercise[] = equipmentRetags.reduce(
+  (exercises, [ids, tags]) => applyRetags(exercises, ids, tags),
+  inventoryTaggedExercises
 );
 
 export const seedExercises: Exercise[] = applyIntensity(

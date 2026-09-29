@@ -27,6 +27,8 @@ The app helps create short exercise routines from a local exercise library. A us
   - `inventory:v9:big-toe-pronation`: big-toe / overpronation correction drills
   - `inventory:v10:hamstring-injury`: hamstring injury rehab/prevention curls
   - `inventory:v11:flexibility-splits`: MovementbyDavid flexibility/splits stretches (with explicit videos)
+  - `inventory:v13:equipment`: home-gym kit additions (TRX, adjustable dumbbells, hyperextension bench)
+- Equipment tags (stackable, also applied to matching earlier exercises): `trx`, `dumbbell`, `hyper-bench`
 - Supported primary muscle groups:
   - spine flexion/extension
   - glutes
